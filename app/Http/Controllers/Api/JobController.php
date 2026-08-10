@@ -23,6 +23,15 @@ class JobController extends Controller
         return response()->json(['data' => $jobs]);
     }
 
+    public function departments(): JsonResponse
+    {
+        $departments = \App\Models\JobDepartment::orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json(['data' => $departments]);
+    }
+
     public function apply(Request $request, int $id): JsonResponse
     {
         $job = Job::where('id', $id)->where('published', true)->first();

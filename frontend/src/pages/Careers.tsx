@@ -48,6 +48,8 @@ export default function Careers() {
   // Filters
   const [departments, setDepartments] = useState<string[]>(['All'])
   const [activeDept, setActiveDept] = useState('All')
+  const [departmentsCount, setDepartmentsCount] = useState<number>(0)
+  const [officesCount, setOfficesCount] = useState<number>(0)
 
   // Expanded Job Opening Accordion
   const [expandedJobId, setExpandedJobId] = useState<number | null>(null)
@@ -86,9 +88,8 @@ export default function Careers() {
           setJobs(res.data)
           setFilteredJobs(res.data)
 
-          // Collect unique departments from active jobs
-          const depts = ['All', ...new Set(res.data.map(j => j.department))]
-          setDepartments(depts)
+          setDepartments(prev => prev.length > 1 ? prev : ['All', ...new Set(res.data.map(j => j.department))])
+          setDepartmentsCount(prev => prev || new Set(res.data.map(j => j.department)).size)
         }
         setLoading(false)
       })
@@ -96,6 +97,25 @@ export default function Careers() {
         console.error('Failed to load job listings:', err)
         setLoading(false)
       })
+
+    // 3. Fetch all active departments
+    api.jobDepartments.list()
+      .then(res => {
+        if (res.data && res.data.length > 0) {
+          setDepartmentsCount(res.data.length)
+          setDepartments(['All', ...res.data.map(d => d.name)])
+        }
+      })
+      .catch(err => console.error('Failed to load departments:', err))
+
+    // 4. Fetch active offices
+    api.offices.list()
+      .then(res => {
+        if (res.data) {
+          setOfficesCount(res.data.length)
+        }
+      })
+      .catch(err => console.error('Failed to load offices count:', err))
   }, [])
 
   // Handle department filter changes
@@ -235,8 +255,8 @@ export default function Careers() {
 
   const stats = [
     { value: String(jobs.length).padStart(2, '0'), label: 'Open roles' },
-    { value: String(Math.max(departments.length - 1, 0)).padStart(2, '0'), label: 'Departments' },
-    { value: '2', label: 'Offices' },
+    { value: String(departmentsCount).padStart(2, '0'), label: 'Departments' },
+    { value: String(officesCount).padStart(2, '0'), label: 'Offices' },
   ]
 
   return (

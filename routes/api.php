@@ -43,6 +43,7 @@ Route::prefix('v1')->group(function () {
 
     // Careers
     Route::get('/jobs', [\App\Http\Controllers\Api\JobController::class, 'index']);
+    Route::get('/job-departments', [\App\Http\Controllers\Api\JobController::class, 'departments']);
     Route::post('/jobs/{id}/apply', [\App\Http\Controllers\Api\JobController::class, 'apply']);
 
     // Contact form — rate limited

@@ -156,7 +156,13 @@ export interface Award {
   portfolio_item?: { slug: string; title: string; client: string } | null
 }
 
-// Careers Types
+export interface JobDepartment {
+  id: number
+  name: string
+  slug: string
+  sort_order: number
+}
+
 export interface Job {
   id: number
   title: string
@@ -216,6 +222,9 @@ export const api = {
   },
   awards: {
     list: () => get<{ data: Award[] }>('/awards'),
+  },
+  jobDepartments: {
+    list: () => get<{ data: JobDepartment[] }>('/job-departments'),
   },
   jobs: {
     list: () => get<{ data: Job[] }>('/jobs'),
