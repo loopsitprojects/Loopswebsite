@@ -13,6 +13,7 @@
     RewriteRule ^build/(.*)$ public/build/$1 [L]
     RewriteRule ^images/(.*)$ public/images/$1 [L]
     RewriteRule ^videos/(.*)$ public/videos/$1 [L]
+    RewriteRule ^fonts/(.*)$ public/fonts/$1 [L]
     RewriteRule ^livewire/(.*)$ index.php [QSA,L]
 
     # Handle Authorization Header
