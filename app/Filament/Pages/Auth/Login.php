@@ -123,6 +123,7 @@ class Login extends BaseLogin
         $this->sendOtpEmail($otp);
 
         $this->requiresOtp = true;
+        $this->resetFormSchemas();
         $this->form->fill();
 
         Notification::make()
@@ -176,6 +177,7 @@ class Login extends BaseLogin
 
         if (!$sessionUserId || !$sessionOtp || !$expiresAt) {
             $this->requiresOtp = false;
+            $this->resetFormSchemas();
             $this->form->fill();
             throw ValidationException::withMessages([
                 'data.otp_code' => 'Session expired. Please enter your credentials again.',
@@ -242,10 +244,16 @@ class Login extends BaseLogin
         }
     }
 
+    protected function resetFormSchemas(): void
+    {
+        $this->cachedSchemas = [];
+    }
+
     public function resendOtp(): void
     {
         if (!session()->has('admin_otp_user_id')) {
             $this->requiresOtp = false;
+            $this->resetFormSchemas();
             $this->form->fill();
             Notification::make()->title('Session Expired')->body('Please log in again.')->danger()->send();
             return;
@@ -271,6 +279,7 @@ class Login extends BaseLogin
     {
         session()->forget(['admin_otp_user_id', 'admin_otp_code', 'admin_otp_expires_at', 'admin_otp_remember']);
         $this->requiresOtp = false;
+        $this->resetFormSchemas();
         $this->form->fill();
     }
 
