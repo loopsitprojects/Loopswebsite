@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageSectionResource\Pages;
 use App\Models\PageSection;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -74,7 +75,7 @@ class PageSectionResource extends Resource
             ])
             ->defaultSort('section')
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([]);
     }

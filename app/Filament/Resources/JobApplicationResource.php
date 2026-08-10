@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\JobApplicationResource\Pages;
 use App\Models\JobApplication;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -125,18 +126,18 @@ class JobApplicationResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('download_cv')
+                Actions\EditAction::make(),
+                Actions\Action::make('download_cv')
                     ->label('Download CV')
                     ->icon('heroicon-o-document-arrow-down')
                     ->url(fn ($record) => $record?->cv_url)
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => !empty($record?->cv_url)),
-                Tables\Actions\DeleteAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

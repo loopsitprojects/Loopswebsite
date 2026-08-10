@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PortfolioCategoryResource\Pages;
 use App\Filament\Resources\PortfolioCategoryResource\RelationManagers;
 use App\Models\PortfolioCategory;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -69,11 +70,11 @@ class PortfolioCategoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

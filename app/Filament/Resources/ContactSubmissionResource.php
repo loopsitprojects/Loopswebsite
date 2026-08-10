@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactSubmissionResource\Pages;
 use App\Models\ContactSubmission;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -81,15 +82,15 @@ class ContactSubmissionResource extends Resource
                     ->falseLabel('Unread'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('mark_read')
+                Actions\ViewAction::make(),
+                Actions\Action::make('mark_read')
                     ->label('Mark Read')
                     ->icon('heroicon-o-check')
                     ->action(fn ($record) => $record->markAsRead())
                     ->visible(fn ($record) => !$record->is_read),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('mark_read')
+                Actions\BulkAction::make('mark_read')
                     ->label('Mark as Read')
                     ->icon('heroicon-o-check')
                     ->action(fn ($records) => $records->each->markAsRead()),
