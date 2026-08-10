@@ -6,7 +6,7 @@ import masLogo from '@/assets/clients/mas.png'
 import yamahaLogo from '@/assets/clients/yamaha.svg'
 import pepsiLogo from '@/assets/clients/pepsi.png'
 import hemasLogo from '@/assets/clients/hemas.svg'
-import softlogicLogo from '@/assets/clients/softlogic.png'
+import softlogicLifeLogo from '@/assets/clients/softlogic-life.png'
 import cargillsLogo from '@/assets/clients/cargills.png'
 import commercialBankLogo from '@/assets/clients/commercial-bank.svg'
 import keellsLogo from '@/assets/clients/keells.png'
@@ -26,9 +26,9 @@ const localClientLogos: Record<string, string> = {
   'pepsico': pepsiLogo,
   'mas': masLogo,
   'mas holdings': masLogo,
-  'softlogic': softlogicLogo,
-  'softlogic life': softlogicLogo,
-  'softlogic holdings': softlogicLogo,
+  'softlogic': softlogicLifeLogo,
+  'softlogic life': softlogicLifeLogo,
+  'softlogic holdings': softlogicLifeLogo,
   'dialog': dialogLogo,
   'dialog axiata': dialogLogo,
   'hemas': hemasLogo,
@@ -55,7 +55,7 @@ const fallbackClients: Client[] = [
   { id: 6, name: 'Elephant House', logo_url: elephantHouseLogo },
   { id: 7, name: 'CEAT', logo_url: ceatLogo },
   { id: 8, name: 'Hemas', logo_url: hemasLogo },
-  { id: 9, name: 'Softlogic', logo_url: softlogicLogo },
+  { id: 9, name: 'Softlogic Life', logo_url: softlogicLifeLogo },
   { id: 10, name: 'Cargills', logo_url: cargillsLogo },
   { id: 11, name: 'Commercial Bank', logo_url: commercialBankLogo },
   { id: 12, name: 'Keells', logo_url: keellsLogo },
