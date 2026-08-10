@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/loopstec/public_html/dev.loopstech.net/loopswebsite
+    - php artisan filament:assets
+    - php artisan livewire:publish --assets
+    - /bin/cp -R public/* $DEPLOYPATH/
