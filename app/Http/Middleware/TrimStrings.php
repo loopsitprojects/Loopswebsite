@@ -16,4 +16,20 @@ class TrimStrings extends Middleware
         'password',
         'password_confirmation',
     ];
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, \Closure $next)
+    {
+        if ($request->hasHeader('X-Livewire') || $request->is('livewire/*')) {
+            return $next($request);
+        }
+
+        return parent::handle($request, $next);
+    }
 }

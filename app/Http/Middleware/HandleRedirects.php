@@ -17,6 +17,7 @@ class HandleRedirects
         if (
             $request->is('api/*') ||
             $request->is('admin*') ||
+            $request->is('livewire*') ||
             $request->is('loops-internal-portal*') ||
             $request->is('_debugbar*') ||
             preg_match('/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|map)$/', $path)
