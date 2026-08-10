@@ -6,6 +6,7 @@ use App\Filament\Resources\NewsletterSubscriberResource\Pages;
 use App\Models\NewsletterSubscriber;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -34,7 +35,7 @@ class NewsletterSubscriberResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->schema([
-            Forms\Components\Section::make('Subscriber Information')->schema([
+            Components\Section::make('Subscriber Information')->schema([
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('email')
                         ->email()

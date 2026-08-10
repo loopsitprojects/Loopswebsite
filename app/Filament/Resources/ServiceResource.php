@@ -7,6 +7,7 @@ use App\Filament\Resources\ServiceResource\RelationManagers;
 use App\Models\Service;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,11 +25,11 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
+                Components\Tabs::make('Tabs')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Service Info')
+                        Components\Tabs\Tab::make('Service Info')
                             ->schema([
-                                Forms\Components\Grid::make(2)->schema([
+                                Components\Grid::make(2)->schema([
                                     Forms\Components\TextInput::make('title')
                                         ->required()
                                         ->maxLength(100)
@@ -75,7 +76,7 @@ class ServiceResource extends Resource
                                         ->default(true),
                                 ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Capabilities')
+                        Components\Tabs\Tab::make('Capabilities')
                             ->schema([
                                 Forms\Components\Repeater::make('capabilities')
                                     ->relationship('capabilities')
@@ -95,7 +96,7 @@ class ServiceResource extends Resource
                                     ->grid(2)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Hero Image')
+                        Components\Tabs\Tab::make('Hero Image')
                             ->schema([
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('hero')
                                     ->collection('hero')
@@ -104,7 +105,7 @@ class ServiceResource extends Resource
                                     ->helperText('Upload a hero image for this service page.')
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('SEO Settings')
+                        Components\Tabs\Tab::make('SEO Settings')
                             ->schema([
                                 Forms\Components\TextInput::make('meta_title')
                                     ->maxLength(255),

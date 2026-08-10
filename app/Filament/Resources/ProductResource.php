@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,11 +26,11 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Product details')
+                Components\Tabs::make('Product details')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('General Info')
+                        Components\Tabs\Tab::make('General Info')
                             ->schema([
-                                Forms\Components\Grid::make(2)->schema([
+                                Components\Grid::make(2)->schema([
                                     Forms\Components\TextInput::make('title')
                                         ->required()
                                         ->maxLength(150)
@@ -53,7 +54,7 @@ class ProductResource extends Resource
                                         ->default(true),
                                 ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Card Image')
+                        Components\Tabs\Tab::make('Card Image')
                             ->schema([
                                 Forms\Components\TextInput::make('image_url')
                                     ->label('Image URL / Link')

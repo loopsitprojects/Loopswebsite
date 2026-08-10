@@ -6,6 +6,7 @@ use App\Filament\Resources\JobResource\Pages;
 use App\Models\Job;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +25,7 @@ class JobResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Job Opening Details')
+                Components\Section::make('Job Opening Details')
                     ->schema([
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('title')
@@ -80,7 +81,7 @@ class JobResource extends Resource
                         ]),
                     ]),
 
-                Forms\Components\Section::make('Job Description')
+                Components\Section::make('Job Description')
                     ->description('Provide the details, responsibilities, and requirements for this role. Supports Markdown formatting.')
                     ->schema([
                         Forms\Components\MarkdownEditor::make('description')
@@ -88,7 +89,7 @@ class JobResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('Application Channels')
+                Components\Section::make('Application Channels')
                     ->description('Set how candidates should submit applications. Leave blank to show the direct online application form.')
                     ->schema([
                         Forms\Components\Grid::make(2)->schema([

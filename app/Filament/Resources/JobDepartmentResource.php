@@ -6,6 +6,7 @@ use App\Filament\Resources\JobDepartmentResource\Pages;
 use App\Models\JobDepartment;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,7 +26,7 @@ class JobDepartmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Department Details')
+                Components\Section::make('Department Details')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()

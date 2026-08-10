@@ -6,6 +6,7 @@ use App\Filament\Resources\JobApplicationResource\Pages;
 use App\Models\JobApplication;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +25,7 @@ class JobApplicationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Applicant Details')
+                Components\Section::make('Applicant Details')
                     ->schema([
                         Forms\Components\Grid::make(2)->schema([
                             Forms\Components\Select::make('job_id')
@@ -65,7 +66,7 @@ class JobApplicationResource extends Resource
                         ]),
                     ]),
 
-                Forms\Components\Section::make('Cover Letter')
+                Components\Section::make('Cover Letter')
                     ->schema([
                         Forms\Components\Textarea::make('cover_letter')
                             ->disabled()
@@ -73,7 +74,7 @@ class JobApplicationResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('Resume / CV')
+                Components\Section::make('Resume / CV')
                     ->schema([
                         Forms\Components\Placeholder::make('cv_download_link')
                             ->label('Attached CV')

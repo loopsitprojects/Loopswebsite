@@ -6,6 +6,7 @@ use App\Filament\Resources\ClientResource\Pages;
 use App\Models\Client;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,7 +26,7 @@ class ClientResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->schema([
-            Forms\Components\Section::make('Brand Details')->schema([
+            Components\Section::make('Brand Details')->schema([
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('name')
                         ->required()
@@ -50,7 +51,7 @@ class ClientResource extends Resource
                 ]),
             ]),
 
-            Forms\Components\Section::make('Logo')
+            Components\Section::make('Logo')
                 ->description('Upload the brand\'s logo. SVG or PNG on transparent background preferred. The logo is displayed on a dark background, so white/light versions work best.')
                 ->schema([
                     Forms\Components\SpatieMediaLibraryFileUpload::make('logo')

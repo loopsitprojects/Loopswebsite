@@ -6,6 +6,7 @@ use App\Filament\Resources\PageSectionResource\Pages;
 use App\Models\PageSection;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -47,7 +48,7 @@ class PageSectionResource extends Resource
                     ->label('Published')
                     ->default(true),
             ]),
-            Forms\Components\Section::make('Section Data (JSON)')
+            Components\Section::make('Section Data (JSON)')
                 ->description('Edit the structured content for this section. Each key becomes available to the frontend.')
                 ->schema([
                     Forms\Components\KeyValue::make('data')

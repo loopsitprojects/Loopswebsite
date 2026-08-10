@@ -6,6 +6,7 @@ use App\Filament\Resources\ContactSubmissionResource\Pages;
 use App\Models\ContactSubmission;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -32,7 +33,7 @@ class ContactSubmissionResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->schema([
-            Forms\Components\Section::make('Sender')->schema([
+            Components\Section::make('Sender')->schema([
                 Forms\Components\Grid::make(3)->schema([
                     Forms\Components\TextInput::make('name')->disabled(),
                     Forms\Components\TextInput::make('email')->disabled(),
@@ -43,10 +44,10 @@ class ContactSubmissionResource extends Resource
                     Forms\Components\TextInput::make('office_context')->label('Office')->disabled(),
                 ]),
             ]),
-            Forms\Components\Section::make('Message')->schema([
+            Components\Section::make('Message')->schema([
                 Forms\Components\Textarea::make('message')->disabled()->rows(6),
             ]),
-            Forms\Components\Section::make('Meta')->schema([
+            Components\Section::make('Meta')->schema([
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('ip_address')->label('IP Address')->disabled(),
                     Forms\Components\DateTimePicker::make('created_at')->label('Received At')->disabled(),

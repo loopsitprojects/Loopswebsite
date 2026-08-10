@@ -6,6 +6,7 @@ use App\Filament\Resources\UserLoginLogResource\Pages;
 use App\Models\UserLoginLog;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,7 +30,7 @@ class UserLoginLogResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Login Log Details')
+                Components\Section::make('Login Log Details')
                     ->schema([
                         Forms\Components\TextInput::make('email')
                             ->label('Email Address')

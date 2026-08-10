@@ -6,6 +6,7 @@ use App\Filament\Resources\OfficeResource\Pages;
 use App\Models\Office;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,7 +26,7 @@ class OfficeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Office Information')->schema([
+                Components\Section::make('Office Information')->schema([
                     Forms\Components\Grid::make(2)->schema([
                         Forms\Components\TextInput::make('city')
                             ->required()
@@ -56,7 +57,7 @@ class OfficeResource extends Resource
                         ->columnSpanFull(),
                 ]),
 
-                Forms\Components\Section::make('Coordinates & Settings')->schema([
+                Components\Section::make('Coordinates & Settings')->schema([
                     Forms\Components\Grid::make(2)->schema([
                         Forms\Components\TextInput::make('lat')
                             ->label('Latitude')

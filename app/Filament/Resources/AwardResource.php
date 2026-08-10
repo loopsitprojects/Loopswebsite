@@ -6,6 +6,7 @@ use App\Filament\Resources\AwardResource\Pages;
 use App\Models\Award;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +25,7 @@ class AwardResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Award Details')
+                Components\Section::make('Award Details')
                     ->schema([
                         Forms\Components\TextInput::make('award_body')
                             ->label('Award Show / Organization')
@@ -47,7 +48,7 @@ class AwardResource extends Resource
                             ->maxLength(255),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Campaign & Client Information')
+                Components\Section::make('Campaign & Client Information')
                     ->schema([
                         Forms\Components\TextInput::make('campaign_name')
                             ->required()
@@ -68,7 +69,7 @@ class AwardResource extends Resource
                             ->columnSpanFull(),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Media & Display Settings')
+                Components\Section::make('Media & Display Settings')
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('background')
                             ->collection('background')

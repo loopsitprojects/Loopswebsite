@@ -6,6 +6,7 @@ use App\Filament\Resources\PortfolioItemResource\Pages;
 use App\Models\PortfolioItem;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,11 +23,11 @@ class PortfolioItemResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->schema([
-            Forms\Components\Tabs::make('Case Study')
+            Components\Tabs::make('Case Study')
                 ->tabs([
-                    Forms\Components\Tabs\Tab::make('Content')
+                    Components\Tabs\Tab::make('Content')
                         ->schema([
-                            Forms\Components\Grid::make(2)->schema([
+                            Components\Grid::make(2)->schema([
                                 Forms\Components\TextInput::make('client')
                                     ->nullable()
                                     ->maxLength(255)
@@ -77,9 +78,9 @@ class PortfolioItemResource extends Resource
                                 ->helperText('Measurable outcomes and impact.'),
                         ]),
 
-                    Forms\Components\Tabs\Tab::make('Media')
+                    Components\Tabs\Tab::make('Media')
                         ->schema([
-                            Forms\Components\Grid::make(2)->schema([
+                            Components\Grid::make(2)->schema([
                                 Forms\Components\Group::make([
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('hero')
                                         ->label('Hero Image')
@@ -218,7 +219,7 @@ class PortfolioItemResource extends Resource
                                         }),
                                 ]),
                             ]),
-                            Forms\Components\Grid::make(2)->schema([
+                            Components\Grid::make(2)->schema([
                                 Forms\Components\Group::make([
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
                                         ->label('Gallery Images')
@@ -288,9 +289,9 @@ class PortfolioItemResource extends Resource
                             ]),
                         ]),
 
-                    Forms\Components\Tabs\Tab::make('Categorisation')
+                    Components\Tabs\Tab::make('Categorisation')
                         ->schema([
-                            Forms\Components\Grid::make(2)->schema([
+                            Components\Grid::make(2)->schema([
                                 Forms\Components\Select::make('year')
                                     ->options(array_combine(
                                         range(date('Y'), 2015),
@@ -319,7 +320,7 @@ class PortfolioItemResource extends Resource
                                 ->createOptionForm([
                                     Forms\Components\TextInput::make('name')->required(),
                                 ]),
-                            Forms\Components\Grid::make(4)->schema([
+                            Components\Grid::make(4)->schema([
                                 Forms\Components\Toggle::make('featured')
                                     ->label('Featured on Homepage')
                                     ->helperText('Show in the Featured Work section'),
@@ -337,7 +338,7 @@ class PortfolioItemResource extends Resource
                             ]),
                         ]),
 
-                    Forms\Components\Tabs\Tab::make('SEO')
+                    Components\Tabs\Tab::make('SEO')
                         ->schema([
                             Forms\Components\TextInput::make('meta_title')
                                 ->label('SEO Title')
