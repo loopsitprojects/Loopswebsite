@@ -4,9 +4,9 @@ namespace App\Filament\Pages;
 
 use App\Models\PageSection;
 use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Grid;
+use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Tabs;
+use Filament\Schemas\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
