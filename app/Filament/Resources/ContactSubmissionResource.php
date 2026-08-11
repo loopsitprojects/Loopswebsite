@@ -89,12 +89,16 @@ class ContactSubmissionResource extends Resource
                     ->icon('heroicon-o-check')
                     ->action(fn ($record) => $record->markAsRead())
                     ->visible(fn ($record) => !$record->is_read),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Actions\BulkAction::make('mark_read')
-                    ->label('Mark as Read')
-                    ->icon('heroicon-o-check')
-                    ->action(fn ($records) => $records->each->markAsRead()),
+                Actions\BulkActionGroup::make([
+                    Actions\BulkAction::make('mark_read')
+                        ->label('Mark as Read')
+                        ->icon('heroicon-o-check')
+                        ->action(fn ($records) => $records->each->markAsRead()),
+                    Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -113,6 +117,11 @@ class ContactSubmissionResource extends Resource
 
     public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
     {
-        return auth()->user()?->isAdmin() ?? false;
+        return true;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return true;
     }
 }
