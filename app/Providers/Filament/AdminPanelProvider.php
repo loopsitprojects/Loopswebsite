@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path(config('services.filament.path', 'loops-internal-portal'))
             ->login(\App\Filament\Pages\Auth\Login::class)
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])
