@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { api } from '@/lib/api'
+import { getRecaptchaToken } from '@/lib/recaptcha'
+
+const SERVICE_OPTIONS = [
+  'Creative & Brand Strategy',
+  'Digital Performance Marketing',
+  'Tech & Web Development',
+  'Events & Experiential Marketing',
+  'PR & Communications',
+  'Other Enquiry',
+]
 
 interface InquiryModalProps {
   isOpen: boolean
   onClose: () => void
 }
-
-const SERVICE_OPTIONS = [
-  'Creative & Strategy',
-  'Digital Performance',
-  'Tech & Software Development',
-  'AI Content & Automation',
-  'Performance Marketing',
-  'Events & Experiences',
-  'Full Integrated Marketing',
-]
 
 export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
   const [formData, setFormData] = useState({
@@ -51,6 +51,8 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
     setErrorMsg('')
 
     try {
+      const recaptchaToken = await getRecaptchaToken('inquiry_modal')
+
       await api.contact({
         name: formData.name,
         email: formData.email,
@@ -58,6 +60,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
         service: formData.service,
         message: formData.message,
         office_context: 'Floating Inquiry Modal',
+        recaptcha_token: recaptchaToken,
       })
       setSubmitted(true)
     } catch (err: any) {

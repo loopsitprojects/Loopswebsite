@@ -1,16 +1,19 @@
 export function getRecaptchaToken(action: string): Promise<string | null> {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LcFKoAtAAAAACxsTvWYRiK3O8RApX0vuHoXaUSd'
   if (!siteKey) return Promise.resolve(null)
 
   return new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve(null)
 
     const execute = () => {
-      if ((window as any).grecaptcha) {
+      if ((window as any).grecaptcha && (window as any).grecaptcha.execute) {
         (window as any).grecaptcha.ready(() => {
           (window as any).grecaptcha.execute(siteKey, { action })
             .then((token: string) => resolve(token))
-            .catch(() => resolve(null))
+            .catch((err: any) => {
+              console.warn('reCAPTCHA v3 execution error:', err)
+              resolve(null)
+            })
         })
       } else {
         resolve(null)
