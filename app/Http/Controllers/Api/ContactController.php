@@ -7,6 +7,7 @@ use App\Http\Requests\Api\ContactSubmissionRequest;
 use App\Mail\InquiryReceived;
 use App\Mail\InquiryThankYou;
 use App\Models\ContactSubmission;
+use App\Services\RecaptchaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -15,6 +16,9 @@ class ContactController extends Controller
 {
     public function store(ContactSubmissionRequest $request): JsonResponse
     {
+        if (!RecaptchaService::verify($request->input('recaptcha_token'), $request->ip())) {
+            return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+        }
         $submission = ContactSubmission::create([
             'name'           => $request->name,
             'email'          => $request->email,

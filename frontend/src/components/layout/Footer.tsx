@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '@/lib/api'
+import { getRecaptchaToken } from '@/lib/recaptcha'
 import BrandLogo from '@/components/ui/BrandLogo'
 
 const footerLinks = {
@@ -34,7 +35,8 @@ export default function Footer() {
     if (!email || submitting) return
     setSubmitting(true)
     try {
-      const res = await api.newsletter.subscribe(email, 'footer')
+      const recaptchaToken = await getRecaptchaToken('newsletter_subscribe')
+      const res = await api.newsletter.subscribe(email, 'footer', recaptchaToken)
       setSubmitted(true)
       setMessage(res.message || "You're in the loop ✓")
       setEmail('')

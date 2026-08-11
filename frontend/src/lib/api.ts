@@ -245,10 +245,10 @@ export const api = {
     section: (page: string, section: string) => get<{ data: Record<string, string> }>(`/pages/${page}/${section}`),
   },
   settings: () => get<{ data: Record<string, Record<string, string>> }>('/settings'),
-  contact: (body: { name: string; email: string; company?: string; service?: string; message: string; office_context?: string }) =>
+  contact: (body: { name: string; email: string; company?: string; service?: string; message: string; office_context?: string; recaptcha_token?: string | null }) =>
     post<{ message: string }>('/contact', body),
   newsletter: {
-    subscribe: (email: string, source: string = 'website') =>
-      post<{ success: boolean; message: string }>('/newsletter/subscribe', { email, source }),
+    subscribe: (email: string, source: string = 'website', recaptcha_token?: string | null) =>
+      post<{ success: boolean; message: string }>('/newsletter/subscribe', { email, source, recaptcha_token }),
   },
 }

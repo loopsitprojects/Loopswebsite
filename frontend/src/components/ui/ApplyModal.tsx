@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { api, Job } from '@/lib/api'
+import { getRecaptchaToken } from '@/lib/recaptcha'
 
 interface ApplyModalProps {
   job: Job | null
@@ -83,6 +84,8 @@ export default function ApplyModal({ job, onClose }: ApplyModalProps) {
     setSubmitting(true)
     setError(null)
 
+    const recaptchaToken = await getRecaptchaToken('job_application')
+
     const formData = new FormData()
     formData.append('name', name)
     formData.append('email', email)
@@ -90,6 +93,7 @@ export default function ApplyModal({ job, onClose }: ApplyModalProps) {
     formData.append('expected_salary', expectedSalary)
     if (portfolio) formData.append('portfolio', portfolio)
     if (coverLetter) formData.append('cover_letter', coverLetter)
+    if (recaptchaToken) formData.append('recaptcha_token', recaptchaToken)
     formData.append('cv', cvFile)
 
     try {

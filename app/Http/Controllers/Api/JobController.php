@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Services\RecaptchaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -34,6 +35,10 @@ class JobController extends Controller
 
     public function apply(Request $request, int $id): JsonResponse
     {
+        if (!RecaptchaService::verify($request->input('recaptcha_token'), $request->ip())) {
+            return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+        }
+
         $job = Job::where('id', $id)->where('published', true)->first();
         if (!$job) {
             return response()->json(['message' => 'Job posting not found.'], 404);

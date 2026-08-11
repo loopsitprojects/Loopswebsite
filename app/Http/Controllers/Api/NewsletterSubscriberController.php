@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\NewsletterSubscriber;
+use App\Services\RecaptchaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +13,12 @@ class NewsletterSubscriberController extends Controller
 {
     public function subscribe(Request $request): JsonResponse
     {
+        if (!RecaptchaService::verify($request->input('recaptcha_token'), $request->ip())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'reCAPTCHA verification failed. Please try again.',
+            ], 422);
+        }
         $validator = Validator::make($request->all(), [
             'email'  => 'required|email|max:255',
             'source' => 'nullable|string|max:100',

@@ -44,4 +44,10 @@ return [
         'path' => env('FILAMENT_PANEL_PATH', 'loops-internal-portal'),
     ],
 
+    'recaptcha' => [
+        'site_key'  => env('RECAPTCHA_SITE_KEY', env('VITE_RECAPTCHA_SITE_KEY')),
+        'secret'    => env('RECAPTCHA_SECRET_KEY'),
+        'min_score' => env('RECAPTCHA_MIN_SCORE', 0.5),
+    ],
+
 ];

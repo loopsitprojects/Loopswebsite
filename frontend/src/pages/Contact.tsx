@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { offices as fallbackOffices } from '@/data/services'
 import { api } from '@/lib/api'
+import { getRecaptchaToken } from '@/lib/recaptcha'
 
 const fallbackServices = ['Creative', 'Digital', 'Play / Productions', 'Tech', 'AI Content', 'Performance Marketing', 'Events & Experiences', 'Full Integrated']
 
@@ -64,7 +65,7 @@ export default function Contact() {
       })
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.name || !formData.email || !formData.message) {
       setShaking(true)
@@ -76,10 +77,12 @@ export default function Contact() {
     setSubmitError('')
 
     const activeOfficeContext = officesList[activeOffice]?.city || 'Colombo'
+    const recaptchaToken = await getRecaptchaToken('contact_form')
 
     api.contact({
       ...formData,
-      office_context: activeOfficeContext
+      office_context: activeOfficeContext,
+      recaptcha_token: recaptchaToken
     })
       .then(() => {
         setSubmitted(true)
