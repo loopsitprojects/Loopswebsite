@@ -52,7 +52,6 @@ export default function Footer() {
     instagram_url: 'https://instagram.com/loopsintegrated',
     linkedin_url: 'https://linkedin.com/company/loops-integrated',
     facebook_url: 'https://facebook.com/loopsintegrated',
-    behance_url: 'https://behance.net/loopsintegrated',
     tiktok_url: 'https://tiktok.com/@loopsintegrated',
     youtube_url: '',
     twitter_url: '',
@@ -76,7 +75,6 @@ export default function Footer() {
             instagram_url: f.instagram_url ?? 'https://instagram.com/loopsintegrated',
             linkedin_url: f.linkedin_url ?? 'https://linkedin.com/company/loops-integrated',
             facebook_url: f.facebook_url ?? 'https://facebook.com/loopsintegrated',
-            behance_url: f.behance_url ?? 'https://behance.net/loopsintegrated',
             tiktok_url: f.tiktok_url ?? 'https://tiktok.com/@loopsintegrated',
             youtube_url: f.youtube_url ?? '',
             twitter_url: f.twitter_url ?? '',
@@ -141,16 +139,6 @@ export default function Footer() {
       ),
     },
     {
-      label: 'Behance',
-      href: footerData.behance_url,
-      color: '#00B4B4',
-      icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M7.5 5.5C8.2 5.5 8.82 5.55 9.36 5.7c.54.14 1 .37 1.37.67.37.3.66.68.86 1.14.2.46.3.99.3 1.61 0 .7-.16 1.3-.47 1.77-.31.47-.77.85-1.38 1.13.83.25 1.47.7 1.9 1.35.43.64.64 1.4.64 2.28 0 .72-.15 1.35-.44 1.86-.29.51-.67.93-1.14 1.24-.47.31-1 .54-1.6.68-.6.14-1.2.21-1.8.21H2V5.5h5.5zm-.3 5.56c.54 0 .99-.13 1.34-.4.35-.27.52-.68.52-1.22 0-.3-.05-.55-.15-.75-.1-.2-.24-.36-.41-.48-.17-.12-.38-.2-.62-.25a3.8 3.8 0 00-.76-.07H4.6v3.17h2.6zm.15 5.9c.28 0 .54-.03.79-.1.25-.07.47-.18.66-.33.19-.15.34-.35.45-.6.11-.25.17-.55.17-.9 0-.7-.2-1.22-.6-1.54-.4-.32-.93-.48-1.62-.48H4.6v3.95h2.75zm8.3 1.18c.44.44 1.06.66 1.86.66.58 0 1.08-.15 1.5-.44.42-.3.68-.6.78-.93h2.4c-.38 1.2-1.02 2.05-1.9 2.54-.88.5-1.93.74-3.15.74-.85 0-1.61-.14-2.3-.42-.68-.28-1.27-.67-1.75-1.17-.48-.5-.85-1.1-1.1-1.8-.26-.7-.39-1.47-.39-2.32 0-.81.13-1.57.4-2.27.27-.7.65-1.3 1.14-1.81.49-.5 1.09-.9 1.79-1.18.7-.28 1.48-.42 2.33-.42.95 0 1.79.19 2.5.57.72.38 1.3.88 1.76 1.52.45.63.77 1.34.95 2.12.18.78.23 1.59.17 2.43h-7.1c0 .86.28 1.68.7 2.15zM18.5 9.8c-.36-.4-.94-.6-1.72-.6-.5 0-.92.09-1.26.27-.34.18-.61.41-.81.68-.2.27-.33.55-.4.84-.07.3-.11.56-.12.8h5.05c-.1-.87-.38-1.6-.74-1.99z"/>
-        </svg>
-      ),
-    },
-    {
       label: 'TikTok',
       href: footerData.tiktok_url,
       color: '#E8005A',
@@ -160,7 +148,7 @@ export default function Footer() {
         </svg>
       ),
     },
-  ]
+  ].filter(s => !!s.href)
 
 
 

@@ -95,11 +95,6 @@ class ManageGlobalSettings extends Page implements HasForms
                                         ->placeholder('https://facebook.com/loopsintegrated')
                                         ->helperText('URL for the Facebook icon in the website footer')
                                         ->columnSpan(1),
-                                    TextInput::make('footer.behance_url')
-                                        ->label('Behance Portfolio URL')
-                                        ->placeholder('https://behance.net/loopsintegrated')
-                                        ->helperText('URL for the Behance icon in the website footer')
-                                        ->columnSpan(1),
                                     TextInput::make('footer.tiktok_url')
                                         ->label('TikTok Profile URL')
                                         ->placeholder('https://tiktok.com/@loopsintegrated')
