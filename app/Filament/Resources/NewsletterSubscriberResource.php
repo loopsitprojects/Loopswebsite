@@ -36,7 +36,7 @@ class NewsletterSubscriberResource extends Resource
     {
         return $form->schema([
             Components\Section::make('Subscriber Information')->schema([
-                Forms\Components\Grid::make(2)->schema([
+                Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('email')
                         ->email()
                         ->required()

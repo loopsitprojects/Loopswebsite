@@ -27,7 +27,7 @@ class OfficeResource extends Resource
         return $form
             ->schema([
                 Components\Section::make('Office Information')->schema([
-                    Forms\Components\Grid::make(2)->schema([
+                    Components\Grid::make(2)->schema([
                         Forms\Components\TextInput::make('city')
                             ->required()
                             ->maxLength(100),
@@ -58,7 +58,7 @@ class OfficeResource extends Resource
                 ]),
 
                 Components\Section::make('Coordinates & Settings')->schema([
-                    Forms\Components\Grid::make(2)->schema([
+                    Components\Grid::make(2)->schema([
                         Forms\Components\TextInput::make('lat')
                             ->label('Latitude')
                             ->numeric(),
@@ -66,7 +66,7 @@ class OfficeResource extends Resource
                             ->label('Longitude')
                             ->numeric(),
                     ]),
-                    Forms\Components\Grid::make(3)->schema([
+                    Components\Grid::make(3)->schema([
                         Forms\Components\Toggle::make('is_headquarters')
                             ->label('Is Headquarters?')
                             ->default(false),

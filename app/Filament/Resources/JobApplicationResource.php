@@ -27,7 +27,7 @@ class JobApplicationResource extends Resource
             ->schema([
                 Components\Section::make('Applicant Details')
                     ->schema([
-                        Forms\Components\Grid::make(2)->schema([
+                        Components\Grid::make(2)->schema([
                             Forms\Components\Select::make('job_id')
                                 ->relationship('job', 'title')
                                 ->disabled()

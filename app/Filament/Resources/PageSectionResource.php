@@ -23,7 +23,7 @@ class PageSectionResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->schema([
-            Forms\Components\Grid::make(3)->schema([
+            Components\Grid::make(3)->schema([
                 Forms\Components\Select::make('page')
                     ->options([
                         'global'  => 'Global / Site-wide',

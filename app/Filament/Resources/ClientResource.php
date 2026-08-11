@@ -27,7 +27,7 @@ class ClientResource extends Resource
     {
         return $form->schema([
             Components\Section::make('Brand Details')->schema([
-                Forms\Components\Grid::make(2)->schema([
+                Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('name')
                         ->required()
                         ->maxLength(255)
@@ -38,7 +38,7 @@ class ClientResource extends Resource
                         ->maxLength(500)
                         ->placeholder('https://yamaha-motor.com'),
                 ]),
-                Forms\Components\Grid::make(3)->schema([
+                Components\Grid::make(3)->schema([
                     Forms\Components\TextInput::make('sort_order')
                         ->label('Display Order')
                         ->numeric()

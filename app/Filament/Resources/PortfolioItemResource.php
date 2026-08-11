@@ -81,7 +81,7 @@ class PortfolioItemResource extends Resource
                     Components\Tabs\Tab::make('Media')
                         ->schema([
                             Components\Grid::make(2)->schema([
-                                Forms\Components\Group::make([
+                                Components\Group::make([
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('hero')
                                         ->label('Hero Image')
                                         ->collection('hero')
@@ -142,7 +142,7 @@ class PortfolioItemResource extends Resource
                                         ->placeholder('https://...')
                                         ->helperText('Optional: Overrides hero image with a looping video'),
                                 ]),
-                                Forms\Components\Group::make([
+                                Components\Group::make([
                                     Forms\Components\Placeholder::make('work_card_applied_preview')
                                         ->label('Applied Work Card Preview (as shown on website)')
                                         ->content(function ($get, $record) {
@@ -220,7 +220,7 @@ class PortfolioItemResource extends Resource
                                 ]),
                             ]),
                             Components\Grid::make(2)->schema([
-                                Forms\Components\Group::make([
+                                Components\Group::make([
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
                                         ->label('Gallery Images')
                                         ->collection('gallery')
@@ -237,7 +237,7 @@ class PortfolioItemResource extends Resource
                                         ->reorderable()
                                         ->helperText('Upload campaign imagery in display order (Interactive image cropper enabled for each photo)'),
                                 ]),
-                                Forms\Components\Group::make([
+                                Components\Group::make([
                                     Forms\Components\Textarea::make('gallery_image_urls')
                                         ->label('Or: Gallery Image URLs')
                                         ->placeholder("https://domain.com/image1.jpg\nhttps://domain.com/image2.jpg")

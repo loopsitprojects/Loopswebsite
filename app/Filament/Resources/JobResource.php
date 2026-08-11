@@ -27,7 +27,7 @@ class JobResource extends Resource
             ->schema([
                 Components\Section::make('Job Opening Details')
                     ->schema([
-                        Forms\Components\Grid::make(2)->schema([
+                        Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('title')
                                 ->required()
                                 ->maxLength(255)
@@ -70,7 +70,7 @@ class JobResource extends Resource
                                 ->placeholder('e.g. Senior, Mid-level, Executive')
                                 ->maxLength(100),
                         ]),
-                        Forms\Components\Grid::make(3)->schema([
+                        Components\Grid::make(3)->schema([
                             Forms\Components\TextInput::make('sort_order')
                                 ->label('Display Order')
                                 ->numeric()
@@ -92,7 +92,7 @@ class JobResource extends Resource
                 Components\Section::make('Application Channels')
                     ->description('Set how candidates should submit applications. Leave blank to show the direct online application form.')
                     ->schema([
-                        Forms\Components\Grid::make(2)->schema([
+                        Components\Grid::make(2)->schema([
                             Forms\Components\TextInput::make('apply_link')
                                 ->label('External Apply URL')
                                 ->url()
