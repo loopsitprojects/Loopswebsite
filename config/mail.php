@@ -46,6 +46,18 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'careers' => [
+            'transport' => 'smtp',
+            'url' => env('CAREERS_MAIL_URL'),
+            'host' => env('CAREERS_MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('CAREERS_MAIL_PORT', 465),
+            'encryption' => env('CAREERS_MAIL_ENCRYPTION', 'ssl'),
+            'username' => env('CAREERS_MAIL_USERNAME', 'careers@loopsintegrated.com'),
+            'password' => env('CAREERS_MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
@@ -110,6 +122,11 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
+
+    'careers_from' => [
+        'address' => env('CAREERS_MAIL_FROM_ADDRESS', 'careers@loopsintegrated.com'),
+        'name' => env('CAREERS_MAIL_FROM_NAME', 'Loops HR'),
     ],
 
     'inquiry_recipient' => env('INQUIRY_RECIPIENT_EMAIL', env('MAIL_FROM_ADDRESS', 'hello@loopsintegrated.com')),

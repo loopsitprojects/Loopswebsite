@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\JobApplication;
 use App\Services\RecaptchaService;
 use App\Mail\JobApplicationSubmitted;
+use App\Mail\JobApplicationThankYou;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -118,6 +119,17 @@ class JobController extends Controller
             Log::error('Failed sending job application notification email', [
                 'application_id' => $application->id,
                 'error'          => $e->getMessage(),
+            ]);
+        }
+
+        // Send confirmation/thank you email to candidate using dedicated careers SMTP
+        try {
+            Mail::mailer('careers')->to($application->email)->send(new JobApplicationThankYou($application, $job));
+        } catch (\Throwable $e) {
+            Log::error('Failed sending candidate job application thank you email', [
+                'application_id' => $application->id,
+                'user_email'    => $application->email,
+                'error'         => $e->getMessage(),
             ]);
         }
 
