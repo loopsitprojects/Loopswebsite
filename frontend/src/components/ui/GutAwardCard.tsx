@@ -220,7 +220,7 @@ export default function GutAwardCard({ award, className = '' }: GutAwardCardProp
             <p className="text-white/60 text-xs md:text-sm font-sans leading-relaxed pt-2.5 border-t border-white/10 tracking-tight">
               <span className="text-white/90 font-medium">{award.year}, {award.tier} Award</span>
               {award.campaign_name ? `, ${award.campaign_name}` : ''}
-              {award.client_name ? `, ${award.client_name}` : ''}
+              {award.client_name && award.client_name.trim() ? `, ${award.client_name}` : ''}
             </p>
           </div>
         </div>

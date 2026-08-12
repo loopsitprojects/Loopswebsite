@@ -56,7 +56,7 @@ class AwardResource extends Resource
                         Forms\Components\TextInput::make('client_name')
                             ->label('Client / Agency Collaborators')
                             ->placeholder('e.g. Seylan Bank PLC, AIA Insurance Lanka Limited')
-                            ->required()
+                            ->nullable()
                             ->maxLength(255),
                         Forms\Components\Select::make('portfolio_item_id')
                             ->label('Link to Portfolio Item (Optional)')

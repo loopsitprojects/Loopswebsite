@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('award_body');
             $table->unsignedSmallInteger('year');
             $table->string('campaign_name');
-            $table->string('client_name');
+            $table->string('client_name')->nullable();
             $table->string('category');
             $table->text('insight')->nullable();
             $table->boolean('published')->default(true);

@@ -149,7 +149,7 @@ export interface Award {
   award_body: string
   year: number
   campaign_name: string
-  client_name: string
+  client_name?: string | null
   category?: string
   insight?: string
   background_path?: string | null

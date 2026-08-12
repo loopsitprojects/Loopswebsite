@@ -190,7 +190,7 @@ export default function GutAwardDisplay({ group, award, className = '' }: GutAwa
             const catStr = (win.category || win.tier) ? `${win.category || win.tier}.` : ''
 
             let brand = ''
-            if (win.client_name) {
+            if (win.client_name && win.client_name.trim()) {
               brand = win.client_name.split(/\s*\(/)[0].trim()
               if (brand.includes(',')) {
                 brand = brand.split(',')[0].trim()
