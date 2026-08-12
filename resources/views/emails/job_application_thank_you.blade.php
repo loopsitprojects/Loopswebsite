@@ -62,27 +62,30 @@
                                     Application Details
                                 </h3>
 
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 0 auto; max-width: 400px; text-align: center;">
+                                <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto; text-align: left;">
                                     <tr>
-                                        <td width="40%"
-                                            style="padding: 8px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: right; padding-right: 12px;">
-                                            Position:</td>
-                                        <td width="60%"
-                                            style="padding: 8px 0; font-size: 14px; color: #111827; font-weight: 600; text-align: left;">
-                                            {{ $job->title ?? 'N/A' }}</td>
+                                        <td style="padding: 6px 16px 6px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: left; white-space: nowrap;">
+                                            Position:
+                                        </td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827; font-weight: 700; text-align: left;">
+                                            {{ $job->title ?? 'N/A' }}
+                                        </td>
                                     </tr>
                                     @if(!empty($job->department))
                                         <tr>
-                                            <td style="padding: 8px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: right; padding-right: 12px;">
-                                                Department:</td>
-                                            <td style="padding: 8px 0; font-size: 14px; color: #374151; text-align: left;">
-                                                {{ $job->department }}</td>
+                                            <td style="padding: 6px 16px 6px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: left; white-space: nowrap;">
+                                                Department:
+                                            </td>
+                                            <td style="padding: 6px 0; font-size: 14px; color: #374151; font-weight: 500; text-align: left;">
+                                                {{ $job->department }}
+                                            </td>
                                         </tr>
                                     @endif
                                     <tr>
-                                        <td style="padding: 8px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: right; padding-right: 12px;">
-                                            Date Submitted:</td>
-                                        <td style="padding: 8px 0; font-size: 14px; color: #374151; text-align: left;">
+                                        <td style="padding: 6px 16px 6px 0; font-size: 14px; color: #6b7280; font-weight: 600; text-align: left; white-space: nowrap;">
+                                            Date Submitted:
+                                        </td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #374151; font-weight: 500; text-align: left;">
                                             {{ $application->created_at ? $application->created_at->format('F j, Y') : now()->format('F j, Y') }}
                                         </td>
                                     </tr>
