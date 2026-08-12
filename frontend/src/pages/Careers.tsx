@@ -88,8 +88,10 @@ export default function Careers() {
           setJobs(res.data)
           setFilteredJobs(res.data)
 
-          setDepartments(prev => prev.length > 1 ? prev : ['All', ...new Set(res.data.map(j => j.department))])
-          setDepartmentsCount(prev => prev || new Set(res.data.map(j => j.department)).size)
+          // Filter department tabs to show ONLY departments with available jobs
+          const availableDepts = Array.from(new Set(res.data.map(j => j.department).filter((d): d is string => Boolean(d))))
+          setDepartments(['All', ...availableDepts])
+          setDepartmentsCount(availableDepts.length)
         }
         setLoading(false)
       })
@@ -97,16 +99,6 @@ export default function Careers() {
         console.error('Failed to load job listings:', err)
         setLoading(false)
       })
-
-    // 3. Fetch all active departments
-    api.jobDepartments.list()
-      .then(res => {
-        if (res.data && res.data.length > 0) {
-          setDepartmentsCount(res.data.length)
-          setDepartments(['All', ...res.data.map(d => d.name)])
-        }
-      })
-      .catch(err => console.error('Failed to load departments:', err))
 
     // 4. Fetch active offices
     api.offices.list()
@@ -261,106 +253,33 @@ export default function Careers() {
 
   return (
     <div ref={pageRef} className="min-h-screen bg-brand-dark">
-      {/* Hero section */}
-      <section className="relative overflow-hidden section-padding pt-40 pb-28 border-b border-white/5">
+      {/* 1. Open Positions section (Main Top Hero Section) */}
+      <section id="open-positions" className="relative overflow-hidden section-padding pt-40 pb-24 border-b border-white/5 scroll-mt-24">
         <ParticleField accent="multi" count={260} spread={16} />
 
-        {/* Glows */}
+        {/* Background Glows */}
         <div className="absolute top-0 right-0 w-[32rem] h-[32rem] rounded-full opacity-20 blur-3xl pointer-events-none bg-brand-pink" />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none bg-brand-blue" />
 
-        <div className="max-w-5xl relative z-10">
-          <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4 hero-reveal">
-            {hero.label}
-          </p>
-          <h1 className="heading-hero fluid-xl text-white mb-6 leading-none hero-reveal">
-            {hero.headline.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="gradient-text">{hero.headline.split(' ').slice(-1)}</span>
-          </h1>
-          <p className="text-white/80 heading-lg fluid-md max-w-3xl leading-relaxed mb-10 hero-reveal">
-            {hero.description}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-6 hero-reveal">
-            <button onClick={scrollToJobs} className="btn-primary">
-              View Open Positions
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Stat strip */}
-          <div className="flex flex-wrap gap-10 md:gap-16 mt-16 pt-10 border-t border-white/8">
-            {stats.map((s, i) => (
-              <div key={i} className="stat-item">
-                <p className="font-display font-bold text-white text-4xl leading-none">{s.value}</p>
-                <p className="label text-white/40 mt-2">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits section */}
-      <section className="py-24 md:py-28 border-b border-white/5 section-padding">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
             <div>
-              <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Why Loops</p>
-              <h2 className="heading-xl fluid-lg text-white">
-                A place built for<br />
-                <span className="gradient-text">people who build.</span>
-              </h2>
-            </div>
-            <p className="text-white/40 max-w-sm fluid-sm leading-relaxed">
-              We invest in talent the same way we invest in our clients' brands — boldly, and for the long run.
-            </p>
-          </div>
-
-          <div className="benefits-grid grid grid-cols-1 md:grid-cols-3 gap-5">
-            {benefits.map((benefit, i) => (
-              <div
-                key={i}
-                className="benefit-card group relative p-8 rounded-2xl bg-white/3 border border-white/5 hover:border-white/15 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
-              >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
-                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
-                />
-                <div
-                  className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-lg"
-                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
-                >
-                  {renderIcon(benefit.icon)}
-                </div>
-                <h3 className="relative font-display font-semibold text-white text-lg mb-3">{benefit.title}</h3>
-                <p className="relative text-white/45 text-sm leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Jobs section */}
-      <section id="open-positions" className="py-24 md:py-28 section-padding scroll-mt-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Join Us</p>
-              <h2 className="heading-xl fluid-lg text-white">Open Positions</h2>
+              <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2 hero-reveal">Join Us</p>
+              <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap hero-reveal">
+                Open Positions
+              </h1>
             </div>
 
-            {/* Department Filter tabs */}
-            {departments.length > 2 && (
-              <div className="flex flex-wrap gap-2">
+            {/* Department Filter tabs - show only if available departments exist */}
+            {departments.length > 1 && (
+              <div className="flex flex-wrap items-center gap-2 md:gap-2.5 hero-reveal lg:justify-end">
                 {departments.map(dept => (
                   <button
                     key={dept}
                     onClick={() => setActiveDept(dept)}
                     className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 ${
                       activeDept === dept
-                        ? 'bg-white text-brand-dark border-white'
+                        ? 'bg-white text-brand-dark border-white shadow-sm'
                         : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white'
                     }`}
                   >
@@ -480,7 +399,60 @@ export default function Careers() {
         </div>
       </section>
 
-      {/* Open application CTA */}
+      {/* 2. Join the loop Intro section (placed below Open Positions) */}
+      <section className="relative overflow-hidden section-padding py-24 border-b border-white/5">
+        <div className="max-w-5xl relative z-10">
+          <h2 className="heading-xl fluid-lg text-white mb-6 leading-tight">
+            {hero.headline.split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="gradient-text">{hero.headline.split(' ').slice(-1)}</span>
+          </h2>
+          <p className="text-white/80 heading-lg fluid-md max-w-3xl leading-relaxed">
+            {hero.description}
+          </p>
+        </div>
+      </section>
+
+      {/* 3. Benefits section */}
+      <section className="py-24 md:py-28 border-b border-white/5 section-padding">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+              <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Why Loops</p>
+              <h2 className="heading-xl fluid-lg text-white">
+                A place built for<br />
+                <span className="gradient-text">people who build.</span>
+              </h2>
+            </div>
+            <p className="text-white/40 max-w-sm fluid-sm leading-relaxed">
+              We invest in talent the same way we invest in our clients' brands — boldly, and for the long run.
+            </p>
+          </div>
+
+          <div className="benefits-grid grid grid-cols-1 md:grid-cols-3 gap-5">
+            {benefits.map((benefit, i) => (
+              <div
+                key={i}
+                className="benefit-card group relative p-8 rounded-2xl bg-white/3 border border-white/5 hover:border-white/15 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+              >
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
+                />
+                <div
+                  className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-lg"
+                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
+                >
+                  {renderIcon(benefit.icon)}
+                </div>
+                <h3 className="relative font-display font-semibold text-white text-lg mb-3">{benefit.title}</h3>
+                <p className="relative text-white/45 text-sm leading-relaxed">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Open application CTA */}
       <section className="relative overflow-hidden section-padding py-24" style={{ background: 'linear-gradient(135deg, #E8005A 0%, #7B2FBE 50%, #1B3FB5 100%)' }}>
         <div className="absolute inset-0 opacity-10"
           style={{

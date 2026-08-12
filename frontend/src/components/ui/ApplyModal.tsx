@@ -293,7 +293,7 @@ export default function ApplyModal({ job, onClose }: ApplyModalProps) {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="btn-primary w-full justify-center py-3 bg-white text-black font-semibold hover:bg-white/90 disabled:bg-white/20 disabled:text-white/40"
+                    className="w-full inline-flex items-center justify-center gap-3 py-3.5 px-8 bg-white text-black font-semibold text-sm rounded-full hover:bg-white/90 hover:text-black transition-all duration-300 disabled:bg-white/20 disabled:text-white/40"
                   >
                     {submitting ? (
                       <span className="flex items-center gap-2">
