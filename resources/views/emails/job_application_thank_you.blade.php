@@ -34,20 +34,20 @@
 
                     <!-- Body Content -->
                     <tr>
-                        <td align="center" style="padding: 40px 48px; text-align: center;">
+                        <td align="center" style="padding: 40px 36px; text-align: center;">
                             <h2
                                 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 700; color: #111827; letter-spacing: -0.3px; text-align: center;">
                                 Thank You for Applying, {{ $application->name }}!
                             </h2>
 
-                            <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.7; color: #374151; text-align: center;">
+                            <p style="margin: 0 auto 20px auto; max-width: 580px; font-size: 15px; line-height: 1.7; color: #374151; text-align: center; text-wrap: balance;">
                                 We’re excited to let you know that your application for the <strong
                                     style="color: #111827;">{{ $job->title ?? 'Position' }}</strong> position at <strong
-                                    style="color: #e8005a;">Loops Integrated</strong> has been successfully received.
+                                    style="color: #e8005a;">Loops Integrated</strong> has been successfully&nbsp;received.
                             </p>
 
-                            <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.7; color: #4b5563; text-align: center;">
-                                Our Talent Acquisition team is carefully reviewing your application and experience. If your profile aligns with what we’re looking for, we’ll be in touch soon to discuss the next steps in your journey with us.
+                            <p style="margin: 0 auto 20px auto; max-width: 580px; font-size: 15px; line-height: 1.7; color: #4b5563; text-align: center; text-wrap: balance;">
+                                Our Talent Acquisition team is carefully reviewing your application and experience. If your profile aligns with what we’re looking for, we’ll be in touch soon to discuss the next steps in your journey with&nbsp;us.
                             </p>
 
                             <p style="margin: 0 0 28px 0; font-size: 15px; line-height: 1.7; color: #374151; text-align: center;">
