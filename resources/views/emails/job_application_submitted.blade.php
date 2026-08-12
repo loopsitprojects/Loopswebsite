@@ -10,6 +10,19 @@
         <tr>
             <td align="center">
                 <table role="presentation" width="100%" style="max-width: 650px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                    
+                    <!-- Header with Official Embedded Logo -->
+                    <tr>
+                        <td align="center" style="background-color: #000000; padding: 32px 40px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                            @if(file_exists(public_path('images/logo.png')))
+                                <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="Loops Integrated" width="200" style="display: block; width: 200px; max-width: 100%; height: auto; margin: 0 auto; border: 0;" />
+                            @else
+                                <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">LOOPS <span style="color: #e8005a;">INTEGRATED</span></h1>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <!-- Body Content -->
                     <tr>
                         <td style="padding: 40px 48px;">
                             
