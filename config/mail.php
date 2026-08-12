@@ -114,6 +114,8 @@ return [
 
     'inquiry_recipient' => env('INQUIRY_RECIPIENT_EMAIL', env('MAIL_FROM_ADDRESS', 'hello@loopsintegrated.com')),
 
+    'careers_recipient' => env('CAREERS_RECIPIENT_EMAIL', 'careers@loopsintegrated.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Services\RecaptchaService;
+use App\Mail\JobApplicationSubmitted;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class JobController extends Controller
@@ -107,6 +109,17 @@ class JobController extends Controller
         }
 
         $application->refresh();
+
+        // Send email notification to careers@loopsintegrated.com
+        try {
+            $recipient = config('mail.careers_recipient', env('CAREERS_RECIPIENT_EMAIL', 'careers@loopsintegrated.com'));
+            Mail::to($recipient)->send(new JobApplicationSubmitted($application, $job));
+        } catch (\Throwable $e) {
+            Log::error('Failed sending job application notification email', [
+                'application_id' => $application->id,
+                'error'          => $e->getMessage(),
+            ]);
+        }
 
         // Dispatch candidate and CV details to loops-hr webhook
         $this->sendToLoopsHrWebhook($application, $job);
