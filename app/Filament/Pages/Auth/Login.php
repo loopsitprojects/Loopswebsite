@@ -285,12 +285,24 @@ class Login extends BaseLogin
 
     protected function getOtpRecipientEmail(): string
     {
-        return config('services.admin_otp.recipient_email') ?: env('ADMIN_OTP_RECIPIENT_EMAIL', 'dilmith@loopsintegrated.com');
+        if (session()->has('admin_otp_user_id')) {
+            $user = \App\Models\User::find(session('admin_otp_user_id'));
+            if ($user && $user->email) {
+                return $user->email;
+            }
+        }
+
+        return '';
     }
 
     protected function sendOtpEmail(string $otp): void
     {
         $recipient = $this->getOtpRecipientEmail();
+        if (!$recipient) {
+            logger()->error('Cannot send OTP email: Recipient email is empty');
+            return;
+        }
+
         try {
             Mail::raw(
                 "Your Loops Admin Panel Login OTP verification code is: {$otp}\n\nThis code will expire in 10 minutes.\nIf you did not request this, please ignore this email.",

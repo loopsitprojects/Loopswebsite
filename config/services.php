@@ -37,7 +37,7 @@ return [
     ],
 
     'admin_otp' => [
-        'recipient_email' => env('ADMIN_OTP_RECIPIENT_EMAIL', 'dilmith@loopsintegrated.com'),
+        'recipient_email' => env('ADMIN_OTP_RECIPIENT_EMAIL'),
     ],
 
     'filament' => [
