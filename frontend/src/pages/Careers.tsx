@@ -302,31 +302,11 @@ export default function Careers() {
       {/* 2. Open Positions section */}
       <section id="open-positions" className="relative overflow-hidden section-padding py-16 md:py-24 border-b border-white/5 scroll-mt-24">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
-            <div>
-              <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2">Join Us</p>
-              <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap">
-                Open Positions
-              </h2>
-            </div>
-
-            {/* Department Filter tabs - show only if available departments exist */}
-            {departments.length > 1 && (
-              <div className="flex items-center gap-2 md:gap-2.5 lg:justify-end overflow-x-auto no-scrollbar pb-2 flex-nowrap max-w-full -mx-6 px-6 lg:mx-0 lg:px-0">
-                {departments.map(dept => (
-                  <button
-                    key={dept}
-                    onClick={() => setActiveDept(dept)}
-                    className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 whitespace-nowrap shrink-0 ${activeDept === dept
-                        ? 'bg-white text-brand-dark border-white shadow-sm'
-                        : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white'
-                      }`}
-                  >
-                    {dept}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="mb-12">
+            <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2">Join Us</p>
+            <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap">
+              Open Positions
+            </h2>
           </div>
 
           {loading ? (
