@@ -11,16 +11,16 @@ class WorkPathGenerator implements PathGenerator
     {
         $model = $media->model;
         $folderName = ($model && !empty($model->slug)) ? $model->slug : ($media->model_id ?? 'general');
-        return "{$folderName}/{$media->id}/";
+        return "{$folderName}/";
     }
 
     public function getPathForConversions(Media $media): string
     {
-        return $this->getPath($media) . 'conversions/';
+        return $this->getPath($media);
     }
 
     public function getPathForResponsiveImages(Media $media): string
     {
-        return $this->getPath($media) . 'responsive-images/';
+        return $this->getPath($media);
     }
 }
