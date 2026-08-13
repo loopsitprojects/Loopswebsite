@@ -6,15 +6,18 @@ const getSubfolder = () => {
 
 export function resolveImageUrl(url?: string): string {
   if (!url) return ''
-  let cleanUrl = url
+  let cleanUrl = url.trim()
+
   if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) {
-    // Replace localhost or 127.0.0.1 backend origins with current window origin
-    cleanUrl = cleanUrl.replace(/^https?:\/\/(127\.0\.0\.1:8000|localhost(:\d+)?)/i, window.location.origin)
-    // If domain matches current origin, check subfolder prefixing
-    if (cleanUrl.startsWith(window.location.origin)) {
-      cleanUrl = cleanUrl.substring(window.location.origin.length)
-    } else {
-      return cleanUrl
+    try {
+      const parsed = new URL(cleanUrl)
+      if (parsed.hostname === window.location.hostname || parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost') {
+        cleanUrl = parsed.pathname + parsed.search
+      } else {
+        return cleanUrl
+      }
+    } catch {
+      cleanUrl = cleanUrl.replace(/^https?:\/\/[^\/]+/i, '')
     }
   }
 
