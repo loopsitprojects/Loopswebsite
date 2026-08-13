@@ -64,7 +64,7 @@ class PortfolioItemResource extends JsonResource
     private function formatMediaUrl(?string $url): ?string
     {
         if (!$url) return null;
-        if (str_contains($url, '/storage/')) {
+        if (str_contains($url, '/works/') || str_contains($url, '/storage/')) {
             $path = parse_url($url, PHP_URL_PATH);
             return $path ?: $url;
         }

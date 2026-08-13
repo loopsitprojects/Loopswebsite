@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             storage_path('logs'),
             storage_path('app/livewire-tmp'),
             storage_path('app/public'),
+            public_path('works'),
         ] as $path) {
             if (!is_dir($path)) {
                 @mkdir($path, 0777, true);
