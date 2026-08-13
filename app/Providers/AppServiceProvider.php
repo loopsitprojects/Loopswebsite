@@ -31,13 +31,21 @@ class AppServiceProvider extends ServiceProvider
             storage_path('app/public'),
             public_path('storage'),
             public_path('works'),
-            base_path('storage'),
-            base_path('works'),
         ] as $path) {
             if (!is_dir($path)) {
                 @mkdir($path, 0777, true);
             }
         }
+
+        // Hostinger Root Symlink Sync: Ensure /works and /storage are accessible whether web root is public_html or public_html/public
+        try {
+            if (is_dir(public_path('works')) && !file_exists(base_path('works'))) {
+                @symlink(public_path('works'), base_path('works'));
+            }
+            if (is_dir(public_path('storage')) && !file_exists(base_path('storage'))) {
+                @symlink(public_path('storage'), base_path('storage'));
+            }
+        } catch (\Throwable $e) {}
 
         $appUrl = config('app.url');
         $subfolder = parse_url($appUrl, PHP_URL_PATH);
