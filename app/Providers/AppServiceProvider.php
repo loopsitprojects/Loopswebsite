@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
             $segments = array_values(array_filter(explode('/', $uriPath)));
             $firstSegment = $segments[0] ?? null;
             $filamentPath = config('services.filament.path', 'loops-internal-portal');
-            if ($firstSegment && !in_array($firstSegment, ['api', 'storage', 'livewire', 'vendor', 'build', 'index.php', 'admin', $filamentPath, 'loops-internal-portal'])) {
+            if ($firstSegment && !str_starts_with($firstSegment, 'livewire') && !in_array($firstSegment, ['api', 'storage', 'vendor', 'build', 'index.php', 'admin', $filamentPath, 'loops-internal-portal'])) {
                 $subfolder = '/' . $firstSegment;
                 $isHttps = str_starts_with($appUrl, 'https://') ||
                            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||

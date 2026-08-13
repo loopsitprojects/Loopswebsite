@@ -18,7 +18,7 @@ class CustomLivewireHandleRequests extends BaseHandleRequests
                 $uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '';
                 $parts = array_values(array_filter(explode('/', $uriPath)));
                 $filamentPath = config('services.filament.path', 'loops-internal-portal');
-                if (!empty($parts[0]) && !in_array($parts[0], ['api', 'storage', 'livewire', 'vendor', 'build', 'index.php', 'admin', $filamentPath, 'loops-internal-portal'])) {
+                if (!empty($parts[0]) && !str_starts_with($parts[0], 'livewire') && !in_array($parts[0], ['api', 'storage', 'vendor', 'build', 'index.php', 'admin', $filamentPath, 'loops-internal-portal'])) {
                     $subfolder = '/' . $parts[0];
                 }
             }
