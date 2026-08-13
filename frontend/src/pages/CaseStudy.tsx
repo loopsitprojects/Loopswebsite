@@ -8,6 +8,7 @@ import { api, PortfolioItem, resolveImageUrl } from '@/lib/api'
 gsap.registerPlugin(ScrollTrigger)
 
 function CampaignGallery({ gallery, color, title, tags }: { gallery: { url: string; thumb?: string; alt?: string }[]; color?: string; title: string; tags: string[] }) {
+  return null
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
