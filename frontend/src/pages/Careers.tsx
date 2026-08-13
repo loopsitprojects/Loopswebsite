@@ -254,7 +254,7 @@ export default function Careers() {
   return (
     <div ref={pageRef} className="min-h-screen bg-brand-dark">
       {/* 1. Open Positions section (Main Top Hero Section) */}
-      <section id="open-positions" className="relative overflow-hidden section-padding pt-40 pb-24 border-b border-white/5 scroll-mt-24">
+      <section id="open-positions" className="relative overflow-hidden section-padding pt-32 sm:pt-40 pb-12 md:pb-24 border-b border-white/5 scroll-mt-24">
         <ParticleField accent="multi" count={260} spread={16} />
 
         {/* Background Glows */}
@@ -343,21 +343,23 @@ export default function Careers() {
                         </h3>
                       </div>
 
-                      <div className="flex items-center gap-4 shrink-0">
+                      <div className="flex items-center justify-between md:justify-end gap-3 sm:gap-4 shrink-0 w-full md:w-auto pt-2 md:pt-0 border-t border-white/5 md:border-t-0">
                         <span className="text-white/40 text-xs font-semibold">
                           {job.type}
                         </span>
-                        <button
-                          onClick={(e) => handleApplyClick(job, e)}
-                          className="btn-primary py-2.5 px-5 text-xs"
-                        >
-                          Apply Now
-                        </button>
-                        <span className={`text-white/40 text-sm transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </span>
+                        <div className="flex items-center gap-2.5 sm:gap-4 ml-auto md:ml-0">
+                          <button
+                            onClick={(e) => handleApplyClick(job, e)}
+                            className="btn-primary py-2.5 px-5 text-xs"
+                          >
+                            Apply Now
+                          </button>
+                          <span className={`text-white/40 text-sm transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -400,20 +402,20 @@ export default function Careers() {
       </section>
 
       {/* 2. Join the loop Intro section (placed below Open Positions) */}
-      <section className="relative overflow-hidden section-padding py-24 border-b border-white/5">
-        <div className="max-w-5xl relative z-10">
-          <h2 className="heading-xl fluid-lg text-white mb-6 leading-tight">
+      <section className="relative overflow-hidden section-padding py-6 sm:py-10 md:py-14 border-b border-white/5">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="heading-xl fluid-lg text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
             {hero.headline.split(' ').slice(0, -1).join(' ')}{' '}
             <span className="gradient-text">{hero.headline.split(' ').slice(-1)}</span>
           </h2>
-          <p className="text-white/80 heading-lg fluid-md max-w-3xl leading-relaxed">
+          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
             {hero.description}
           </p>
         </div>
       </section>
 
       {/* 3. Benefits section */}
-      <section className="py-24 md:py-28 border-b border-white/5 section-padding">
+      <section className="py-20 md:py-28 border-b border-white/5 section-padding">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
