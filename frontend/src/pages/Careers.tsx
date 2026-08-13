@@ -331,7 +331,7 @@ export default function Careers() {
                 </svg>
               </div>
               <p className="text-white/50 mb-2 text-sm">No open positions found in this department.</p>
-              <p className="text-white/25 text-xs">Feel free to check back later or drop your CV to careers@loops.lk</p>
+              <p className="text-white/25 text-xs">Feel free to check back later or drop your CV to careers@loopsintegrated.com</p>
             </div>
           ) : (
             <div className="jobs-list space-y-4">
@@ -440,45 +440,7 @@ export default function Careers() {
         </div>
       </section>
 
-      {/* 3. Benefits section */}
-      <section className="py-20 md:py-28 border-b border-white/5 section-padding">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-            <div>
-              <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Why Loops</p>
-              <h2 className="heading-xl fluid-lg text-white">
-                A place built for<br />
-                <span className="gradient-text">people who build.</span>
-              </h2>
-            </div>
-            <p className="text-white/40 max-w-sm fluid-sm leading-relaxed">
-              We invest in talent the same way we invest in our clients' brands — boldly, and for the long run.
-            </p>
-          </div>
 
-          <div className="benefits-grid grid grid-cols-1 md:grid-cols-3 gap-5">
-            {benefits.map((benefit, i) => (
-              <div
-                key={i}
-                className="benefit-card group relative p-8 rounded-2xl bg-white/3 border border-white/5 hover:border-white/15 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
-              >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
-                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
-                />
-                <div
-                  className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-lg"
-                  style={{ background: DEPT_GRADIENTS[i % DEPT_GRADIENTS.length] }}
-                >
-                  {renderIcon(benefit.icon)}
-                </div>
-                <h3 className="relative font-display font-semibold text-white text-lg mb-3">{benefit.title}</h3>
-                <p className="relative text-white/45 text-sm leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 4. Open application CTA */}
       <section className="relative overflow-hidden section-padding py-24" style={{ background: 'linear-gradient(135deg, #E8005A 0%, #7B2FBE 50%, #1B3FB5 100%)' }}>
@@ -495,8 +457,8 @@ export default function Careers() {
           <p className="text-white/80 fluid-sm leading-relaxed mb-10 max-w-xl mx-auto">
             Send us your CV and tell us what you're great at — we'll reach out when the right opportunity opens up.
           </p>
-          <a href="mailto:careers@loops.lk" className="inline-flex items-center justify-center gap-3.5 px-8 py-4 sm:px-11 sm:py-5 bg-white text-brand-dark font-display font-bold text-base sm:text-lg md:text-xl tracking-tight rounded-full shadow-2xl hover:bg-white/95 transition-all duration-300 hover:scale-105">
-            careers@loops.lk
+          <a href="mailto:careers@loopsintegrated.com" className="inline-flex items-center justify-center gap-3.5 px-8 py-4 sm:px-11 sm:py-5 bg-white text-brand-dark font-display font-bold text-base sm:text-lg md:text-xl tracking-tight rounded-full shadow-2xl hover:bg-white/95 transition-all duration-300 hover:scale-105">
+            careers@loopsintegrated.com
             <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>

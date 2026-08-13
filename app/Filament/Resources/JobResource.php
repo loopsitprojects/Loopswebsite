@@ -101,7 +101,7 @@ class JobResource extends Resource
                             Forms\Components\TextInput::make('apply_email')
                                 ->label('Fallback Apply Email')
                                 ->email()
-                                ->placeholder('careers@loops.lk')
+                                ->placeholder('careers@loopsintegrated.com')
                                 ->maxLength(255),
                         ]),
                     ]),
