@@ -36,7 +36,7 @@ export default function Careers() {
   // Careers page config settings from database
   const [hero, setHero] = useState({
     label: 'Careers',
-    headline: 'Join the loop.',
+    headline: 'Join the loop',
     description: 'We are always on the lookout for bright minds, bold creators, and disruptive developers. Explore our open roles, challenge the status quo, and help us build what\'s next.'
   })
   const [benefits, setBenefits] = useState<Benefit[]>([
@@ -69,7 +69,7 @@ export default function Careers() {
           if (heroData) {
             setHero({
               label: heroData.label || 'Careers',
-              headline: heroData.headline || 'Join the loop.',
+              headline: (heroData.headline || 'Join the loop').replace(/\.+$/, ''),
               description: heroData.description || ''
             })
           }
@@ -304,11 +304,10 @@ export default function Careers() {
                   <button
                     key={dept}
                     onClick={() => setActiveDept(dept)}
-                    className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 ${
-                      activeDept === dept
+                    className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 ${activeDept === dept
                         ? 'bg-white text-brand-dark border-white shadow-sm'
                         : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white'
-                    }`}
+                      }`}
                   >
                     {dept}
                   </button>
@@ -432,8 +431,8 @@ export default function Careers() {
       <section className="relative overflow-hidden section-padding py-6 sm:py-10 md:py-14 border-b border-white/5">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="heading-xl fluid-lg text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
-            {hero.headline.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="gradient-text">{hero.headline.split(' ').slice(-1)}</span>
+            {hero.headline.replace(/\.+$/, '').split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="gradient-text">{hero.headline.replace(/\.+$/, '').split(' ').slice(-1)}</span>
           </h2>
           <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
             {hero.description}
