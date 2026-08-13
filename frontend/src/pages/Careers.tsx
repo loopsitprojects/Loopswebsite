@@ -303,9 +303,8 @@ export default function Careers() {
       <section id="open-positions" className="relative overflow-hidden section-padding py-16 md:py-24 border-b border-white/5 scroll-mt-24">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="mb-12">
-            <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2">Join Us</p>
             <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap">
-              Open Positions
+              Join Us
             </h2>
           </div>
 
@@ -396,14 +395,10 @@ export default function Careers() {
                               {renderMarkdown(job.description)}
                             </div>
 
-                            <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
-                              <div>
-                                <p className="text-white/30 text-[10px] uppercase font-bold tracking-wider">Experience Level</p>
-                                <p className="text-white/70 text-sm font-medium">{job.experience_level || 'Not Specified'}</p>
-                              </div>
+                            <div className="pt-6 border-t border-white/5 flex justify-end w-full">
                               <button
                                 onClick={(e) => handleApplyClick(job, e)}
-                                className="btn-primary bg-white text-brand-dark font-semibold hover:bg-white/90 sm:ml-auto"
+                                className="btn-primary bg-white text-brand-dark font-semibold hover:bg-white/90"
                               >
                                 Submit Resume for this Role
                               </button>
