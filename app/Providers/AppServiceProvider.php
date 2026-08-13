@@ -22,7 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        foreach ([storage_path('framework/sessions'), storage_path('framework/views'), storage_path('framework/cache'), storage_path('logs')] as $path) {
+        foreach ([
+            storage_path('framework/sessions'),
+            storage_path('framework/views'),
+            storage_path('framework/cache'),
+            storage_path('logs'),
+            storage_path('app/livewire-tmp'),
+            storage_path('app/public'),
+        ] as $path) {
             if (!is_dir($path)) {
                 @mkdir($path, 0777, true);
             }

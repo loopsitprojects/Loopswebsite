@@ -85,6 +85,8 @@ class PortfolioItemResource extends Resource
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('hero')
                                         ->label('Hero Image')
                                         ->collection('hero')
+                                        ->disk('public')
+                                        ->visibility('public')
                                         ->image()
                                         ->imageEditor()
                                         ->imageEditorAspectRatios([
@@ -224,6 +226,8 @@ class PortfolioItemResource extends Resource
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
                                         ->label('Gallery Images')
                                         ->collection('gallery')
+                                        ->disk('public')
+                                        ->visibility('public')
                                         ->image()
                                         ->imageEditor()
                                         ->imageEditorAspectRatios([
