@@ -335,6 +335,10 @@ class PortfolioItemResource extends Resource
                                     ->label('Clickable Detail Page')
                                     ->default(true)
                                     ->helperText('Allow clicking to detail page & show in Next Project'),
+                                Forms\Components\Toggle::make('show_gallery')
+                                    ->label('Show Campaign Gallery')
+                                    ->default(true)
+                                    ->helperText('Display gallery section on case study page'),
                                 Forms\Components\TextInput::make('sort_order')
                                     ->numeric()
                                     ->default(0)

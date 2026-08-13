@@ -83,6 +83,7 @@ export interface PortfolioItem {
   image_fit?: string
   featured: boolean
   is_clickable?: boolean
+  show_gallery?: boolean
   categories: Category[]
   tags: string[]
   hero_url?: string

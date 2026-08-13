@@ -7,8 +7,7 @@ import { api, PortfolioItem, resolveImageUrl } from '@/lib/api'
 
 gsap.registerPlugin(ScrollTrigger)
 
-function CampaignGallery({ gallery, color, title, tags }: { gallery: { url: string; thumb?: string; alt?: string }[]; color?: string; title: string; tags: string[] }) {
-  return null
+function CampaignGallery({ gallery, color, title, tags, showGallery = true }: { gallery: { url: string; thumb?: string; alt?: string }[]; color?: string; title: string; tags: string[]; showGallery?: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
@@ -20,7 +19,7 @@ function CampaignGallery({ gallery, color, title, tags }: { gallery: { url: stri
     return () => clearInterval(interval)
   }, [gallery.length, isPaused])
 
-  if (!gallery || gallery.length === 0) return null
+  if (!showGallery || !gallery || gallery.length === 0) return null
 
   const activeImage = gallery[activeIndex] || gallery[0]
 
@@ -683,7 +682,7 @@ export default function CaseStudy() {
       )}
 
       {/* ── 5. Campaign Gallery ─────────────────────────── */}
-      <CampaignGallery gallery={item.gallery} color={item.color} title={item.title} tags={item.tags} />
+      <CampaignGallery gallery={item.gallery} color={item.color} title={item.title} tags={item.tags} showGallery={item.show_gallery} />
 
       {/* ── 6. Results bar ───────────────────────────────── */}
       {!isPerformanceMarketing && item.result && (
