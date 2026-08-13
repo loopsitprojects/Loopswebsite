@@ -260,53 +260,23 @@ class PortfolioItemResource extends Resource
                                         ->helperText('Upload campaign imagery in display order (Interactive image cropper enabled for each photo)'),
                                 ]),
                                 Components\Group::make([
-                                    Forms\Components\Textarea::make('gallery_image_urls')
-                                        ->label('Or: Gallery Image URLs')
-                                        ->placeholder("https://domain.com/image1.jpg\nhttps://domain.com/image2.jpg")
-                                        ->helperText('Paste one link per line to download and add them to the gallery.')
-                                        ->rows(5)
-                                        ->dehydrated(false)
-                                        ->live(onBlur: true)
-                                        ->rules([
-                                            function () {
-                                                return function (string $attribute, $value, \Closure $fail) {
-                                                    if (empty($value)) {
-                                                        return;
-                                                    }
-                                                    $urls = preg_split('/\r\n|\r|\n/', $value);
-                                                    foreach ($urls as $url) {
-                                                        $url = trim($url);
-                                                        if (empty($url)) {
-                                                            continue;
-                                                        }
-                                                        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                                                            $fail("The link '{$url}' is not a valid URL.");
-                                                        }
-                                                    }
-                                                };
-                                            }
-                                        ]),
-                                    Forms\Components\Placeholder::make('gallery_image_urls_preview')
-                                        ->label('Gallery Images Preview')
-                                        ->content(function ($get) {
-                                            $value = $get('gallery_image_urls');
-                                            if (empty($value)) {
-                                                return null;
-                                            }
-                                            $urls = preg_split('/\r\n|\r|\n/', $value);
-                                            $html = '<div class="grid grid-cols-3 gap-2 mt-2">';
-                                            $hasImages = false;
-                                            foreach ($urls as $url) {
-                                                $url = trim($url);
-                                                if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
-                                                    continue;
-                                                }
-                                                $html .= "<div class='relative'><img src='{$url}' class='h-24 w-full object-cover rounded-lg border border-gray-300 dark:border-gray-700' alt='Preview' /></div>";
-                                                $hasImages = true;
-                                            }
-                                            $html .= '</div>';
-                                            return $hasImages ? new \Illuminate\Support\HtmlString($html) : null;
-                                        })
+                                    Forms\Components\Repeater::make('gallery_urls')
+                                        ->label('Or: Campaign Gallery Image URLs')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('url')
+                                                ->label('Image URL')
+                                                ->placeholder('https://domain.com/photo.jpg')
+                                                ->required()
+                                                ->url(),
+                                            Forms\Components\TextInput::make('alt')
+                                                ->label('Caption / Alt Text')
+                                                ->placeholder('Optional image caption'),
+                                        ])
+                                        ->itemLabel(fn (array $state): ?string => !empty($state['alt']) ? $state['alt'] : ($state['url'] ?? 'Image Item'))
+                                        ->collapsible()
+                                        ->reorderable()
+                                        ->defaultItems(0)
+                                        ->helperText('Add direct image links for the campaign gallery.'),
                                 ]),
                             ]),
                         ]),

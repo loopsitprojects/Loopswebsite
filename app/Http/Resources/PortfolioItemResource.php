@@ -45,13 +45,7 @@ class PortfolioItemResource extends JsonResource
                                     ->get()
                                     ->map(fn ($a) => "{$a->count}× {$a->tier} — {$a->award_body}")
                                     ->first(),
-            'gallery'          => $this->getMedia('gallery')->map(fn ($m) => [
-                'url'   => $this->formatMediaUrl($m->getUrl()),
-                'thumb' => $this->formatMediaUrl(
-                    $m->hasGeneratedConversion('thumb') ? $m->getUrl('thumb') : $m->getUrl()
-                ),
-                'alt'   => $m->custom_properties['alt'] ?? $this->title,
-            ]),
+            'gallery'          => $this->getFormattedGallery(),
             'meta' => [
                 'title'       => $this->seo_title,
                 'description' => $this->seo_description,
@@ -69,6 +63,49 @@ class PortfolioItemResource extends JsonResource
             return $path ?: $url;
         }
         return $url;
+    }
+
+    private function getFormattedGallery(): array
+    {
+        $gallery = [];
+        $urlsSeen = [];
+
+        foreach ($this->getMedia('gallery') as $m) {
+            $fullUrl = $this->formatMediaUrl($m->getUrl());
+            $thumbUrl = $this->formatMediaUrl(
+                $m->hasGeneratedConversion('thumb') ? $m->getUrl('thumb') : $m->getUrl()
+            );
+
+            if ($fullUrl && !in_array($fullUrl, $urlsSeen)) {
+                $gallery[] = [
+                    'url'   => $fullUrl,
+                    'thumb' => $thumbUrl,
+                    'alt'   => $m->custom_properties['alt'] ?? $this->title,
+                ];
+                $urlsSeen[] = $fullUrl;
+            }
+        }
+
+        if (is_array($this->gallery_urls)) {
+            foreach ($this->gallery_urls as $item) {
+                $rawUrl = is_array($item) ? ($item['url'] ?? '') : (is_string($item) ? $item : '');
+                $altText = is_array($item) ? ($item['alt'] ?? '') : '';
+
+                if (!empty($rawUrl)) {
+                    $convertedUrl = \App\Models\PortfolioItem::convertDirectImageUrl($rawUrl);
+                    if ($convertedUrl && !in_array($convertedUrl, $urlsSeen)) {
+                        $gallery[] = [
+                            'url'   => $convertedUrl,
+                            'thumb' => $convertedUrl,
+                            'alt'   => !empty($altText) ? $altText : $this->title,
+                        ];
+                        $urlsSeen[] = $convertedUrl;
+                    }
+                }
+            }
+        }
+
+        return $gallery;
     }
 
     private function formatCampaignVideos(): array
