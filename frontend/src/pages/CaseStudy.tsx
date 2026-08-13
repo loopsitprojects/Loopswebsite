@@ -106,7 +106,17 @@ function CampaignGallery({ gallery, color, title, tags }: { gallery: { url: stri
                   }`}
                   style={{ borderColor: isActive ? (color || '#E8005A') : 'transparent' }}
                 >
-                  <img src={resolveImageUrl(img.thumb || img.url)} alt={img.alt || ''} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <img
+                    src={resolveImageUrl(img.thumb || img.url)}
+                    alt={img.alt || ''}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      const target = e.currentTarget
+                      if (img.url && target.src !== resolveImageUrl(img.url)) {
+                        target.src = resolveImageUrl(img.url)
+                      }
+                    }}
+                  />
                   {isActive && (
                     <span
                       className="absolute inset-0 bg-black/10 border-2 rounded-2xl"

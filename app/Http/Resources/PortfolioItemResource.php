@@ -45,7 +45,11 @@ class PortfolioItemResource extends JsonResource
                                     ->first(),
             'gallery'          => $this->getMedia('gallery')->map(fn ($m) => [
                 'url'   => $this->formatMediaUrl($m->getUrl()),
-                'thumb' => $this->formatMediaUrl($m->getUrl('thumb')),
+                'thumb' => $this->formatMediaUrl(
+                    ($m->hasGeneratedConversion('thumb') && file_exists($m->getPath('thumb')))
+                        ? $m->getUrl('thumb')
+                        : $m->getUrl()
+                ),
                 'alt'   => $m->custom_properties['alt'] ?? $this->title,
             ]),
             'meta' => [
