@@ -586,7 +586,7 @@ export default function CaseStudy() {
             {item.title}
           </motion.h1>
 
-          {!isPerformanceMarketing && item.result && (
+          {item.result && (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -768,7 +768,7 @@ export default function CaseStudy() {
       <CampaignGallery gallery={item.gallery} color={item.color} title={item.title} tags={item.tags} showGallery={item.show_gallery} />
 
       {/* ── 6. Results bar ───────────────────────────────── */}
-      {!isPerformanceMarketing && item.result && (
+      {item.result && (
         <section className="bg-[#0D0D11] border-t border-b border-white/10 section-padding py-20">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 max-w-7xl">
             <div className="cs-reveal max-w-3xl border-l-4 pl-6 md:pl-8" style={{ borderColor: item.color || '#E8005A' }}>
