@@ -280,26 +280,39 @@ export default function Careers() {
 
   return (
     <div ref={pageRef} className="min-h-screen bg-brand-dark">
-      {/* 1. Open Positions section (Main Top Hero Section) */}
-      <section id="open-positions" className="relative overflow-hidden section-padding pt-32 sm:pt-40 pb-12 md:pb-24 border-b border-white/5 scroll-mt-24">
+      {/* 1. Join the loop Intro Hero section (Top of Page) */}
+      <section className="relative overflow-hidden section-padding pt-32 sm:pt-40 pb-12 sm:pb-16 border-b border-white/5">
         <ParticleField accent="multi" count={260} spread={16} />
 
         {/* Background Glows */}
         <div className="absolute top-0 right-0 w-[32rem] h-[32rem] rounded-full opacity-20 blur-3xl pointer-events-none bg-brand-pink" />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none bg-brand-blue" />
 
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h1 className="heading-xl fluid-lg text-white mb-3 sm:mb-4 md:mb-6 leading-tight hero-reveal">
+            {hero.headline.replace(/\.+$/, '').split(' ').slice(0, -1).join(' ')}{' '}
+            <span className="gradient-text">{hero.headline.replace(/\.+$/, '').split(' ').slice(-1)}</span>
+          </h1>
+          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed hero-reveal">
+            {hero.description}
+          </p>
+        </div>
+      </section>
+
+      {/* 2. Open Positions section */}
+      <section id="open-positions" className="relative overflow-hidden section-padding py-16 md:py-24 border-b border-white/5 scroll-mt-24">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
             <div>
-              <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2 hero-reveal">Join Us</p>
-              <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap hero-reveal">
+              <p className="text-white font-display font-bold text-lg md:text-xl tracking-tight mb-2">Join Us</p>
+              <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight whitespace-nowrap">
                 Open Positions
-              </h1>
+              </h2>
             </div>
 
             {/* Department Filter tabs - show only if available departments exist */}
             {departments.length > 1 && (
-              <div className="flex items-center gap-2 md:gap-2.5 hero-reveal lg:justify-end overflow-x-auto no-scrollbar pb-2 flex-nowrap max-w-full -mx-6 px-6 lg:mx-0 lg:px-0">
+              <div className="flex items-center gap-2 md:gap-2.5 lg:justify-end overflow-x-auto no-scrollbar pb-2 flex-nowrap max-w-full -mx-6 px-6 lg:mx-0 lg:px-0">
                 {departments.map(dept => (
                   <button
                     key={dept}
@@ -424,19 +437,6 @@ export default function Careers() {
               })}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* 2. Join the loop Intro section (placed below Open Positions) */}
-      <section className="relative overflow-hidden section-padding py-6 sm:py-10 md:py-14 border-b border-white/5">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="heading-xl fluid-lg text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
-            {hero.headline.replace(/\.+$/, '').split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="gradient-text">{hero.headline.replace(/\.+$/, '').split(' ').slice(-1)}</span>
-          </h2>
-          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            {hero.description}
-          </p>
         </div>
       </section>
 
