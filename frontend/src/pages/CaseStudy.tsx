@@ -106,41 +106,41 @@ function CampaignVideoSection({
             {renderPlayer(currentUrl, currentVideo.title)}
           </div>
 
-          {/* Interactive Multi-Video Selector Tabs */}
+          {/* Interactive Dot Navigation */}
           {videos.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 pt-2">
-              {videos.map((vid, idx) => {
-                const isActive = idx === activeIdx
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveIdx(idx)}
-                    className={`flex items-center gap-3 px-5 py-3 rounded-2xl border transition-all duration-300 shrink-0 text-left cursor-pointer ${
-                      isActive
-                        ? 'bg-white/10 border-white/30 text-white shadow-lg shadow-black/40 scale-[1.02]'
-                        : 'bg-white/2 border-white/10 text-white/50 hover:border-white/20 hover:text-white/80'
-                    }`}
-                  >
-                    <div
-                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
-                        isActive ? 'bg-white text-brand-dark' : 'bg-white/10 text-white/70'
-                      }`}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+              <div className="flex items-center gap-2">
+                {videos.map((vid, idx) => {
+                  const isActive = idx === activeIdx
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveIdx(idx)}
+                      aria-label={`Go to ${vid.title || `Video ${idx + 1}`}`}
+                      className="group relative focus:outline-none p-1.5 cursor-pointer"
                     >
-                      {String(idx + 1).padStart(2, '0')}
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold tracking-wide leading-tight">{vid.title || `Video ${idx + 1}`}</p>
-                      <p className="text-[10px] text-white/40 font-mono mt-0.5 uppercase">
-                        {vid.url.includes('youtube') || vid.url.includes('youtu.be')
-                          ? 'YouTube'
-                          : vid.url.includes('vimeo')
-                          ? 'Vimeo'
-                          : 'Video Clip'}
-                      </p>
-                    </div>
-                  </button>
-                )
-              })}
+                      <span
+                        className={`block rounded-full transition-all duration-500 ease-out ${
+                          isActive
+                            ? 'w-8 h-2.5 shadow-md'
+                            : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/60 group-hover:scale-125'
+                        }`}
+                        style={{
+                          backgroundColor: isActive ? (color || '#E8005A') : undefined,
+                        }}
+                      />
+                    </button>
+                  )
+                })}
+              </div>
+
+              {currentVideo.title && (
+                <div className="text-right">
+                  <p className="text-xs font-medium text-white/80 tracking-wide">
+                    {currentVideo.title}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
