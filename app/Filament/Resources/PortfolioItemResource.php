@@ -391,11 +391,14 @@ class PortfolioItemResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('featured')
                     ->boolean()->sortable(),
-                Tables\Columns\IconColumn::make('published')
-                    ->boolean()->sortable(),
-                Tables\Columns\IconColumn::make('is_clickable')
+                Tables\Columns\ToggleColumn::make('published')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_clickable')
                     ->label('Clickable')
-                    ->boolean()->sortable(),
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('show_gallery')
+                    ->label('Gallery')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->sortable()->label('Order'),
             ])
