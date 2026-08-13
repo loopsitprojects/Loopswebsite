@@ -299,12 +299,12 @@ export default function Careers() {
 
             {/* Department Filter tabs - show only if available departments exist */}
             {departments.length > 1 && (
-              <div className="flex flex-wrap items-center gap-2 md:gap-2.5 hero-reveal lg:justify-end">
+              <div className="flex items-center gap-2 md:gap-2.5 hero-reveal lg:justify-end overflow-x-auto no-scrollbar pb-2 flex-nowrap max-w-full -mx-6 px-6 lg:mx-0 lg:px-0">
                 {departments.map(dept => (
                   <button
                     key={dept}
                     onClick={() => setActiveDept(dept)}
-                    className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 ${activeDept === dept
+                    className={`px-4 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase border transition-all duration-300 whitespace-nowrap shrink-0 ${activeDept === dept
                         ? 'bg-white text-brand-dark border-white shadow-sm'
                         : 'border-white/10 text-white/50 hover:border-white/25 hover:text-white'
                       }`}
