@@ -108,39 +108,29 @@ function CampaignVideoSection({
 
           {/* Interactive Dot Navigation */}
           {videos.length > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
-              <div className="flex items-center gap-2">
-                {videos.map((vid, idx) => {
-                  const isActive = idx === activeIdx
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveIdx(idx)}
-                      aria-label={`Go to ${vid.title || `Video ${idx + 1}`}`}
-                      className="group relative focus:outline-none p-1.5 cursor-pointer"
-                    >
-                      <span
-                        className={`block rounded-full transition-all duration-500 ease-out ${
-                          isActive
-                            ? 'w-8 h-2.5 shadow-md'
-                            : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/60 group-hover:scale-125'
-                        }`}
-                        style={{
-                          backgroundColor: isActive ? (color || '#E8005A') : undefined,
-                        }}
-                      />
-                    </button>
-                  )
-                })}
-              </div>
-
-              {currentVideo.title && (
-                <div className="text-right">
-                  <p className="text-xs font-medium text-white/80 tracking-wide">
-                    {currentVideo.title}
-                  </p>
-                </div>
-              )}
+            <div className="flex items-center justify-center gap-2 mt-6">
+              {videos.map((vid, idx) => {
+                const isActive = idx === activeIdx
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIdx(idx)}
+                    aria-label={`Go to Video ${idx + 1}`}
+                    className="group relative focus:outline-none p-1.5 cursor-pointer"
+                  >
+                    <span
+                      className={`block rounded-full transition-all duration-500 ease-out ${
+                        isActive
+                          ? 'w-8 h-2.5 shadow-md'
+                          : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/60 group-hover:scale-125'
+                      }`}
+                      style={{
+                        backgroundColor: isActive ? (color || '#E8005A') : undefined,
+                      }}
+                    />
+                  </button>
+                )
+              })}
             </div>
           )}
         </div>
