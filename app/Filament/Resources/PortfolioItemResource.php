@@ -143,6 +143,10 @@ class PortfolioItemResource extends Resource
                                         ->url()
                                         ->placeholder('https://www.youtube.com/watch?v=... or https://vimeo.com/... or .mp4 link')
                                         ->helperText('Optional: Overrides hero image with a looping video'),
+                                    Forms\Components\Toggle::make('show_hero_as_campaign_video')
+                                        ->label('Include Hero Video in Campaign Video Showcase')
+                                        ->default(true)
+                                        ->helperText('ON: Displays the Hero Video as a playable campaign video in the showcase section. OFF: Excludes Hero Video from the campaign videos section.'),
                                     Forms\Components\Repeater::make('video_urls')
                                         ->label('Campaign Videos (Showcase Multiple Videos)')
                                         ->schema([

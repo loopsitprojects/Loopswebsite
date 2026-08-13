@@ -85,6 +85,7 @@ export interface PortfolioItem {
   is_clickable?: boolean
   show_gallery?: boolean
   show_year?: boolean
+  show_hero_as_campaign_video?: boolean
   categories: Category[]
   tags: string[]
   hero_url?: string

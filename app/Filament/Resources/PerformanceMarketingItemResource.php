@@ -145,6 +145,28 @@ class PerformanceMarketingItemResource extends Resource
                                         ->url()
                                         ->placeholder('https://...')
                                         ->helperText('Optional: Overrides hero image with a looping video'),
+                                    Forms\Components\Toggle::make('show_hero_as_campaign_video')
+                                        ->label('Include Hero Video in Campaign Video Showcase')
+                                        ->default(true)
+                                        ->helperText('ON: Displays the Hero Video as a playable campaign video in the showcase section. OFF: Excludes Hero Video from the campaign videos section.'),
+                                    Forms\Components\Repeater::make('video_urls')
+                                        ->label('Campaign Videos (Showcase Multiple Videos)')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('title')
+                                                ->label('Video Title / Label')
+                                                ->placeholder('e.g. Main TVC, 30s Cut, Behind the Scenes')
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('url')
+                                                ->label('Video Link (YouTube, Vimeo, or MP4 URL)')
+                                                ->placeholder('https://www.youtube.com/watch?v=...')
+                                                ->required()
+                                                ->url(),
+                                        ])
+                                        ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
+                                        ->collapsible()
+                                        ->reorderable()
+                                        ->defaultItems(0)
+                                        ->helperText('Add multiple campaign videos to display an interactive video showcase on the case study page.'),
                                 ]),
                                 Components\Group::make([
                                     Forms\Components\Placeholder::make('work_card_applied_preview')

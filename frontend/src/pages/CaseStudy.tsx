@@ -454,7 +454,7 @@ export default function CaseStudy() {
 
   const campaignVideos = (item.campaign_videos && item.campaign_videos.length > 0)
     ? item.campaign_videos
-    : (item.video_url ? [{ title: 'Main Campaign Video', url: item.video_url }] : [])
+    : (item.video_url && item.show_hero_as_campaign_video !== false ? [{ title: 'Main Campaign Video', url: item.video_url }] : [])
 
   const isPerformanceMarketing = item.categories.some(
     c => c.slug.toLowerCase().includes('performance') || c.name.toLowerCase().includes('performance')

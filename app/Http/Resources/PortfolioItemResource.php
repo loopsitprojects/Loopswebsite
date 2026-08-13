@@ -29,9 +29,10 @@ class PortfolioItemResource extends JsonResource
             'image_position'   => $this->image_position ?? 'center',
             'image_fit'        => $this->image_fit ?? 'cover',
             'featured'         => $this->featured,
-            'is_clickable'     => $this->is_clickable ?? true,
-            'show_gallery'     => $this->show_gallery ?? true,
-            'show_year'        => $this->show_year ?? false,
+            'is_clickable'                 => $this->is_clickable ?? true,
+            'show_gallery'                 => $this->show_gallery ?? true,
+            'show_year'                    => $this->show_year ?? false,
+            'show_hero_as_campaign_video'  => $this->show_hero_as_campaign_video ?? true,
             'categories'       => $this->categories->map(fn ($c) => [
                 'id'    => $c->id,
                 'name'  => $c->name,
@@ -114,7 +115,9 @@ class PortfolioItemResource extends JsonResource
         $videos = [];
         $urlsSeen = [];
 
-        if (!empty($this->video_url)) {
+        $showHeroAsCampaign = $this->show_hero_as_campaign_video ?? true;
+
+        if ($showHeroAsCampaign && !empty($this->video_url)) {
             $videos[] = [
                 'title' => 'Main Campaign Video',
                 'url'   => $this->video_url,
