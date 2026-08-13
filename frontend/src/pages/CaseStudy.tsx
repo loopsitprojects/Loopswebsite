@@ -7,6 +7,148 @@ import { api, PortfolioItem, resolveImageUrl } from '@/lib/api'
 
 gsap.registerPlugin(ScrollTrigger)
 
+function CampaignVideoSection({
+  videos,
+  insight,
+  color,
+  posterImage,
+}: {
+  videos: { title: string; url: string }[]
+  insight?: string
+  color?: string
+  posterImage?: string
+}) {
+  const [activeIdx, setActiveIdx] = useState(0)
+
+  if (!videos || videos.length === 0) return null
+
+  const currentVideo = videos[activeIdx] || videos[0]
+  const currentUrl = currentVideo.url.startsWith('http://')
+    ? currentVideo.url.replace('http://', 'https://')
+    : currentVideo.url
+
+  const renderPlayer = (url: string, title: string) => {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const videoId = url.includes('youtu.be')
+        ? url.split('/').pop()?.split('?')[0]
+        : new URLSearchParams(new URL(url).search).get('v')
+      return (
+        <iframe
+          className="w-full h-full aspect-[16/9] rounded-2xl"
+          src={`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      )
+    }
+    if (url.includes('vimeo.com')) {
+      const videoId = url.split('/').pop()?.split('?')[0]
+      return (
+        <iframe
+          className="w-full h-full aspect-[16/9] rounded-2xl"
+          src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
+          title={title}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
+      )
+    }
+    return (
+      <video
+        key={url}
+        className="w-full h-full object-cover rounded-2xl"
+        src={url}
+        controls
+        autoPlay
+        controlsList="nodownload"
+        onContextMenu={(e) => e.preventDefault()}
+        playsInline
+        preload="metadata"
+        poster={posterImage}
+      />
+    )
+  }
+
+  return (
+    <section className="bg-brand-dark section-padding py-16 border-t border-b border-white/10">
+      <div className="max-w-6xl mx-auto space-y-12">
+        {insight && (
+          <div className="pb-2 text-left w-full cs-reveal">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: color || '#E8005A' }} />
+              <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">THE INSIGHT</p>
+            </div>
+            <blockquote className="text-white/90 text-base md:text-lg lg:text-xl font-normal leading-relaxed tracking-tight w-full max-w-full whitespace-normal break-words">
+              "{insight}"
+            </blockquote>
+          </div>
+        )}
+
+        <div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 cs-reveal">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: color || '#E8005A' }} />
+              <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">
+                {videos.length > 1 ? 'CAMPAIGN VIDEOS' : 'CAMPAIGN VIDEO'}
+              </p>
+            </div>
+
+            {videos.length > 1 && (
+              <span className="text-white/40 text-xs font-mono">
+                Video <strong className="text-white">{activeIdx + 1}</strong> of {videos.length}
+              </span>
+            )}
+          </div>
+
+          {/* Main Video Display Box */}
+          <div className="cs-reveal relative rounded-3xl overflow-hidden bg-black/90 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] aspect-[16/9] w-full mb-6">
+            {renderPlayer(currentUrl, currentVideo.title)}
+          </div>
+
+          {/* Interactive Multi-Video Selector Tabs */}
+          {videos.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 pt-2">
+              {videos.map((vid, idx) => {
+                const isActive = idx === activeIdx
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIdx(idx)}
+                    className={`flex items-center gap-3 px-5 py-3 rounded-2xl border transition-all duration-300 shrink-0 text-left cursor-pointer ${
+                      isActive
+                        ? 'bg-white/10 border-white/30 text-white shadow-lg shadow-black/40 scale-[1.02]'
+                        : 'bg-white/2 border-white/10 text-white/50 hover:border-white/20 hover:text-white/80'
+                    }`}
+                  >
+                    <div
+                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-colors ${
+                        isActive ? 'bg-white text-brand-dark' : 'bg-white/10 text-white/70'
+                      }`}
+                    >
+                      {String(idx + 1).padStart(2, '0')}
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold tracking-wide leading-tight">{vid.title || `Video ${idx + 1}`}</p>
+                      <p className="text-[10px] text-white/40 font-mono mt-0.5 uppercase">
+                        {vid.url.includes('youtube') || vid.url.includes('youtu.be')
+                          ? 'YouTube'
+                          : vid.url.includes('vimeo')
+                          ? 'Vimeo'
+                          : 'Video Clip'}
+                      </p>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function CampaignGallery({ gallery, color, title, tags, showGallery = true }: { gallery: { url: string; thumb?: string; alt?: string }[]; color?: string; title: string; tags: string[]; showGallery?: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
@@ -320,6 +462,10 @@ export default function CaseStudy() {
     ? item.video_url.replace('http://', 'https://')
     : item.video_url
 
+  const campaignVideos = (item.campaign_videos && item.campaign_videos.length > 0)
+    ? item.campaign_videos
+    : (item.video_url ? [{ title: 'Main Campaign Video', url: item.video_url }] : [])
+
   const isPerformanceMarketing = item.categories.some(
     c => c.slug.toLowerCase().includes('performance') || c.name.toLowerCase().includes('performance')
   )
@@ -602,87 +748,30 @@ export default function CaseStudy() {
         </div>
       </section>
 
-      {/* ── Big Campaign Video Player & Insight ───────────── */}
-      {videoUrl && (
-        <section className="bg-brand-dark section-padding py-16 border-t border-b border-white/10">
-          <div className="max-w-6xl mx-auto space-y-12">
-            {item.insight && (
-              <div className="pb-2 text-left w-full cs-reveal">
-                <div className="flex items-center gap-2.5 mb-3">
-                  <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: item.color || '#E8005A' }} />
-                  <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">THE INSIGHT</p>
-                </div>
-                <blockquote className="text-white/90 text-base md:text-lg lg:text-xl font-normal leading-relaxed tracking-tight w-full max-w-full whitespace-normal break-words">
-                  "{item.insight}"
-                </blockquote>
-              </div>
-            )}
 
-            <div>
-              <div className="flex items-center gap-2.5 mb-6 cs-reveal">
+
+      {/* ── 4. Campaign Videos & Insight Section ─────────── */}
+      {campaignVideos.length > 0 ? (
+        <CampaignVideoSection
+          videos={campaignVideos}
+          insight={item.insight}
+          color={item.color}
+          posterImage={heroImage}
+        />
+      ) : (
+        item.insight && (
+          <section className="bg-[#0D0D11] border-t border-b border-white/10 section-padding py-20 relative overflow-hidden">
+            <div className="max-w-6xl mx-auto text-left relative z-10">
+              <div className="flex items-center gap-2.5 mb-4 cs-reveal">
                 <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: item.color || '#E8005A' }} />
-                <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">CAMPAIGN VIDEO</p>
+                <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">THE INSIGHT</p>
               </div>
-              <div className="cs-reveal relative rounded-3xl overflow-hidden bg-black/90 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] aspect-[16/9] w-full">
-                {(() => {
-                  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                    const videoId = videoUrl.includes('youtu.be')
-                      ? videoUrl.split('/').pop()?.split('?')[0]
-                      : new URLSearchParams(new URL(videoUrl).search).get('v')
-                    return (
-                      <iframe
-                        className="w-full h-full aspect-[16/9] rounded-2xl"
-                        src={`https://www.youtube.com/embed/${videoId}?rel=0`}
-                        title="Campaign Video"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    )
-                  }
-                  if (videoUrl.includes('vimeo.com')) {
-                    const videoId = videoUrl.split('/').pop()?.split('?')[0]
-                    return (
-                      <iframe
-                        className="w-full h-full aspect-[16/9] rounded-2xl"
-                        src={`https://player.vimeo.com/video/${videoId}`}
-                        title="Campaign Video"
-                        allow="autoplay; fullscreen; picture-in-picture"
-                        allowFullScreen
-                      />
-                    )
-                  }
-                  return (
-                    <video
-                      className="w-full h-full object-cover rounded-2xl"
-                      src={videoUrl}
-                      controls
-                      controlsList="nodownload"
-                      onContextMenu={(e) => e.preventDefault()}
-                      playsInline
-                      preload="metadata"
-                      poster={heroImage}
-                    />
-                  )
-                })()}
-              </div>
+              <blockquote className="cs-reveal text-white/90 text-base md:text-lg lg:text-xl font-normal leading-relaxed tracking-tight w-full max-w-full whitespace-normal break-words">
+                "{item.insight}"
+              </blockquote>
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* Standalone Insight section if no video URL is provided */}
-      {!videoUrl && item.insight && (
-        <section className="bg-[#0D0D11] border-t border-b border-white/10 section-padding py-20 relative overflow-hidden">
-          <div className="max-w-6xl mx-auto text-left relative z-10">
-            <div className="flex items-center gap-2.5 mb-4 cs-reveal">
-              <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: item.color || '#E8005A' }} />
-              <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">THE INSIGHT</p>
-            </div>
-            <blockquote className="cs-reveal text-white/90 text-base md:text-lg lg:text-xl font-normal leading-relaxed tracking-tight w-full max-w-full whitespace-normal break-words">
-              "{item.insight}"
-            </blockquote>
-          </div>
-        </section>
+          </section>
+        )
       )}
 
       {/* ── 5. Campaign Gallery ─────────────────────────── */}

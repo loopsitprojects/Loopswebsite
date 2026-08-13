@@ -21,8 +21,8 @@ class PortfolioItemResource extends JsonResource
             'objective'        => $this->objective,
             'insight'          => $this->insight,
             'idea'             => $this->idea,
-            'result'           => $this->result,
             'video_url'        => $this->video_url,
+            'campaign_videos'  => $this->formatCampaignVideos(),
             'year'             => $this->year,
             'color'            => $this->color,
             'image_position'   => $this->image_position ?? 'center',
@@ -69,5 +69,36 @@ class PortfolioItemResource extends JsonResource
             return $path ?: $url;
         }
         return $url;
+    }
+
+    private function formatCampaignVideos(): array
+    {
+        $videos = [];
+        $urlsSeen = [];
+
+        if (!empty($this->video_url)) {
+            $videos[] = [
+                'title' => 'Main Campaign Video',
+                'url'   => $this->video_url,
+            ];
+            $urlsSeen[] = trim($this->video_url);
+        }
+
+        if (is_array($this->video_urls)) {
+            foreach ($this->video_urls as $v) {
+                $url = is_array($v) ? ($v['url'] ?? '') : (is_string($v) ? $v : '');
+                $title = is_array($v) ? ($v['title'] ?? '') : '';
+
+                if (!empty($url) && !in_array(trim($url), $urlsSeen)) {
+                    $videos[] = [
+                        'title' => !empty($title) ? $title : ('Video ' . (count($videos) + 1)),
+                        'url'   => trim($url),
+                    ];
+                    $urlsSeen[] = trim($url);
+                }
+            }
+        }
+
+        return $videos;
     }
 }

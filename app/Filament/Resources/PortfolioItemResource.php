@@ -139,10 +139,28 @@ class PortfolioItemResource extends Resource
                                         ->helperText('Select the crop framing position to align subject inside the card.')
                                         ->live(),
                                     Forms\Components\TextInput::make('video_url')
-                                        ->label('Hero Video URL')
+                                        ->label('Hero / Featured Video URL')
                                         ->url()
-                                        ->placeholder('https://...')
+                                        ->placeholder('https://www.youtube.com/watch?v=... or https://vimeo.com/... or .mp4 link')
                                         ->helperText('Optional: Overrides hero image with a looping video'),
+                                    Forms\Components\Repeater::make('video_urls')
+                                        ->label('Campaign Videos (Showcase Multiple Videos)')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('title')
+                                                ->label('Video Title / Label')
+                                                ->placeholder('e.g. Main TVC, 30s Cut, Behind the Scenes')
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('url')
+                                                ->label('Video Link (YouTube, Vimeo, or MP4 URL)')
+                                                ->placeholder('https://www.youtube.com/watch?v=...')
+                                                ->required()
+                                                ->url(),
+                                        ])
+                                        ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
+                                        ->collapsible()
+                                        ->reorderable()
+                                        ->defaultItems(0)
+                                        ->helperText('Add multiple campaign videos to display an interactive video showcase on the case study page.'),
                                 ]),
                                 Components\Group::make([
                                     Forms\Components\Placeholder::make('work_card_applied_preview')
