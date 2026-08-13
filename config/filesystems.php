@@ -38,7 +38,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => public_path('storage'),
+            'root' => file_exists(base_path('index.php')) ? base_path('storage') : public_path('storage'),
             'url' => env('PUBLIC_STORAGE_URL', '/storage'),
             'visibility' => 'public',
             'throw' => false,
@@ -46,7 +46,7 @@ return [
 
         'works' => [
             'driver' => 'local',
-            'root' => public_path('works'),
+            'root' => file_exists(base_path('index.php')) ? base_path('works') : public_path('works'),
             'url' => '/works',
             'visibility' => 'public',
             'throw' => false,
