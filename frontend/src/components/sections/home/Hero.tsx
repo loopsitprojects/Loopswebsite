@@ -105,37 +105,19 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-black"
+      className="relative w-full overflow-hidden bg-white"
       style={{ height: '100dvh', minHeight: 560 }}
     >
-      {/* ── Background Poster Image (shows on desktop & mobile until video is cached & playing) ── */}
+      {/* ── Hero Thumbnail & Loading Placeholder (Desktop & Mobile) ─────────── */}
       <div
-        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out pointer-events-none ${
-          videoReady ? 'opacity-0' : 'opacity-100'
-        }`}
-        style={{
-          backgroundImage: `url(${resolveImageUrl(isMobile ? '/images/mobile-hero-poster.jpg' : '/images/yamaha-bg.jpg')})`,
-          backgroundColor: '#0A0A0A',
-        }}
-      />
-
-      {/* ── Hero Loading Image Placeholder (Desktop & Mobile) ─────────── */}
-      <div
-        className={`absolute inset-0 z-20 bg-brand-dark flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-none ${
+        className={`absolute inset-0 z-20 bg-white flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-none ${
           videoReady ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none"
-          style={{
-            backgroundImage: `url(${resolveImageUrl(isMobile ? '/images/mobile-hero-poster.jpg' : '/images/yamaha-bg.jpg')})`,
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40" />
         <img
           src={resolveImageUrl('/images/logo-dark-text.png')}
           alt="LOOPS INTEGRATED"
-          className="relative z-10 w-56 sm:w-64 max-w-[70vw] h-auto object-contain select-none animate-pulse filter invert"
+          className="w-64 sm:w-80 md:w-[420px] max-w-[80vw] h-auto object-contain select-none"
         />
       </div>
 
