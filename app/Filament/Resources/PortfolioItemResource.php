@@ -295,7 +295,7 @@ class PortfolioItemResource extends Resource
 
                     Components\Tabs\Tab::make('Categorisation')
                         ->schema([
-                            Components\Grid::make(2)->schema([
+                            Components\Grid::make(3)->schema([
                                 Forms\Components\Select::make('year')
                                     ->options(array_combine(
                                         range(date('Y'), 2015),
@@ -303,6 +303,10 @@ class PortfolioItemResource extends Resource
                                     ))
                                     ->default(date('Y'))
                                     ->nullable(),
+                                Forms\Components\Toggle::make('show_year')
+                                    ->label('Show Year')
+                                    ->default(false)
+                                    ->helperText('Display year on public work cards and case study'),
                                 Forms\Components\ColorPicker::make('color')
                                     ->label('Accent Color')
                                     ->default('#E8005A')

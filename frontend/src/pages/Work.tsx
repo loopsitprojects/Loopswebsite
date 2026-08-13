@@ -241,7 +241,7 @@ export default function Work() {
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex items-center justify-between mb-3">
                     <p className="label text-white/70">{item.client}</p>
-                    <p className="label text-white/60">{item.year}</p>
+                    {item.show_year && <p className="label text-white/60">{item.year}</p>}
                   </div>
                   <h3 className="font-display font-600 text-white text-xl leading-tight mb-3">{item.title}</h3>
                   <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">{item.insight}</p>

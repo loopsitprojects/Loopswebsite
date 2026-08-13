@@ -17,7 +17,7 @@ class PortfolioItem extends Model implements HasMedia
 
     protected $fillable = [
         'slug', 'client', 'title', 'brief', 'background', 'objective', 'insight', 'idea',
-        'result', 'video_url', 'image_url', 'image_position', 'image_fit', 'year', 'color', 'featured',
+        'result', 'video_url', 'image_url', 'image_position', 'image_fit', 'year', 'show_year', 'color', 'featured',
         'published', 'is_clickable', 'show_gallery', 'sort_order',
         'meta_title', 'meta_description', 'canonical_url', 'json_ld',
     ];
@@ -27,6 +27,7 @@ class PortfolioItem extends Model implements HasMedia
         'published'    => 'boolean',
         'is_clickable' => 'boolean',
         'show_gallery' => 'boolean',
+        'show_year'    => 'boolean',
         'json_ld'      => 'array',
         'year'         => 'integer',
     ];

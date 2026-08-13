@@ -420,12 +420,14 @@ export default function CaseStudy() {
                 {c.name}
               </span>
             ))}
-            <span
-              className="text-white/70 font-mono font-medium"
-              style={{ fontSize: '0.72rem' }}
-            >
-              {item.year}
-            </span>
+            {item.show_year && (
+              <span
+                className="text-white/70 font-mono font-medium"
+                style={{ fontSize: '0.72rem' }}
+              >
+                {item.year}
+              </span>
+            )}
           </motion.div>
 
           <motion.p
@@ -485,10 +487,12 @@ export default function CaseStudy() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 max-w-7xl">
           <div className="lg:col-span-3">
             <div className="sticky top-28 space-y-7">
-              <div>
-                <p className="label text-slate-500 font-bold mb-2 tracking-[0.18em]">YEAR</p>
-                <p className="font-display font-semibold text-brand-dark text-lg">{item.year}</p>
-              </div>
+              {item.show_year && (
+                <div>
+                  <p className="label text-slate-500 font-bold mb-2 tracking-[0.18em]">YEAR</p>
+                  <p className="font-display font-semibold text-brand-dark text-lg">{item.year}</p>
+                </div>
+              )}
               <div>
                 <p className="label text-slate-500 font-bold mb-2 tracking-[0.18em]">CLIENT</p>
                 <p className="font-display font-bold text-brand-dark text-xl md:text-2xl leading-snug">{item.client}</p>

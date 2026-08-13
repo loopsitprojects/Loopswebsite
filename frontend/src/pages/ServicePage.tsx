@@ -612,7 +612,7 @@ export default function ServicePage() {
                       <div>
                         <div className="flex items-center justify-between mb-3">
                           <p className="text-[0.68rem] font-mono font-bold tracking-widest text-white/60 uppercase">{item.client}</p>
-                          <p className="text-[0.68rem] font-mono text-cyan-400/90 font-medium">{item.year}</p>
+                          {item.show_year && <p className="text-[0.68rem] font-mono text-cyan-400/90 font-medium">{item.year}</p>}
                         </div>
                         <h4 className={`font-display font-semibold text-white text-lg md:text-xl leading-tight mb-2.5 transition-colors line-clamp-2 ${isClickable ? 'group-hover:text-brand-pink' : ''}`}>
                           {item.title}

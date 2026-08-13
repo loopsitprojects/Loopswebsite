@@ -84,6 +84,7 @@ export interface PortfolioItem {
   featured: boolean
   is_clickable?: boolean
   show_gallery?: boolean
+  show_year?: boolean
   categories: Category[]
   tags: string[]
   hero_url?: string

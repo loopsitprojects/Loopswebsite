@@ -30,6 +30,7 @@ class PortfolioItemResource extends JsonResource
             'featured'         => $this->featured,
             'is_clickable'     => $this->is_clickable ?? true,
             'show_gallery'     => $this->show_gallery ?? true,
+            'show_year'        => $this->show_year ?? false,
             'categories'       => $this->categories->map(fn ($c) => [
                 'id'    => $c->id,
                 'name'  => $c->name,
