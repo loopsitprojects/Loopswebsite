@@ -198,38 +198,65 @@ export default function Careers() {
 
   // Basic Markdown Renderer for job descriptions
   const renderMarkdown = (text: string) => {
-    return text.split('\n').map((line, idx) => {
-      const trimmed = line.trim()
-      if (trimmed.startsWith('###')) {
-        return (
-          <h4 key={idx} className="font-display font-semibold text-white mt-6 mb-3 text-lg">
-            {trimmed.replace('###', '').trim()}
-          </h4>
-        )
-      }
-      if (trimmed.startsWith('##')) {
-        return (
-          <h3 key={idx} className="font-display font-bold text-white mt-8 mb-4 text-xl">
-            {trimmed.replace('##', '').trim()}
-          </h3>
-        )
-      }
-      if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
-        return (
-          <ul key={idx} className="list-disc list-inside pl-4 text-white/60 space-y-1 mb-2">
-            <li>{trimmed.substring(1).trim()}</li>
+    if (!text) return null
+    const lines = text.split('\n')
+    const blocks: React.ReactNode[] = []
+    let currentList: string[] = []
+
+    const flushList = (keyPrefix: string) => {
+      if (currentList.length > 0) {
+        blocks.push(
+          <ul key={`ul-${keyPrefix}`} className="list-disc pl-5 text-white/70 space-y-1.5 mb-4">
+            {currentList.map((item, i) => (
+              <li key={i} className="text-sm leading-relaxed">
+                {item}
+              </li>
+            ))}
           </ul>
         )
+        currentList = []
       }
-      if (trimmed === '') {
-        return <div key={idx} className="h-3" />
+    }
+
+    lines.forEach((line, idx) => {
+      const trimmed = line.trim()
+
+      if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+        const content = trimmed.substring(1).trim()
+        currentList.push(content)
+      } else {
+        flushList(`${idx}`)
+        if (trimmed.startsWith('###')) {
+          blocks.push(
+            <h4 key={idx} className="font-display font-semibold text-white mt-5 mb-2 text-lg">
+              {trimmed.replace(/^###\s*/, '').trim()}
+            </h4>
+          )
+        } else if (trimmed.startsWith('##')) {
+          blocks.push(
+            <h3 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-xl">
+              {trimmed.replace(/^##\s*/, '').trim()}
+            </h3>
+          )
+        } else if (trimmed.endsWith(':') && !trimmed.startsWith('<')) {
+          blocks.push(
+            <h4 key={idx} className="font-display font-semibold text-white mt-4 mb-2 text-base">
+              {trimmed}
+            </h4>
+          )
+        } else if (trimmed !== '') {
+          blocks.push(
+            <p key={idx} className="text-white/70 text-sm leading-relaxed mb-3">
+              {trimmed}
+            </p>
+          )
+        }
       }
-      return (
-        <p key={idx} className="text-white/60 text-sm leading-relaxed mb-3">
-          {line}
-        </p>
-      )
     })
+
+    flushList('final')
+
+    return blocks
   }
 
   const handleApplyClick = (job: Job, e: React.MouseEvent) => {
@@ -372,22 +399,22 @@ export default function Careers() {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3, ease: 'easeInOut' }}
                         >
-                          <div className="px-6 pb-8 md:px-8 md:pb-8 pt-2 border-t border-white/5 bg-white/[0.01]">
-                            <div className="max-w-3xl">
+                          <div className="px-6 pb-8 md:px-8 md:pb-8 pt-4 border-t border-white/5 bg-white/[0.01]">
+                            <div className="max-w-3xl mb-8">
                               {renderMarkdown(job.description)}
+                            </div>
 
-                              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div>
-                                  <p className="text-white/30 text-[10px] uppercase font-bold tracking-wider">Experience Level</p>
-                                  <p className="text-white/70 text-sm font-medium">{job.experience_level || 'Not Specified'}</p>
-                                </div>
-                                <button
-                                  onClick={(e) => handleApplyClick(job, e)}
-                                  className="btn-primary bg-white text-brand-dark font-semibold hover:bg-white/90"
-                                >
-                                  Submit Resume for this Role
-                                </button>
+                            <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+                              <div>
+                                <p className="text-white/30 text-[10px] uppercase font-bold tracking-wider">Experience Level</p>
+                                <p className="text-white/70 text-sm font-medium">{job.experience_level || 'Not Specified'}</p>
                               </div>
+                              <button
+                                onClick={(e) => handleApplyClick(job, e)}
+                                className="btn-primary bg-white text-brand-dark font-semibold hover:bg-white/90 sm:ml-auto"
+                              >
+                                Submit Resume for this Role
+                              </button>
                             </div>
                           </div>
                         </motion.div>
@@ -469,7 +496,7 @@ export default function Careers() {
           <p className="text-white/80 fluid-sm leading-relaxed mb-10 max-w-xl mx-auto">
             Send us your CV and tell us what you're great at — we'll reach out when the right opportunity opens up.
           </p>
-          <a href="mailto:careers@loops.lk" className="inline-flex items-center gap-3.5 px-9 py-4.5 sm:px-11 sm:py-5 bg-white text-brand-dark font-display font-bold text-base sm:text-lg md:text-xl tracking-tight rounded-full shadow-2xl hover:bg-white/95 transition-all duration-300 hover:scale-105">
+          <a href="mailto:careers@loops.lk" className="inline-flex items-center justify-center gap-3.5 px-8 py-4 sm:px-11 sm:py-5 bg-white text-brand-dark font-display font-bold text-base sm:text-lg md:text-xl tracking-tight rounded-full shadow-2xl hover:bg-white/95 transition-all duration-300 hover:scale-105">
             careers@loops.lk
             <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
