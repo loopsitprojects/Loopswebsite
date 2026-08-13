@@ -118,7 +118,7 @@ class PortfolioItem extends Model implements HasMedia
     public function getSeoDescriptionAttribute(): string
     {
         return $this->meta_description
-            ?? substr($this->brief, 0, 160);
+            ?? substr((string) ($this->brief ?? $this->background ?? ''), 0, 160);
     }
 
     public static function convertDirectImageUrl(string $url): string

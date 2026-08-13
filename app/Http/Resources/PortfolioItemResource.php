@@ -21,6 +21,7 @@ class PortfolioItemResource extends JsonResource
             'objective'        => $this->objective,
             'insight'          => $this->insight,
             'idea'             => $this->idea,
+            'result'           => $this->result,
             'video_url'        => $this->video_url,
             'campaign_videos'  => $this->formatCampaignVideos(),
             'year'             => $this->year,
