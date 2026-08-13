@@ -21,14 +21,46 @@ export default function Hero() {
     if (!vid) return
 
     vid.muted = true
+    // @ts-ignore
+    vid.defaultMuted = true
     vid.volume = 0
+    vid.setAttribute('muted', '')
+    vid.setAttribute('playsinline', '')
+    vid.setAttribute('webkit-playsinline', 'true')
+    vid.setAttribute('x5-playsinline', 'true')
 
     // Pick the video source in JS rather than relying on <source media="">
     let currentIsMobile = isMobileViewport()
     setIsMobile(currentIsMobile)
     vid.src = currentIsMobile ? MOBILE_VIDEO_URL : DESKTOP_VIDEO_URL
     vid.load()
-    vid.play().catch(() => {})
+
+    const playVideo = () => {
+      if (!videoRef.current) return
+      videoRef.current.muted = true
+      // @ts-ignore
+      videoRef.current.defaultMuted = true
+      videoRef.current.play()
+        .then(() => {
+          if (videoRef.current && (videoRef.current.currentTime > 0.05 || videoRef.current.readyState >= 2)) {
+            setVideoReady(true)
+          }
+        })
+        .catch(() => {})
+    }
+
+    playVideo()
+
+    // iOS Safari / Low Power Mode user gesture unlock listener
+    const unlockAutoplay = () => {
+      playVideo()
+    }
+
+    window.addEventListener('touchstart', unlockAutoplay, { passive: true })
+    window.addEventListener('touchmove', unlockAutoplay, { passive: true })
+    window.addEventListener('touchend', unlockAutoplay, { passive: true })
+    window.addEventListener('scroll', unlockAutoplay, { passive: true })
+    window.addEventListener('click', unlockAutoplay, { passive: true })
 
     // Swap the source on window resize if the viewport crosses the mobile/desktop breakpoint
     const handleResize = () => {
@@ -92,21 +124,35 @@ export default function Hero() {
 
     return () => {
       clearTimeout(timer)
+      window.removeEventListener('touchstart', unlockAutoplay)
+      window.removeEventListener('touchmove', unlockAutoplay)
+      window.removeEventListener('touchend', unlockAutoplay)
+      window.removeEventListener('scroll', unlockAutoplay)
+      window.removeEventListener('click', unlockAutoplay)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
 
   const markVideoReady = () => {
-    if (videoRef.current && videoRef.current.readyState >= 2) {
+    if (videoRef.current && (videoRef.current.currentTime > 0.05 || videoRef.current.readyState >= 2)) {
       setVideoReady(true)
+    }
+  }
+
+  const handleHeroClick = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = true
+      videoRef.current.play().then(() => setVideoReady(true)).catch(() => {})
     }
   }
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white"
+      className="relative w-full overflow-hidden bg-white cursor-pointer"
       style={{ height: '100dvh', minHeight: 560 }}
+      onClick={handleHeroClick}
+      onTouchStart={handleHeroClick}
     >
       {/* ── Hero Thumbnail & Loading Placeholder (Desktop & Mobile) ─────────── */}
       <div
@@ -140,7 +186,6 @@ export default function Hero() {
         // @ts-ignore
         x5-playsinline="true"
         preload="auto"
-        poster={resolveImageUrl(isMobile ? '/images/mobile-hero-poster.jpg' : '/images/yamaha-bg.jpg')}
         onPlaying={markVideoReady}
         onCanPlayThrough={markVideoReady}
         onTimeUpdate={() => {
