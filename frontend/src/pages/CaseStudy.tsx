@@ -473,48 +473,59 @@ export default function CaseStudy() {
           }
         }}
       >
-        {videoUrl ? (
-          <>
-            <video
-              ref={(el) => {
-                if (el) {
-                  heroVideoRef.current = el
-                  el.muted = true
-                  // @ts-ignore
-                  el.defaultMuted = true
-                  el.setAttribute('muted', '')
-                  el.setAttribute('playsinline', '')
-                  el.setAttribute('webkit-playsinline', 'true')
-                  el.setAttribute('x5-playsinline', 'true')
-                  el.play().catch(() => {})
-                }
-              }}
-              className="bg-video cs-hero-bg absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-              src={videoUrl}
-              poster={heroImage}
-              autoPlay
-              muted
-              // @ts-ignore
-              defaultMuted
-              loop
-              playsInline
-              // @ts-ignore
-              webkit-playsinline="true"
-              // @ts-ignore
-              x5-playsinline="true"
-              disablePictureInPicture
-              // @ts-ignore
-              disableRemotePlayback="true"
-              preload="auto"
-              onPlay={() => setIsHeroPlaying(true)}
-            />
-          </>
-        ) : (
-          <div
-            className="cs-hero-bg absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: heroImage ? `url(${heroImage})` : 'none',
-              backgroundColor: item.color || '#0A0A0A',
+        {/* Background Thumbnail Image — always present & visible while video is loading/buffering */}
+        <div
+          className={`cs-hero-bg absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
+            videoUrl && isHeroPlaying ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{
+            backgroundImage: heroImage ? `url(${heroImage})` : 'none',
+            backgroundColor: item.color || '#0A0A0A',
+          }}
+        />
+
+        {videoUrl && (
+          <video
+            ref={(el) => {
+              if (el) {
+                heroVideoRef.current = el
+                el.muted = true
+                // @ts-ignore
+                el.defaultMuted = true
+                el.setAttribute('muted', '')
+                el.setAttribute('playsinline', '')
+                el.setAttribute('webkit-playsinline', 'true')
+                el.setAttribute('x5-playsinline', 'true')
+                el.play().then(() => {
+                  if (el.currentTime > 0.05) setIsHeroPlaying(true)
+                }).catch(() => {})
+              }
+            }}
+            className={`bg-video cs-hero-bg absolute inset-0 w-full h-full object-cover pointer-events-none select-none transition-opacity duration-700 ${
+              isHeroPlaying ? 'opacity-100' : 'opacity-0'
+            }`}
+            src={videoUrl}
+            poster={heroImage}
+            autoPlay
+            muted
+            // @ts-ignore
+            defaultMuted
+            loop
+            playsInline
+            // @ts-ignore
+            webkit-playsinline="true"
+            // @ts-ignore
+            x5-playsinline="true"
+            disablePictureInPicture
+            // @ts-ignore
+            disableRemotePlayback="true"
+            preload="auto"
+            onPlaying={() => setIsHeroPlaying(true)}
+            onCanPlayThrough={() => setIsHeroPlaying(true)}
+            onTimeUpdate={(e) => {
+              if (e.currentTarget.currentTime > 0.05) {
+                setIsHeroPlaying(true)
+              }
             }}
           />
         )}

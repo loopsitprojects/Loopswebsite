@@ -108,26 +108,46 @@ export default function Hero() {
       className="relative w-full overflow-hidden bg-black"
       style={{ height: '100dvh', minHeight: 560 }}
     >
-      {/* ── Mobile Hero First Loading Image Placeholder ─────────────── */}
+      {/* ── Background Poster Image (shows on desktop & mobile until video is cached & playing) ── */}
       <div
-        className={`absolute inset-0 z-20 md:hidden bg-white flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-none ${
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out pointer-events-none ${
+          videoReady ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          backgroundImage: `url(${resolveImageUrl(isMobile ? '/images/mobile-hero-poster.jpg' : '/images/yamaha-bg.jpg')})`,
+          backgroundColor: '#0A0A0A',
+        }}
+      />
+
+      {/* ── Hero Loading Image Placeholder (Desktop & Mobile) ─────────── */}
+      <div
+        className={`absolute inset-0 z-20 bg-brand-dark flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-none ${
           videoReady ? 'opacity-0' : 'opacity-100'
         }`}
       >
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none"
+          style={{
+            backgroundImage: `url(${resolveImageUrl(isMobile ? '/images/mobile-hero-poster.jpg' : '/images/yamaha-bg.jpg')})`,
+          }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
         <img
           src={resolveImageUrl('/images/logo-dark-text.png')}
           alt="LOOPS INTEGRATED"
-          className="w-56 sm:w-64 max-w-[70vw] h-auto object-contain select-none"
+          className="relative z-10 w-56 sm:w-64 max-w-[70vw] h-auto object-contain select-none animate-pulse filter invert"
         />
       </div>
 
       {/* ── Full-screen Background Video ─────────────────────────── */}
       <video
         ref={videoRef}
-        className="bg-video absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+        className={`bg-video absolute inset-0 w-full h-full object-cover pointer-events-none select-none transition-opacity duration-700 ${
+          videoReady ? 'opacity-100' : 'opacity-0'
+        }`}
         style={{
           transform: 'scale(1.03)',
-          transition: 'transform 8s ease-out',
+          transition: 'transform 8s ease-out, opacity 0.7s ease-out',
         }}
         autoPlay
         muted
