@@ -17,7 +17,6 @@ class SecurityHeaders
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
-        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
 
         // HSTS — only on production (not local dev)
         if (app()->isProduction()) {
