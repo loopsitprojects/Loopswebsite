@@ -231,12 +231,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5 section-padding py-6 flex flex-col sm:flex-row items-center justify-between gap-4 pr-6 sm:pr-[380px] lg:pr-[420px]">
-        <p className="label text-white/30">{footerData.copyright}</p>
-        <div className="flex items-center gap-6 z-10">
-          <Link to="/privacy" className="label text-white/40 hover:text-white transition-colors cursor-pointer py-1">Privacy</Link>
-          <Link to="/terms" className="label text-white/40 hover:text-white transition-colors cursor-pointer py-1">Terms</Link>
-        </div>
+      <div className="border-t border-white/5 section-padding py-6 flex items-center justify-center text-center">
+        <p className="label text-white/30 text-center">{footerData.copyright}</p>
       </div>
     </footer>
   )
