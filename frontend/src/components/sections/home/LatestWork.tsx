@@ -94,15 +94,16 @@ export default function LatestWork() {
             const rawThumb = item.thumbnail_url || item.hero_url || '/images/default.jpg'
             const thumbUrl = resolveImageUrl(rawThumb)
             const isClickable = item.is_clickable !== false
+            const resultText = item.result
 
             const cardContent = (
               <>
                 {/* Full-bleed Header Image */}
-                <div className="relative overflow-hidden w-full aspect-[16/10] bg-neutral-900 flex items-center justify-center">
+                <div className="relative overflow-hidden w-full aspect-[16/10] bg-black/60 flex items-center justify-center">
                   <img
                     src={thumbUrl}
                     alt={item.title}
-                    className={`w-full h-full transition-transform duration-700 ${isClickable ? 'group-hover:scale-105' : ''}`}
+                    className={`w-full h-full object-cover transition-transform duration-700 ${isClickable ? 'group-hover:scale-105' : ''}`}
                     style={{
                       objectFit: item.image_fit?.startsWith('contain') ? 'contain' : 'cover',
                       objectPosition: item.image_position || 'center',
@@ -119,18 +120,29 @@ export default function LatestWork() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="label text-white/70">{item.client}</p>
-                    {item.show_year && <p className="label text-white/60">{item.year}</p>}
+                <div className="p-6 flex flex-col flex-grow justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-[0.68rem] font-mono font-bold tracking-widest text-white/60 uppercase">{item.client}</p>
+                      {item.show_year && <p className="text-[0.68rem] font-mono text-cyan-400/90 font-medium">{item.year}</p>}
+                    </div>
+                    <h3 className="font-display font-semibold text-white text-lg md:text-xl leading-tight mb-2.5 transition-colors line-clamp-2 group-hover:text-brand-pink">
+                      {item.title}
+                    </h3>
+                    {item.insight && (
+                      <p className="text-white/50 text-sm leading-relaxed line-clamp-2 mb-4 font-normal">
+                        {item.insight}
+                      </p>
+                    )}
                   </div>
-                  <h3 className="font-display font-600 text-white text-xl leading-tight mb-3">{item.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">{item.insight}</p>
-                  {item.result && (
-                    <div className="mt-auto pt-3.5 border-t border-white/10 flex items-start gap-2">
-                      <span className="text-emerald-400 font-bold text-xs shrink-0 mt-0.5">↑</span>
+
+                  {resultText && (
+                    <div className="mt-auto p-3.5 rounded-xl bg-black/50 border border-white/10 flex items-start gap-2.5 text-xs text-white/80 leading-relaxed font-sans font-medium">
+                      <span className="text-emerald-400 font-bold shrink-0 mt-0.5">
+                        {resultText.trim().startsWith('↑') || resultText.trim().startsWith('•') ? '' : '• '}
+                      </span>
                       <span className="text-slate-200 text-xs leading-relaxed font-sans font-medium line-clamp-2">
-                        {item.result}
+                        {resultText}
                       </span>
                     </div>
                   )}
