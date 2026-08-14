@@ -199,6 +199,28 @@ export default function Careers() {
   // Basic Markdown Renderer for job descriptions
   const renderMarkdown = (text: string) => {
     if (!text) return null
+
+    const parseInline = (str: string): React.ReactNode => {
+      if (!str) return ''
+      const parts = str.split(/(\*\*.*?\*\*)/g)
+      if (parts.length === 1) return str
+      return parts.map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
+          return (
+            <strong key={i} className="font-semibold text-white">
+              {part.slice(2, -2)}
+            </strong>
+          )
+        }
+        return part
+      })
+    }
+
+    const isTopicHeader = (str: string) => {
+      const clean = str.replace(/^\*\*|\*\*$/g, '').replace(/^#+\s*/, '').replace(/:$/, '').trim()
+      return /^(responsibilities|requirements|qualifications|about the role|key responsibilities|what you'll do|what you will do|who you are|skills & requirements|preferred qualifications|essential duties|benefits|about us|role summary|overview)$/i.test(clean)
+    }
+
     const lines = text.split('\n')
     const blocks: React.ReactNode[] = []
     let currentList: string[] = []
@@ -209,7 +231,7 @@ export default function Careers() {
           <ul key={`ul-${keyPrefix}`} className="list-disc pl-5 text-white/70 space-y-1.5 mb-4">
             {currentList.map((item, i) => (
               <li key={i} className="text-sm leading-relaxed">
-                {item}
+                {parseInline(item)}
               </li>
             ))}
           </ul>
@@ -228,26 +250,33 @@ export default function Careers() {
         flushList(`${idx}`)
         if (trimmed.startsWith('###')) {
           blocks.push(
-            <h4 key={idx} className="font-display font-semibold text-white mt-5 mb-2 text-lg">
-              {trimmed.replace(/^###\s*/, '').trim()}
+            <h4 key={idx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
+              {parseInline(trimmed.replace(/^###\s*/, '').trim())}
             </h4>
           )
         } else if (trimmed.startsWith('##')) {
           blocks.push(
-            <h3 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-xl">
-              {trimmed.replace(/^##\s*/, '').trim()}
+            <h3 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-lg sm:text-xl tracking-tight">
+              {parseInline(trimmed.replace(/^##\s*/, '').trim())}
             </h3>
           )
-        } else if (trimmed.endsWith(':') && !trimmed.startsWith('<')) {
+        } else if (trimmed.startsWith('#')) {
           blocks.push(
-            <h4 key={idx} className="font-display font-semibold text-white mt-4 mb-2 text-base">
-              {trimmed}
+            <h2 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-xl sm:text-2xl tracking-tight">
+              {parseInline(trimmed.replace(/^#\s*/, '').trim())}
+            </h2>
+          )
+        } else if (isTopicHeader(trimmed) || (trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**'))) {
+          const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
+          blocks.push(
+            <h4 key={idx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
+              {cleanTitle}
             </h4>
           )
         } else if (trimmed !== '') {
           blocks.push(
             <p key={idx} className="text-white/70 text-sm leading-relaxed mb-3">
-              {trimmed}
+              {parseInline(trimmed)}
             </p>
           )
         }
