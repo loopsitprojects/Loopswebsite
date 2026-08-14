@@ -141,12 +141,12 @@ export default function LoopsMap({
       { city: 'Singapore', country: 'Singapore', role: 'Southeast Asia', lat: 1.2838, lng: 103.8516, is_headquarters: false },
     ]
     return list.map((o, idx) => ({
-      name: o.city,
-      role: o.role || o.country,
+      name: o.city || o.country || o.role || `Office ${idx + 1}`,
+      role: o.role || o.country || '',
       lat: o.lat ?? 0,
       lng: o.lng ?? 0,
       color: DEFAULT_COLORS[idx % DEFAULT_COLORS.length],
-      labelDir: getLabelDir(o.city),
+      labelDir: getLabelDir(o.city || o.country || ''),
       is_headquarters: !!o.is_headquarters
     }))
   }, [offices])
@@ -442,13 +442,15 @@ export default function LoopsMap({
               >
                 {o.name}
               </p>
-              <p
-                className="font-mono text-[0.44rem] sm:text-[0.54rem] font-semibold uppercase tracking-wider leading-none"
-                style={{ color: '#F1F5F9', textShadow: '0 1px 4px rgba(0,0,0,0.95)' }}
-              >
-                <span style={{ color: o.color === '#E8005A' ? '#FF6B9D' : o.color, marginRight: 3 }}>●</span>
-                {o.role}
-              </p>
+              {Boolean(o.role?.trim()) && (
+                <p
+                  className="font-mono text-[0.44rem] sm:text-[0.54rem] font-semibold uppercase tracking-wider leading-none"
+                  style={{ color: '#F1F5F9', textShadow: '0 1px 4px rgba(0,0,0,0.95)' }}
+                >
+                  <span style={{ color: o.color === '#E8005A' ? '#FF6B9D' : o.color, marginRight: 3 }}>●</span>
+                  {o.role}
+                </p>
+              )}
             </div>
           </div>
         )

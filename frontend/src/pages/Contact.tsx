@@ -123,27 +123,30 @@ export default function Contact() {
 
           {/* Office tabs */}
           <div className="flex flex-wrap gap-3 mb-10">
-            {officesList.map((office, i) => (
-              <button
-                key={office.city}
-                onClick={() => setActiveOffice(i)}
-                className={`px-5 py-2.5 rounded-full label transition-all duration-300 ${
-                  activeOffice === i
-                    ? 'bg-brand-dark text-white'
-                    : 'border border-brand-dark/15 text-brand-dark/50 hover:border-brand-dark/40 hover:text-brand-dark'
-                }`}
-              >
-                {office.city}
-                {office.is_headquarters && <span className="ml-2 text-[0.6rem] opacity-60">HQ</span>}
-              </button>
-            ))}
+            {officesList.map((office, i) => {
+              const label = office.city || office.country || office.role || `Office ${i + 1}`
+              return (
+                <button
+                  key={office.id || office.city || i}
+                  onClick={() => setActiveOffice(i)}
+                  className={`px-5 py-2.5 rounded-full label transition-all duration-300 ${
+                    activeOffice === i
+                      ? 'bg-brand-dark text-white'
+                      : 'border border-brand-dark/15 text-brand-dark/50 hover:border-brand-dark/40 hover:text-brand-dark'
+                  }`}
+                >
+                  {label}
+                  {office.is_headquarters && <span className="ml-2 text-[0.6rem] opacity-60">HQ</span>}
+                </button>
+              )
+            })}
           </div>
 
           {/* Active office detail */}
           <AnimatePresence mode="wait">
             {officesList[activeOffice] && (
               <motion.div
-                key={activeOffice}
+                key={officesList[activeOffice].id || officesList[activeOffice].city || activeOffice}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -153,16 +156,18 @@ export default function Contact() {
                 {/* Left: Location & Role */}
                 <div className="lg:w-1/3">
                   <div className="flex items-center gap-3 mb-2 flex-wrap">
-                    <h3 className="font-display font-bold text-brand-dark text-3xl md:text-4xl tracking-tight">
-                      {officesList[activeOffice].city}
-                    </h3>
-                    {officesList[activeOffice].country && (
+                    {Boolean(officesList[activeOffice].city?.trim()) && (
+                      <h3 className="font-display font-bold text-brand-dark text-3xl md:text-4xl tracking-tight">
+                        {officesList[activeOffice].city}
+                      </h3>
+                    )}
+                    {Boolean(officesList[activeOffice].country?.trim()) && (
                       <span className="px-3 py-1 rounded-full text-[0.7rem] font-mono tracking-wider uppercase font-semibold text-brand-dark/60 bg-brand-dark/5 border border-brand-dark/12">
                         {officesList[activeOffice].country}
                       </span>
                     )}
                   </div>
-                  {officesList[activeOffice].role && (
+                  {Boolean(officesList[activeOffice].role?.trim()) && (
                     <div className="flex items-center gap-2 mt-3">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                       <p className="text-xs font-mono uppercase tracking-widest text-brand-dark/60 font-semibold">
@@ -191,37 +196,39 @@ export default function Contact() {
                 )}
 
                 {/* Right: Contact */}
-                <div className="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-brand-dark/10 pt-6 lg:pt-0 lg:pl-8 flex flex-col gap-3">
-                  <p className="text-xs font-mono uppercase tracking-widest text-brand-dark/40 mb-0.5 font-bold">Direct Line</p>
-                  
-                  {officesList[activeOffice].phone && (
-                    <a
-                      href={`tel:${officesList[activeOffice].phone}`}
-                      className="inline-flex items-center gap-3 text-brand-dark font-semibold text-sm hover:text-black transition-colors group"
-                    >
-                      <div className="w-8 h-8 rounded-xl bg-brand-dark/5 border border-brand-dark/10 flex items-center justify-center text-brand-dark/70 group-hover:bg-brand-dark group-hover:text-white group-hover:border-brand-dark transition-all">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                      </div>
-                      <span>{officesList[activeOffice].phone}</span>
-                    </a>
-                  )}
+                {(Boolean(officesList[activeOffice].phone?.trim()) || Boolean(officesList[activeOffice].email?.trim())) && (
+                  <div className="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-brand-dark/10 pt-6 lg:pt-0 lg:pl-8 flex flex-col gap-3">
+                    <p className="text-xs font-mono uppercase tracking-widest text-brand-dark/40 mb-0.5 font-bold">Direct Line</p>
+                    
+                    {Boolean(officesList[activeOffice].phone?.trim()) && (
+                      <a
+                        href={`tel:${officesList[activeOffice].phone}`}
+                        className="inline-flex items-center gap-3 text-brand-dark font-semibold text-sm hover:text-black transition-colors group"
+                      >
+                        <div className="w-8 h-8 rounded-xl bg-brand-dark/5 border border-brand-dark/10 flex items-center justify-center text-brand-dark/70 group-hover:bg-brand-dark group-hover:text-white group-hover:border-brand-dark transition-all">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                        </div>
+                        <span>{officesList[activeOffice].phone}</span>
+                      </a>
+                    )}
 
-                  {officesList[activeOffice].email && (
-                    <a
-                      href={`mailto:${officesList[activeOffice].email}`}
-                      className="inline-flex items-center gap-3 text-brand-dark font-semibold text-sm hover:text-black transition-colors group"
-                    >
-                      <div className="w-8 h-8 rounded-xl bg-brand-dark/5 border border-brand-dark/10 flex items-center justify-center text-brand-dark/70 group-hover:bg-brand-dark group-hover:text-white group-hover:border-brand-dark transition-all">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <span>{officesList[activeOffice].email}</span>
-                    </a>
-                  )}
-                </div>
+                    {Boolean(officesList[activeOffice].email?.trim()) && (
+                      <a
+                        href={`mailto:${officesList[activeOffice].email}`}
+                        className="inline-flex items-center gap-3 text-brand-dark font-semibold text-sm hover:text-black transition-colors group"
+                      >
+                        <div className="w-8 h-8 rounded-xl bg-brand-dark/5 border border-brand-dark/10 flex items-center justify-center text-brand-dark/70 group-hover:bg-brand-dark group-hover:text-white group-hover:border-brand-dark transition-all">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <span>{officesList[activeOffice].email}</span>
+                      </a>
+                    )}
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

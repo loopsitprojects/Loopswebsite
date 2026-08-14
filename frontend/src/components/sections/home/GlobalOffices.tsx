@@ -84,9 +84,10 @@ export default function GlobalOffices() {
             <div className="flex flex-wrap gap-2.5">
               {officesList.map((office, i) => {
                 const isActive = activeOffice === i
+                const label = office.city || office.country || office.role || `Office ${i + 1}`
                 return (
                   <button
-                    key={office.city}
+                    key={office.id || office.city || i}
                     onClick={() => setActiveOffice(i)}
                     className={`px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border whitespace-nowrap cursor-pointer ${
                       isActive
@@ -99,7 +100,7 @@ export default function GlobalOffices() {
                         isActive ? 'bg-brand-pink scale-125 shadow-[0_0_8px_rgba(232,0,90,0.9)]' : 'bg-white/70'
                       }`}
                     />
-                    <span className={isActive ? 'text-black' : 'text-white'}>{office.city}</span>
+                    <span className={isActive ? 'text-black' : 'text-white'}>{label}</span>
                   </button>
                 )
               })}
@@ -111,7 +112,7 @@ export default function GlobalOffices() {
             <AnimatePresence mode="wait">
               {officesList[activeOffice] && (
                 <motion.div
-                  key={officesList[activeOffice].city}
+                  key={officesList[activeOffice].id || officesList[activeOffice].city || activeOffice}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -15 }}
@@ -131,19 +132,23 @@ export default function GlobalOffices() {
                     <div className="flex flex-wrap items-start justify-between gap-4 mb-6 pb-6 border-b border-white/10">
                       <div>
                         <div className="flex items-center gap-3 flex-wrap">
-                          <h3 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
-                            {officesList[activeOffice].city}
-                          </h3>
-                          <span className="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 text-white/80 border border-white/15">
-                            {officesList[activeOffice].country}
-                          </span>
+                          {Boolean(officesList[activeOffice].city?.trim()) && (
+                            <h3 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
+                              {officesList[activeOffice].city}
+                            </h3>
+                          )}
+                          {Boolean(officesList[activeOffice].country?.trim()) && (
+                            <span className="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 text-white/80 border border-white/15">
+                              {officesList[activeOffice].country}
+                            </span>
+                          )}
                           {officesList[activeOffice].is_headquarters && (
                             <span className="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-pink-500/25 text-pink-200 border border-pink-400/50 font-bold shadow-sm">
                               HQ
                             </span>
                           )}
                         </div>
-                        {officesList[activeOffice].role && officesList[activeOffice].role.toLowerCase() !== 'headquarters' && (
+                        {Boolean(officesList[activeOffice].role?.trim()) && officesList[activeOffice].role.toLowerCase() !== 'headquarters' && (
                           <p className="text-pink-300 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider mt-2.5 flex items-center gap-1.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                             <span className="w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0 shadow-[0_0_6px_rgba(244,114,182,0.8)]" />
                             {officesList[activeOffice].role}
@@ -158,41 +163,43 @@ export default function GlobalOffices() {
                     </div>
 
                     {/* Description */}
-                    {officesList[activeOffice].description && (
+                    {Boolean(officesList[activeOffice].description?.trim()) && (
                       <p className="text-white/70 text-sm leading-relaxed mb-6">
                         {officesList[activeOffice].description}
                       </p>
                     )}
 
                     {/* Contact Details */}
-                    <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-sans">
-                      {officesList[activeOffice].phone && (
-                        <a
-                          href={`tel:${officesList[activeOffice].phone}`}
-                          className="inline-flex items-center gap-2.5 text-white/90 hover:text-brand-pink transition-colors px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 group w-max max-w-full"
-                        >
-                          <svg className="w-4 h-4 text-brand-pink shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                          </svg>
-                          <span className="font-medium whitespace-nowrap text-white/90 tracking-normal">{officesList[activeOffice].phone}</span>
-                        </a>
-                      )}
+                    {(Boolean(officesList[activeOffice].phone?.trim()) || Boolean(officesList[activeOffice].email?.trim())) && (
+                      <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-sans">
+                        {Boolean(officesList[activeOffice].phone?.trim()) && (
+                          <a
+                            href={`tel:${officesList[activeOffice].phone}`}
+                            className="inline-flex items-center gap-2.5 text-white/90 hover:text-brand-pink transition-colors px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 group w-max max-w-full"
+                          >
+                            <svg className="w-4 h-4 text-brand-pink shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span className="font-medium whitespace-nowrap text-white/90 tracking-normal">{officesList[activeOffice].phone}</span>
+                          </a>
+                        )}
 
-                      {officesList[activeOffice].email && (
-                        <a
-                          href={`mailto:${officesList[activeOffice].email}`}
-                          className="inline-flex items-center gap-2.5 text-white/90 hover:text-brand-pink transition-colors px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 group w-max max-w-full"
-                        >
-                          <svg className="w-4 h-4 text-brand-pink shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                          <span className="font-medium whitespace-nowrap text-white/90 tracking-normal">{officesList[activeOffice].email}</span>
-                        </a>
-                      )}
-                    </div>
+                        {Boolean(officesList[activeOffice].email?.trim()) && (
+                          <a
+                            href={`mailto:${officesList[activeOffice].email}`}
+                            className="inline-flex items-center gap-2.5 text-white/90 hover:text-brand-pink transition-colors px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 group w-max max-w-full"
+                          >
+                            <svg className="w-4 h-4 text-brand-pink shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span className="font-medium whitespace-nowrap text-white/90 tracking-normal">{officesList[activeOffice].email}</span>
+                          </a>
+                        )}
+                      </div>
+                    )}
 
                     {/* Address */}
-                    {officesList[activeOffice].address && (
+                    {Boolean(officesList[activeOffice].address?.trim()) && (
                       <div className="mt-5 pt-5 border-t border-white/10 flex items-start gap-3 text-sm text-white/80">
                         <svg className="w-5 h-5 text-brand-pink shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -224,9 +231,10 @@ export default function GlobalOffices() {
         {officesList.map((o, i) => {
           const colors = ['#E8005A', '#7B2FBE', '#1B3FB5', '#00B4B4']
           const isActive = activeOffice === i
+          const label = o.city || o.country || o.role || `Office ${i + 1}`
           return (
             <button
-              key={o.city}
+              key={o.id || o.city || i}
               onClick={() => setActiveOffice(i)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer border whitespace-nowrap shrink-0 ${
                 isActive
@@ -241,7 +249,7 @@ export default function GlobalOffices() {
                 style={{ background: colors[i % colors.length] }}
               />
               <span className="font-mono text-xs font-bold uppercase tracking-wider text-white">
-                {o.city}
+                {label}
               </span>
             </button>
           )

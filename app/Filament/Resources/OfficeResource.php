@@ -29,23 +29,24 @@ class OfficeResource extends Resource
                 Components\Section::make('Office Information')->schema([
                     Components\Grid::make(2)->schema([
                         Forms\Components\TextInput::make('city')
-                            ->required()
+                            ->nullable()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('country')
-                            ->required()
+                            ->nullable()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('role')
                             ->placeholder('e.g. Regional Office / Headquarters')
-                            ->required()
+                            ->nullable()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('email')
                             ->email()
+                            ->nullable()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('phone')
                             ->tel()
+                            ->nullable()
                             ->maxLength(50),
                         Forms\Components\TextInput::make('sort_order')
-                            ->required()
                             ->numeric()
                             ->default(0),
                     ]),
