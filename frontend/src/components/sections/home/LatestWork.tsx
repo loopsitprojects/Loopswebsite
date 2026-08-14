@@ -90,81 +90,68 @@ export default function LatestWork() {
             msOverflowStyle: 'none',
           }}
         >
-          {items.map((item, i) => {
-            const accentColor = item.color || '#E8005A'
+          {items.map((item) => {
             const rawThumb = item.thumbnail_url || item.hero_url || '/images/default.jpg'
-            const thumb = resolveImageUrl(rawThumb)
+            const thumbUrl = resolveImageUrl(rawThumb)
             const isClickable = item.is_clickable !== false
 
-            const innerCard = (
-              <motion.div
-                className={`relative rounded-2xl overflow-hidden bg-brand-dark flex flex-col justify-between border border-white/10 shadow-2xl group/card h-full ${!isClickable ? 'cursor-default' : ''}`}
-                whileHover={isClickable ? { y: -6 } : {}}
-                transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
-              >
-                {/* Top: Image container */}
-                <div className="relative w-full aspect-[16/9] overflow-hidden bg-neutral-950 border-b border-white/10 flex-shrink-0">
+            const cardContent = (
+              <>
+                {/* Full-bleed Header Image */}
+                <div className="relative overflow-hidden w-full aspect-[16/10] bg-neutral-900 flex items-center justify-center">
                   <img
-                    src={thumb}
+                    src={thumbUrl}
                     alt={item.title}
-                    className={`w-full h-full transition-transform duration-700 ${isClickable ? 'group-hover/card:scale-105' : ''}`}
+                    className={`w-full h-full transition-transform duration-700 ${isClickable ? 'group-hover:scale-105' : ''}`}
                     style={{
                       objectFit: item.image_fit?.startsWith('contain') ? 'contain' : 'cover',
                       objectPosition: item.image_position || 'center',
                       padding: item.image_fit === 'contain-pad' ? '12px' : undefined,
                     }}
                     onError={(e) => {
-                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.onerror = null
+                      const fallback = resolveImageUrl('/images/default.jpg')
+                      if (e.currentTarget.src !== fallback) {
+                        e.currentTarget.src = fallback
+                      }
                     }}
                   />
-
-                  {/* Arrow */}
-                  {isClickable && (
-                    <div className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-all duration-300 translate-x-2 group-hover/card:translate-x-0 border border-white/20">
-                      <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
-                      </svg>
-                    </div>
-                  )}
                 </div>
 
-                {/* Bottom: Dedicated text content section */}
-                <div className="p-5 flex flex-col justify-between flex-grow bg-brand-dark">
-                  <div>
-                    <p className="label text-white/40 mb-1 text-[0.68rem] tracking-wider uppercase font-mono">{item.client}</p>
-                    <h3 className={`font-display font-bold text-white text-base md:text-lg leading-snug line-clamp-2 min-h-[2.7rem] md:min-h-[3.1rem] mb-2 transition-colors ${isClickable ? 'group-hover/card:text-brand-pink' : ''}`}>
-                      {item.title}
-                    </h3>
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="label text-white/70">{item.client}</p>
+                    {item.show_year && <p className="label text-white/60">{item.year}</p>}
                   </div>
-
-                  {item.result ? (
-                    <div className="flex items-start gap-2 pt-2.5 border-t border-white/10 mt-2">
+                  <h3 className="font-display font-600 text-white text-xl leading-tight mb-3">{item.title}</h3>
+                  <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">{item.insight}</p>
+                  {item.result && (
+                    <div className="mt-auto pt-3.5 border-t border-white/10 flex items-start gap-2">
                       <span className="text-emerald-400 font-bold text-xs shrink-0 mt-0.5">↑</span>
-                      <span className="text-slate-200 text-xs leading-relaxed font-sans font-medium line-clamp-1">{item.result}</span>
+                      <span className="text-slate-200 text-xs leading-relaxed font-sans font-medium line-clamp-2">
+                        {item.result}
+                      </span>
                     </div>
-                  ) : (
-                    <div className="pt-2.5 border-t border-transparent mt-2" />
                   )}
                 </div>
-              </motion.div>
+              </>
             )
 
-            return isClickable ? (
-              <Link
-                key={item.id}
-                to={item.slug ? `/work/${item.slug}` : '/work'}
-                className="group block flex-shrink-0 flex flex-col"
-                style={{ width: 'clamp(280px, 30vw, 420px)' }}
-              >
-                {innerCard}
-              </Link>
-            ) : (
-              <div
-                key={item.id}
-                className="block flex-shrink-0 flex flex-col"
-                style={{ width: 'clamp(280px, 30vw, 420px)' }}
-              >
-                {innerCard}
+            return (
+              <div key={item.id} className="flex-shrink-0 flex flex-col" style={{ width: 'clamp(300px, 32vw, 420px)' }}>
+                {isClickable ? (
+                  <Link
+                    to={item.slug ? `/work/${item.slug}` : '/work'}
+                    className="group flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 hover:border-white/25 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:-translate-y-1"
+                  >
+                    {cardContent}
+                  </Link>
+                ) : (
+                  <div className="flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 shadow-xl cursor-default">
+                    {cardContent}
+                  </div>
+                )}
               </div>
             )
           })}
@@ -172,7 +159,7 @@ export default function LatestWork() {
           {/* View all card */}
           <Link
             to="/work"
-            className="flex-shrink-0 rounded-2xl border-2 border-dashed border-brand-dark/20 flex flex-col items-center justify-center gap-4 hover:border-brand-pink hover:bg-brand-pink/5 transition-all duration-300 group p-6 h-full min-h-[310px]"
+            className="flex-shrink-0 rounded-2xl md:rounded-3xl border-2 border-dashed border-brand-dark/20 flex flex-col items-center justify-center gap-4 hover:border-brand-pink hover:bg-brand-pink/5 transition-all duration-300 group p-6 h-full min-h-[360px]"
             style={{ width: 'clamp(200px, 20vw, 280px)' }}
           >
             <div className="w-12 h-12 rounded-full border border-brand-dark/20 group-hover:border-brand-pink flex items-center justify-center transition-colors">
