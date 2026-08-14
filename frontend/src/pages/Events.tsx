@@ -567,27 +567,27 @@ export default function Events() {
                   </div>
 
                   {/* Bottom: Dedicated text content section */}
-                  <div className="p-6 flex flex-col justify-between flex-grow bg-[#121216]">
-                    <div>
-                      {client && (
-                        <p className="text-white/40 text-[0.68rem] font-mono font-bold uppercase tracking-wider mb-2">
-                          {client} {year ? `· ${year}` : ''}
-                        </p>
-                      )}
-                      <h3 className="font-display font-bold text-white text-lg sm:text-xl leading-snug line-clamp-2 min-h-[2.8rem] mb-3 group-hover/card:text-brand-pink transition-colors">
-                        {title}
-                      </h3>
+                  <div className="p-6 flex flex-col flex-grow bg-brand-dark">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="label text-white/70">{client}</p>
+                      {year && <p className="label text-white/60">{year}</p>}
                     </div>
+                    <h3 className="font-display font-600 text-white text-xl leading-tight mb-3 group-hover/card:text-brand-pink transition-colors">
+                      {title}
+                    </h3>
+                    {(item.insight || item.brief) && (
+                      <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">
+                        {item.insight || item.brief}
+                      </p>
+                    )}
 
-                    {(item.result || item.brief) ? (
-                      <div className="flex items-start gap-2 pt-3 border-t border-white/10 mt-auto">
+                    {item.result && (
+                      <div className="mt-auto pt-3.5 border-t border-white/10 flex items-start gap-2">
                         <span className="text-emerald-400 font-bold text-xs shrink-0 mt-0.5">↑</span>
-                        <span className="text-slate-200 text-xs sm:text-sm leading-relaxed font-sans font-medium line-clamp-1">
-                          {item.result || item.brief}
+                        <span className="text-slate-200 text-xs leading-relaxed font-sans font-medium line-clamp-2">
+                          {item.result}
                         </span>
                       </div>
-                    ) : (
-                      <div className="pt-3 border-t border-transparent mt-auto" />
                     )}
                   </div>
                 </div>
