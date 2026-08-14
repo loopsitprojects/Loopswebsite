@@ -387,8 +387,10 @@ class PortfolioItemResource extends Resource
                 Tables\Columns\ToggleColumn::make('show_gallery')
                     ->label('Gallery')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->sortable()->label('Order'),
+                Tables\Columns\TextInputColumn::make('sort_order')
+                    ->numeric()
+                    ->sortable()
+                    ->label('Order'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('categories')
