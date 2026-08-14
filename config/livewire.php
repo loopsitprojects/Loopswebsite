@@ -182,13 +182,7 @@ return [
     |
     */
 
-    'asset_url' => env('ASSET_URL') && str_ends_with(env('ASSET_URL'), '.js')
-        ? env('ASSET_URL')
-        : (env('ASSET_URL')
-            ? rtrim(env('ASSET_URL'), '/') . '/livewire/livewire.js'
-            : (env('APP_URL')
-                ? rtrim(env('APP_URL'), '/') . '/livewire/livewire.js'
-                : '/livewire/livewire.js')),
-    'update_uri' => env('LIVEWIRE_UPDATE_URI', null),
-    'release_token' => 'a',
+    'asset_url' => null,
+    'update_uri' => null,
+    'release_token' => null,
 ];
