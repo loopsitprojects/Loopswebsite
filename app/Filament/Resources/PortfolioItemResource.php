@@ -163,7 +163,6 @@ class PortfolioItemResource extends Resource
                                         ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
                                         ->collapsible()
                                         ->reorderableWithButtons()
-                                        ->cloneable()
                                         ->defaultItems(0)
                                         ->helperText('Add multiple campaign videos. Use the Up (↑) and Down (↓) buttons to change video order.'),
                                 ]),
