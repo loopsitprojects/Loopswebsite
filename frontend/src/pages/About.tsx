@@ -183,19 +183,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Statement / Philosophy ─────────────────────────────── */}
-      <section className="bg-white py-20 md:py-28 border-t border-black/5 px-4 sm:px-6 md:px-10 lg:px-12">
-        <motion.div {...revealProps} className="w-full max-w-[100rem] mx-auto text-center">
-          <p className="text-xl md:text-2xl font-bold text-black tracking-tight mb-8 font-sans">{statement.label}</p>
-          <p
-            className="font-display font-bold text-brand-dark leading-snug whitespace-pre-line w-full mx-auto"
-            style={{ fontSize: 'clamp(1.75rem, 3.2vw, 3.4rem)' }}
-          >
-            {formattedStatementText}
-          </p>
-        </motion.div>
-      </section>
-
       {/* ── Offices ──────────────────────────────────────────────────────── */}
       <GlobalOffices />
 
