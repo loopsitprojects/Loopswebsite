@@ -452,7 +452,9 @@ export default function Careers() {
           }}
         />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <p className="text-white/90 font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Don't See Your Role?</p>
+          <h2 className="heading-xl fluid-lg text-white mb-6">
+            Don't See Your Role?
+          </h2>
           <p className="text-white/80 fluid-sm leading-relaxed mb-10 max-w-xl mx-auto">
             Send us your CV and tell us what you're great at — we'll reach out when the right opportunity opens up.
           </p>
