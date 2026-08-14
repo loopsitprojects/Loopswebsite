@@ -588,7 +588,7 @@ export default function ServicePage() {
 
                 const cardInner = (
                   <>
-                    <div className="relative overflow-hidden aspect-[16/10] w-full bg-black/60 flex items-center justify-center">
+                    <div className="relative overflow-hidden aspect-[16/10] w-full bg-neutral-900 flex items-center justify-center">
                       {thumb ? (
                         <img
                           src={resolveImageUrl(thumb)}
@@ -608,24 +608,20 @@ export default function ServicePage() {
                         </div>
                       )}
                     </div>
-                    <div className="p-6 flex flex-col flex-grow justify-between">
-                      <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <p className="text-[0.68rem] font-mono font-bold tracking-widest text-white/60 uppercase">{item.client}</p>
-                          {item.show_year && <p className="text-[0.68rem] font-mono text-cyan-400/90 font-medium">{item.year}</p>}
-                        </div>
-                        <h4 className={`font-display font-semibold text-white text-lg md:text-xl leading-tight mb-2.5 transition-colors line-clamp-2 ${isClickable ? 'group-hover:text-brand-pink' : ''}`}>
-                          {item.title}
-                        </h4>
-                        <p className="text-white/50 text-sm leading-relaxed line-clamp-2 mb-4 font-normal">
-                          {item.insight || item.brief}
-                        </p>
+                    <div className="p-6 flex flex-col flex-grow">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="label text-white/70">{item.client}</p>
+                        {item.show_year && <p className="label text-white/60">{item.year}</p>}
                       </div>
+                      <h3 className={`font-display font-600 text-white text-xl leading-tight mb-3 transition-colors ${isClickable ? 'group-hover:text-brand-pink' : ''}`}>
+                        {item.title}
+                      </h3>
+                      <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">
+                        {item.insight || item.brief}
+                      </p>
                       {resultText && (
-                        <div className="mt-auto p-3.5 rounded-xl bg-black/50 border border-white/10 flex items-start gap-2.5 text-xs text-white/80 leading-relaxed font-sans font-medium">
-                          <span className="text-emerald-400 font-bold shrink-0 mt-0.5">
-                            {resultText.trim().startsWith('↑') || resultText.trim().startsWith('•') ? '' : '• '}
-                          </span>
+                        <div className="mt-auto pt-3.5 border-t border-white/10 flex items-start gap-2">
+                          <span className="text-emerald-400 font-bold text-xs shrink-0 mt-0.5">↑</span>
                           <span className="text-slate-200 text-xs leading-relaxed font-sans font-medium line-clamp-2">
                             {resultText}
                           </span>
@@ -639,14 +635,14 @@ export default function ServicePage() {
                   <Link
                     key={item.id}
                     to={`/work/${item.slug}`}
-                    className="group flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-[#121216] border border-white/10 hover:border-white/25 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:-translate-y-1"
+                    className="group flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 hover:border-white/25 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:-translate-y-1"
                   >
                     {cardInner}
                   </Link>
                 ) : (
                   <div
                     key={item.id}
-                    className="flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-[#121216] border border-white/10 shadow-xl cursor-default"
+                    className="flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 shadow-xl cursor-default"
                   >
                     {cardInner}
                   </div>
