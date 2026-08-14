@@ -409,8 +409,7 @@ class PortfolioItemResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('sort_order')
-            ->reorderable('sort_order');
+            ->defaultSort('sort_order');
     }
 
     public static function getRelations(): array
