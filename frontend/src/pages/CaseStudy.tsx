@@ -181,22 +181,22 @@ function CampaignVideoSection({
                               <motion.span
                                 className="w-0.5 bg-white rounded-full"
                                 animate={{ height: ['25%', '100%', '40%', '85%', '25%'] }}
-                                transition={{ repeat: Infinity, duration: 0.8, ease: 'easeInOut' }}
+                                transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
                               />
                               <motion.span
                                 className="w-0.5 bg-white rounded-full"
                                 animate={{ height: ['85%', '30%', '100%', '50%', '85%'] }}
-                                transition={{ repeat: Infinity, duration: 0.7, ease: 'easeInOut' }}
+                                transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
                               />
                               <motion.span
                                 className="w-0.5 bg-white rounded-full"
                                 animate={{ height: ['40%', '90%', '20%', '100%', '40%'] }}
-                                transition={{ repeat: Infinity, duration: 0.9, ease: 'easeInOut' }}
+                                transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
                               />
                               <motion.span
                                 className="w-0.5 bg-white rounded-full"
                                 animate={{ height: ['95%', '35%', '75%', '25%', '95%'] }}
-                                transition={{ repeat: Infinity, duration: 0.75, ease: 'easeInOut' }}
+                                transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
                               />
                             </div>
                           ) : (
