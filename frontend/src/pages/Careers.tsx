@@ -218,83 +218,121 @@ export default function Careers() {
 
     const isMainHeader = (str: string) => {
       const clean = str.replace(/^\*\*|\*\*$/g, '').replace(/^#+\s*/, '').replace(/:$/, '').trim()
-      return /^(key responsibilities|responsibilities|requirements|about the role|role summary|overview|benefits|about us)$/i.test(clean)
-    }
-
-    const lines = text.split('\n')
-    const blocks: React.ReactNode[] = []
-    let currentList: string[] = []
-
-    const flushList = (keyPrefix: string) => {
-      if (currentList.length > 0) {
-        blocks.push(
-          <ul key={`ul-${keyPrefix}`} className="list-disc pl-5 text-white/70 space-y-1.5 mb-4">
-            {currentList.map((item, i) => (
-              <li key={i} className="text-sm leading-relaxed">
-                {parseInline(item)}
-              </li>
-            ))}
-          </ul>
-        )
-        currentList = []
+      if (/^(key responsibilities|responsibilities|key requirements|requirements|qualifications & experience|qualifications|about the role|role summary|overview|benefits|about us|why join us\??)$/i.test(clean)) {
+        return true
       }
+      if ((clean.endsWith(':') || clean.endsWith('?')) && clean.length < 60) {
+        return true
+      }
+      return false
     }
 
-    lines.forEach((line, idx) => {
-      const trimmed = line.trim()
+    const formatTitle = (str: string) => str.replace(/^\*\*|\*\*$/g, '').replace(/^#+\s*/, '').trim()
 
-      if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
-        const content = trimmed.substring(1).trim()
-        currentList.push(content)
-      } else {
-        flushList(`${idx}`)
-        const nextNonEmptyLine = lines.slice(idx + 1).find(l => l.trim() !== '')?.trim() || ''
-        const isFollowedByList = nextNonEmptyLine.startsWith('-') || nextNonEmptyLine.startsWith('*')
-        const isShortTitle = trimmed.length < 100 && !trimmed.endsWith('.')
+    const rawParagraphs = text.split(/\n\s*\n/)
+    const blocks: React.ReactNode[] = []
 
-        if (trimmed.startsWith('###')) {
+    rawParagraphs.forEach((paragraph, pIdx) => {
+      const trimmedPara = paragraph.trim()
+      if (!trimmedPara) return
+
+      const lines = trimmedPara.split('\n')
+      const hasListItems = lines.some(l => l.trim().startsWith('-') || l.trim().startsWith('*'))
+
+      if (hasListItems) {
+        let currentList: string[] = []
+        lines.forEach((line, idx) => {
+          const trimmed = line.trim()
+          if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+            currentList.push(trimmed.substring(1).trim())
+          } else {
+            if (currentList.length > 0) {
+              blocks.push(
+                <ul key={`ul-${pIdx}-${idx}`} className="list-disc pl-5 text-white/70 space-y-1.5 mb-4">
+                  {currentList.map((item, i) => (
+                    <li key={i} className="text-sm leading-relaxed">
+                      {parseInline(item)}
+                    </li>
+                  ))}
+                </ul>
+              )
+              currentList = []
+            }
+            if (trimmed) {
+              if (isMainHeader(trimmed)) {
+                blocks.push(
+                  <h4 key={`h4-${pIdx}-${idx}`} className="font-display font-bold text-white mt-7 mb-3 text-lg sm:text-xl tracking-tight">
+                    {formatTitle(trimmed)}
+                  </h4>
+                )
+              } else if (trimmed.endsWith(':') || (trimmed.startsWith('**') && trimmed.endsWith('**')) || trimmed.length < 60) {
+                blocks.push(
+                  <h5 key={`h5-${pIdx}-${idx}`} className="font-display font-semibold text-white/90 mt-5 mb-2 text-base sm:text-lg tracking-tight">
+                    {formatTitle(trimmed)}
+                  </h5>
+                )
+              } else {
+                blocks.push(
+                  <p key={`p-${pIdx}-${idx}`} className="text-white/70 text-sm leading-relaxed mb-3">
+                    {parseInline(trimmed)}
+                  </p>
+                )
+              }
+            }
+          }
+        })
+        if (currentList.length > 0) {
           blocks.push(
-            <h4 key={idx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
-              {parseInline(trimmed.replace(/^###\s*/, '').trim())}
+            <ul key={`ul-${pIdx}-end`} className="list-disc pl-5 text-white/70 space-y-1.5 mb-4">
+              {currentList.map((item, i) => (
+                <li key={i} className="text-sm leading-relaxed">
+                  {parseInline(item)}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      } else {
+        if (trimmedPara.startsWith('###')) {
+          blocks.push(
+            <h4 key={pIdx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
+              {parseInline(trimmedPara.replace(/^###\s*/, '').trim())}
             </h4>
           )
-        } else if (trimmed.startsWith('##')) {
+        } else if (trimmedPara.startsWith('##')) {
           blocks.push(
-            <h3 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-lg sm:text-xl tracking-tight">
-              {parseInline(trimmed.replace(/^##\s*/, '').trim())}
+            <h3 key={pIdx} className="font-display font-bold text-white mt-6 mb-3 text-lg sm:text-xl tracking-tight">
+              {parseInline(trimmedPara.replace(/^##\s*/, '').trim())}
             </h3>
           )
-        } else if (trimmed.startsWith('#')) {
+        } else if (trimmedPara.startsWith('#')) {
           blocks.push(
-            <h2 key={idx} className="font-display font-bold text-white mt-6 mb-3 text-xl sm:text-2xl tracking-tight">
-              {parseInline(trimmed.replace(/^#\s*/, '').trim())}
+            <h2 key={pIdx} className="font-display font-bold text-white mt-6 mb-3 text-xl sm:text-2xl tracking-tight">
+              {parseInline(trimmedPara.replace(/^#\s*/, '').trim())}
             </h2>
           )
-        } else if (isMainHeader(trimmed)) {
-          const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
+        } else if (isMainHeader(trimmedPara)) {
           blocks.push(
-            <h4 key={idx} className="font-display font-bold text-white mt-7 mb-3 text-lg sm:text-xl tracking-tight">
-              {cleanTitle}
+            <h4 key={pIdx} className="font-display font-bold text-white mt-7 mb-3 text-lg sm:text-xl tracking-tight">
+              {formatTitle(trimmedPara)}
             </h4>
           )
-        } else if ((trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**')) || (isFollowedByList && isShortTitle)) {
-          const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
+        } else if ((trimmedPara.endsWith(':') || trimmedPara.endsWith('?')) && trimmedPara.length < 80) {
           blocks.push(
-            <h5 key={idx} className="font-display font-semibold text-white/90 mt-4 mb-1.5 text-xs sm:text-sm tracking-wide">
-              {cleanTitle}
-            </h5>
+            <h4 key={pIdx} className="font-display font-bold text-white mt-7 mb-3 text-lg sm:text-xl tracking-tight">
+              {formatTitle(trimmedPara)}
+            </h4>
           )
-        } else if (trimmed !== '') {
+        } else {
+          const singleParagraphText = lines.map(l => l.trim()).join(' ')
           blocks.push(
-            <p key={idx} className="text-white/70 text-sm leading-relaxed mb-3">
-              {parseInline(trimmed)}
+            <p key={pIdx} className="text-white/70 text-sm leading-relaxed mb-3">
+              {parseInline(singleParagraphText)}
             </p>
           )
         }
       }
     })
-
-    flushList('final')
 
     return blocks
   }
