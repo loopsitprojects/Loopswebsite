@@ -162,9 +162,10 @@ class PortfolioItemResource extends Resource
                                         ])
                                         ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
                                         ->collapsible()
-                                        ->reorderable()
+                                        ->reorderableWithButtons()
+                                        ->cloneable()
                                         ->defaultItems(0)
-                                        ->helperText('Add multiple campaign videos to display an interactive video showcase on the case study page.'),
+                                        ->helperText('Add multiple campaign videos. Use the Up (↑) and Down (↓) buttons to change video order.'),
                                 ]),
                                 Components\Group::make([
                                     Forms\Components\Placeholder::make('work_card_applied_preview')

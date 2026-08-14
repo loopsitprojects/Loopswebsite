@@ -117,15 +117,7 @@ class PortfolioItemResource extends JsonResource
 
         $showHeroAsCampaign = $this->show_hero_as_campaign_video ?? true;
 
-        if ($showHeroAsCampaign && !empty($this->video_url)) {
-            $videos[] = [
-                'title' => 'Main Campaign Video',
-                'url'   => $this->video_url,
-            ];
-            $urlsSeen[] = trim($this->video_url);
-        }
-
-        if (is_array($this->video_urls)) {
+        if (is_array($this->video_urls) && count($this->video_urls) > 0) {
             foreach ($this->video_urls as $v) {
                 $url = is_array($v) ? ($v['url'] ?? '') : (is_string($v) ? $v : '');
                 $title = is_array($v) ? ($v['title'] ?? '') : '';
@@ -137,6 +129,21 @@ class PortfolioItemResource extends JsonResource
                     ];
                     $urlsSeen[] = trim($url);
                 }
+            }
+
+            if ($showHeroAsCampaign && !empty($this->video_url) && !in_array(trim($this->video_url), $urlsSeen)) {
+                $videos[] = [
+                    'title' => 'Main Campaign Video',
+                    'url'   => trim($this->video_url),
+                ];
+                $urlsSeen[] = trim($this->video_url);
+            }
+        } else {
+            if ($showHeroAsCampaign && !empty($this->video_url)) {
+                $videos[] = [
+                    'title' => 'Main Campaign Video',
+                    'url'   => trim($this->video_url),
+                ];
             }
         }
 
