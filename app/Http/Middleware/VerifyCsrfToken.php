@@ -13,6 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'livewire/*',
+        'livewire/update',
+        '*/livewire/*',
+        '*/livewire/update',
         'admin/livewire/*',
         'admin/login',
         'admin/*',
