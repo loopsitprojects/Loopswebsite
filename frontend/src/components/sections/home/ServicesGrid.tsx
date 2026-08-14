@@ -152,7 +152,7 @@ export default function ServicesGrid() {
             </h2>
           </div>
           <p className="text-brand-dark/50 max-w-sm fluid-sm leading-relaxed">
-            Six disciplines. One team. Zero gaps in your marketing ecosystem.
+            Seven disciplines. One team. Zero gaps in your marketing ecosystem.
           </p>
         </div>
 
