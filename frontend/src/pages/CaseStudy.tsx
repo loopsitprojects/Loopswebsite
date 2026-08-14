@@ -165,19 +165,45 @@ function CampaignVideoSection({
                         </div>
                       )}
 
-                      {/* Play Icon Overlay */}
+                      {/* Play Icon / Wave Bars Overlay */}
                       <div className={`absolute inset-0 flex items-center justify-center transition-colors ${
-                        isActive ? 'bg-black/20' : 'bg-black/40 group-hover:bg-black/15'
+                        isActive ? 'bg-black/30' : 'bg-black/45 group-hover:bg-black/20'
                       }`}>
                         <div
-                          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-transform duration-300 ${
-                            isActive ? 'scale-110 shadow-md' : 'group-hover:scale-110'
+                          className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-transform duration-300 ${
+                            isActive ? 'scale-110 shadow-lg' : 'group-hover:scale-110'
                           }`}
-                          style={{ background: isActive ? (color || '#E8005A') : 'rgba(0,0,0,0.6)' }}
+                          style={{ background: isActive ? (color || '#E8005A') : 'rgba(0,0,0,0.65)' }}
                         >
-                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                          </svg>
+                          {isActive ? (
+                            /* Equalizer Wave Bars Animation */
+                            <div className="flex items-end justify-center gap-0.5 h-4 w-4">
+                              <motion.span
+                                className="w-0.5 bg-white rounded-full"
+                                animate={{ height: ['25%', '100%', '40%', '85%', '25%'] }}
+                                transition={{ repeat: Infinity, duration: 0.8, ease: 'easeInOut' }}
+                              />
+                              <motion.span
+                                className="w-0.5 bg-white rounded-full"
+                                animate={{ height: ['85%', '30%', '100%', '50%', '85%'] }}
+                                transition={{ repeat: Infinity, duration: 0.7, ease: 'easeInOut' }}
+                              />
+                              <motion.span
+                                className="w-0.5 bg-white rounded-full"
+                                animate={{ height: ['40%', '90%', '20%', '100%', '40%'] }}
+                                transition={{ repeat: Infinity, duration: 0.9, ease: 'easeInOut' }}
+                              />
+                              <motion.span
+                                className="w-0.5 bg-white rounded-full"
+                                animate={{ height: ['95%', '35%', '75%', '25%', '95%'] }}
+                                transition={{ repeat: Infinity, duration: 0.75, ease: 'easeInOut' }}
+                              />
+                            </div>
+                          ) : (
+                            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                          )}
                         </div>
                       </div>
                     </button>
