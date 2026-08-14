@@ -216,9 +216,9 @@ export default function Careers() {
       })
     }
 
-    const isTopicHeader = (str: string) => {
+    const isMainHeader = (str: string) => {
       const clean = str.replace(/^\*\*|\*\*$/g, '').replace(/^#+\s*/, '').replace(/:$/, '').trim()
-      return /^(responsibilities|requirements|qualifications|about the role|key responsibilities|qualifications & experience|creative strategy & art direction|video production & execution|generative ai integration|what you'll do|what you will do|who you are|skills & requirements|preferred qualifications|essential duties|benefits|about us|role summary|overview)$/i.test(clean)
+      return /^(key responsibilities|responsibilities|requirements|about the role|role summary|overview|benefits|about us)$/i.test(clean)
     }
 
     const lines = text.split('\n')
@@ -270,12 +270,19 @@ export default function Careers() {
               {parseInline(trimmed.replace(/^#\s*/, '').trim())}
             </h2>
           )
-        } else if (isTopicHeader(trimmed) || (trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**')) || (isFollowedByList && isShortTitle)) {
+        } else if (isMainHeader(trimmed)) {
           const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
           blocks.push(
-            <h4 key={idx} className="font-display font-bold text-white mt-5 mb-2 text-base sm:text-lg tracking-tight">
+            <h4 key={idx} className="font-display font-bold text-white mt-7 mb-3 text-lg sm:text-xl tracking-tight">
               {cleanTitle}
             </h4>
+          )
+        } else if ((trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**')) || (isFollowedByList && isShortTitle)) {
+          const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
+          blocks.push(
+            <h5 key={idx} className="font-display font-semibold text-white/90 mt-4 mb-1.5 text-xs sm:text-sm tracking-wide">
+              {cleanTitle}
+            </h5>
           )
         } else if (trimmed !== '') {
           blocks.push(
