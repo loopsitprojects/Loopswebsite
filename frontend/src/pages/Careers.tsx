@@ -387,17 +387,8 @@ export default function Careers() {
                           transition={{ duration: 0.3, ease: 'easeInOut' }}
                         >
                           <div className="px-6 pb-8 md:px-8 md:pb-8 pt-4 border-t border-white/5 bg-white/[0.01]">
-                            <div className="max-w-3xl mb-8">
+                            <div className="max-w-3xl">
                               {renderMarkdown(job.description)}
-                            </div>
-
-                            <div className="pt-6 border-t border-white/5 flex justify-end w-full">
-                              <button
-                                onClick={(e) => handleApplyClick(job, e)}
-                                className="btn-primary bg-white text-brand-dark font-semibold hover:bg-white/90"
-                              >
-                                Submit Resume for this Role
-                              </button>
                             </div>
                           </div>
                         </motion.div>
