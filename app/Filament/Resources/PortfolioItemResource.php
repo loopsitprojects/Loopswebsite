@@ -387,11 +387,8 @@ class PortfolioItemResource extends Resource
                 Tables\Columns\ToggleColumn::make('show_gallery')
                     ->label('Gallery')
                     ->sortable(),
-                Tables\Columns\TextInputColumn::make('sort_order')
-                    ->numeric()
-                    ->rules(['integer', 'min:0'])
-                    ->sortable()
-                    ->label('Order'),
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->sortable()->label('Order'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('categories')
@@ -409,7 +406,8 @@ class PortfolioItemResource extends Resource
                     Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('sort_order');
+            ->defaultSort('sort_order')
+            ->reorderable('sort_order');
     }
 
     public static function getRelations(): array
