@@ -27,11 +27,30 @@ function CampaignVideoSection({
     ? currentVideo.url.replace('http://', 'https://')
     : currentVideo.url
 
+  const getYouTubeId = (url: string) => {
+    if (!url) return ''
+    if (url.includes('youtu.be')) {
+      return url.split('/').pop()?.split('?')[0] || ''
+    }
+    try {
+      const parsed = new URL(url)
+      return parsed.searchParams.get('v') || url.split('/').pop()?.split('?')[0] || ''
+    } catch {
+      return ''
+    }
+  }
+
+  const getVideoThumbnail = (url: string) => {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const ytId = getYouTubeId(url)
+      if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+    }
+    return posterImage || ''
+  }
+
   const renderPlayer = (url: string, title: string) => {
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
-      const videoId = url.includes('youtu.be')
-        ? url.split('/').pop()?.split('?')[0]
-        : new URLSearchParams(new URL(url).search).get('v')
+      const videoId = getYouTubeId(url)
       return (
         <iframe
           className="w-full h-full aspect-[16/9] rounded-2xl"
@@ -70,9 +89,11 @@ function CampaignVideoSection({
     )
   }
 
+  const hasMultiple = videos.length > 1
+
   return (
     <section className="bg-brand-dark section-padding py-16 border-t border-b border-white/10">
-      <div className="max-w-6xl mx-auto space-y-12">
+      <div className="max-w-7xl mx-auto space-y-10">
         {insight && (
           <div className="pb-2 text-left w-full cs-reveal">
             <div className="flex items-center gap-2.5 mb-3">
@@ -90,49 +111,121 @@ function CampaignVideoSection({
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: color || '#E8005A' }} />
               <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">
-                {videos.length > 1 ? 'CAMPAIGN VIDEOS' : 'CAMPAIGN VIDEO'}
+                {hasMultiple ? 'CAMPAIGN VIDEOS' : 'CAMPAIGN VIDEO'}
               </p>
             </div>
 
-            {videos.length > 1 && (
+            {hasMultiple && (
               <span className="text-white/40 text-xs font-mono">
                 Video <strong className="text-white">{activeIdx + 1}</strong> of {videos.length}
               </span>
             )}
           </div>
 
-          {/* Main Video Display Box */}
-          <div className="cs-reveal relative rounded-3xl overflow-hidden bg-black/90 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] aspect-[16/9] w-full mb-6">
-            {renderPlayer(currentUrl, currentVideo.title)}
-          </div>
-
-          {/* Interactive Dot Navigation */}
-          {videos.length > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-6">
-              {videos.map((vid, idx) => {
-                const isActive = idx === activeIdx
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveIdx(idx)}
-                    aria-label={`Go to Video ${idx + 1}`}
-                    className="group relative focus:outline-none p-1.5 cursor-pointer"
+          {/* Main Layout Grid */}
+          <div className={hasMultiple ? "grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start" : "w-full"}>
+            {/* Main Video Preview Player */}
+            <div className={hasMultiple ? "lg:col-span-8 w-full" : "w-full max-w-5xl mx-auto"}>
+              <div className="cs-reveal relative rounded-3xl overflow-hidden bg-black/90 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] aspect-[16/9] w-full">
+                {renderPlayer(currentUrl, currentVideo.title)}
+              </div>
+              {hasMultiple && (
+                <div className="mt-3 px-2 flex items-center justify-between">
+                  <p className="text-white font-medium text-sm md:text-base line-clamp-1">
+                    {currentVideo.title}
+                  </p>
+                  <span
+                    className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shrink-0"
+                    style={{ background: `${color || '#E8005A'}25`, color: color || '#E8005A', border: `1px solid ${color || '#E8005A'}40` }}
                   >
-                    <span
-                      className={`block rounded-full transition-all duration-500 ease-out ${
-                        isActive
-                          ? 'w-8 h-2.5 shadow-md'
-                          : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/60 group-hover:scale-125'
-                      }`}
-                      style={{
-                        backgroundColor: isActive ? (color || '#E8005A') : undefined,
-                      }}
-                    />
-                  </button>
-                )
-              })}
+                    Now Playing
+                  </span>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Right Side Video Gallery / Playlist */}
+            {hasMultiple && (
+              <div className="lg:col-span-4 w-full cs-reveal">
+                <p className="label text-white/50 font-bold text-xs tracking-[0.15em] uppercase mb-3 px-1">
+                  Video Playlist ({videos.length})
+                </p>
+                <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1 custom-scrollbar">
+                  {videos.map((vid, idx) => {
+                    const isActive = idx === activeIdx
+                    const thumbUrl = getVideoThumbnail(vid.url)
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveIdx(idx)}
+                        className={`group relative flex items-center gap-3.5 p-3 rounded-2xl border transition-all duration-300 text-left w-full cursor-pointer ${
+                          isActive
+                            ? 'bg-white/10 border-white/30 shadow-lg scale-[1.01]'
+                            : 'bg-white/4 border-white/8 hover:bg-white/8 hover:border-white/20'
+                        }`}
+                        style={{
+                          borderColor: isActive ? (color || '#E8005A') : undefined,
+                        }}
+                      >
+                        {/* Thumbnail Container */}
+                        <div className="w-28 sm:w-32 aspect-[16/9] shrink-0 rounded-xl overflow-hidden relative bg-black/60 border border-white/10">
+                          {thumbUrl ? (
+                            <img
+                              src={thumbUrl}
+                              alt={vid.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                              <svg className="w-6 h-6 text-white/30" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          )}
+
+                          {/* Play Icon Overlay */}
+                          <div className={`absolute inset-0 flex items-center justify-center transition-colors ${
+                            isActive ? 'bg-black/30' : 'bg-black/45 group-hover:bg-black/25'
+                          }`}>
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300 ${
+                                isActive ? 'scale-110 shadow-md' : 'group-hover:scale-110'
+                              }`}
+                              style={{ background: isActive ? (color || '#E8005A') : 'rgba(0,0,0,0.6)' }}
+                            >
+                              <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Video Info */}
+                        <div className="flex-1 min-w-0 pr-1">
+                          <p className={`text-xs sm:text-sm font-semibold line-clamp-2 leading-snug transition-colors ${
+                            isActive ? 'text-white' : 'text-white/80 group-hover:text-white'
+                          }`}>
+                            {vid.title || `Video ${idx + 1}`}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-1.5">
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${isActive ? 'animate-pulse' : 'opacity-40'}`}
+                              style={{ background: isActive ? (color || '#E8005A') : '#ffffff' }}
+                            />
+                            <span className={`text-[10px] font-mono tracking-wider ${
+                              isActive ? 'text-white/90 font-bold' : 'text-white/40'
+                            }`}>
+                              {isActive ? 'PLAYING' : `VIDEO ${idx + 1}`}
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
