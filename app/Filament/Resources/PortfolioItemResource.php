@@ -33,8 +33,8 @@ class PortfolioItemResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('e.g. Yamaha')
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, ?PortfolioItem $record) {
-                                        if (!$record) {
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, string $operation) {
+                                        if ($operation === 'create') {
                                             $set('slug', Str::slug(trim(($state ?? '') . ' ' . ($get('title') ?? ''))));
                                         }
                                     }),
@@ -43,8 +43,8 @@ class PortfolioItemResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('Campaign or project title')
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, ?PortfolioItem $record) {
-                                        if (!$record) {
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, string $operation) {
+                                        if ($operation === 'create') {
                                             $set('slug', Str::slug(trim(($get('client') ?? '') . ' ' . ($state ?? ''))));
                                         }
                                     }),

@@ -12,9 +12,15 @@ class CreatePortfolioItem extends CreateRecord
 
     protected function afterCreate(): void
     {
-        $this->record->addMediaFromUrls(
-            $this->data['image_url'] ?? $this->data['hero_image_url'] ?? null,
-            $this->data['gallery_image_urls'] ?? null
-        );
+        $heroUrl = is_string($this->data['image_url'] ?? $this->data['hero_image_url'] ?? null) 
+            ? ($this->data['image_url'] ?? $this->data['hero_image_url']) 
+            : null;
+        $galleryUrls = is_string($this->data['gallery_image_urls'] ?? null) 
+            ? $this->data['gallery_image_urls'] 
+            : null;
+
+        if ($heroUrl || $galleryUrls) {
+            $this->record->addMediaFromUrls($heroUrl, $galleryUrls);
+        }
     }
 }
