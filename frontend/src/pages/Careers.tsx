@@ -300,13 +300,9 @@ export default function Careers() {
       </section>
 
       {/* 2. Open Positions section */}
-      <section id="open-positions" className="relative overflow-hidden section-padding py-16 md:py-24 border-b border-white/5 scroll-mt-24">
+      <section id="open-positions" className="relative overflow-hidden section-padding py-12 md:py-16 border-b border-white/5 scroll-mt-24">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="mb-10">
-            <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight whitespace-nowrap">
-              Join Us
-            </h2>
-          </div>
+
 
           {loading ? (
             <div className="text-center py-20">
