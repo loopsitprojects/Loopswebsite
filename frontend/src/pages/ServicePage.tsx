@@ -574,51 +574,53 @@ export default function ServicePage() {
       {/* Related work — BLACK */}
       {relatedWork.length > 0 && (
         <section className="bg-brand-dark section-padding py-24 border-t border-white/5">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Case Studies</p>
             <h2 className="heading-xl fluid-lg text-white mb-12 font-display font-bold">
               Featured <span className="bg-gradient-to-r from-brand-pink via-purple-400 to-cyan-400 bg-clip-text text-transparent">Works.</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedWork.map(item => {
-                const rawThumb = item.hero_url || item.thumbnail_url || item.thumbnail || item.image_url || ''
-                const thumb = rawThumb.replace(/^https?:\/\/(127\.0\.0\.1:8000|localhost(:\d+)?)/i, '')
-                const resultText = item.result
+                const rawThumb = item.thumbnail_url || item.hero_url || item.thumbnail || item.image_url || '/images/default.jpg'
+                const thumbUrl = resolveImageUrl(rawThumb)
                 const isClickable = item.is_clickable !== false
+                const resultText = item.result
 
-                const cardInner = (
+                const cardContent = (
                   <>
-                    <div className="relative overflow-hidden aspect-[16/10] w-full bg-neutral-900 flex items-center justify-center">
-                      {thumb ? (
-                        <img
-                          src={resolveImageUrl(thumb)}
-                          alt={item.title}
-                          className={`w-full h-full object-cover transition-transform duration-700 ${isClickable ? 'group-hover:scale-105' : ''}`}
-                          onError={(e) => {
-                            e.currentTarget.onerror = null
-                            e.currentTarget.style.opacity = '0.3'
-                          }}
-                        />
-                      ) : (
-                        <div
-                          className="w-full h-full flex items-center justify-center p-4 text-center text-white/40 font-mono text-xs uppercase"
-                          style={{ backgroundColor: item.color || '#1A1A24' }}
-                        >
-                          {item.client}
-                        </div>
-                      )}
+                    {/* Full-bleed Header Image */}
+                    <div className="relative overflow-hidden w-full aspect-[16/10] bg-neutral-900 flex items-center justify-center">
+                      <img
+                        src={thumbUrl}
+                        alt={item.title}
+                        loading="eager"
+                        // @ts-ignore
+                        fetchpriority="high"
+                        decoding="async"
+                        className={`w-full h-full object-cover transition-transform duration-700 ${isClickable ? 'group-hover:scale-105' : ''}`}
+                        style={{
+                          objectFit: item.image_fit?.startsWith('contain') ? 'contain' : 'cover',
+                          objectPosition: item.image_position || 'center',
+                          padding: item.image_fit === 'contain-pad' ? '12px' : undefined,
+                        }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null
+                          const fallback = resolveImageUrl('/images/default.jpg')
+                          if (e.currentTarget.src !== fallback) {
+                            e.currentTarget.src = fallback
+                          }
+                        }}
+                      />
                     </div>
+
+                    {/* Content */}
                     <div className="p-6 flex flex-col flex-grow">
                       <div className="flex items-center justify-between mb-3">
                         <p className="label text-white/70">{item.client}</p>
                         {item.show_year && <p className="label text-white/60">{item.year}</p>}
                       </div>
-                      <h3 className={`font-display font-600 text-white text-xl leading-tight mb-3 transition-colors ${isClickable ? 'group-hover:text-brand-pink' : ''}`}>
-                        {item.title}
-                      </h3>
-                      <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">
-                        {item.insight || item.brief}
-                      </p>
+                      <h3 className="font-display font-600 text-white text-xl leading-tight mb-3">{item.title}</h3>
+                      <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-3">{item.insight || item.brief}</p>
                       {resultText && (
                         <div className="mt-auto pt-3.5 border-t border-white/10 flex items-start gap-2">
                           <span className="text-emerald-400 font-bold text-xs shrink-0 mt-0.5">↑</span>
@@ -631,20 +633,17 @@ export default function ServicePage() {
                   </>
                 )
 
-                return isClickable ? (
-                  <Link
-                    key={item.id}
-                    to={`/work/${item.slug}`}
-                    className="group flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 hover:border-white/25 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:-translate-y-1"
-                  >
-                    {cardInner}
-                  </Link>
-                ) : (
-                  <div
-                    key={item.id}
-                    className="flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 shadow-xl cursor-default"
-                  >
-                    {cardInner}
+                return (
+                  <div key={item.id} className="h-full">
+                    {isClickable ? (
+                      <Link to={`/work/${item.slug}`} className="group flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 hover:border-white/25 transition-all duration-500 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:-translate-y-1">
+                        {cardContent}
+                      </Link>
+                    ) : (
+                      <div className="flex flex-col h-full rounded-2xl md:rounded-3xl overflow-hidden bg-brand-dark border border-white/10 shadow-xl cursor-default">
+                        {cardContent}
+                      </div>
+                    )}
                   </div>
                 )
               })}
