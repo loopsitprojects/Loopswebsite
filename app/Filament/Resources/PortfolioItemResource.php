@@ -31,21 +31,29 @@ class PortfolioItemResource extends Resource
                                 Forms\Components\TextInput::make('client')
                                     ->nullable()
                                     ->maxLength(255)
-                                    ->placeholder('e.g. Yamaha'),
+                                    ->placeholder('e.g. Yamaha')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, ?PortfolioItem $record) {
+                                        if (!$record) {
+                                            $set('slug', Str::slug(trim(($state ?? '') . ' ' . ($get('title') ?? ''))));
+                                        }
+                                    }),
                                 Forms\Components\TextInput::make('title')
                                     ->nullable()
                                     ->maxLength(255)
                                     ->placeholder('Campaign or project title')
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn ($state, Forms\Set $set) =>
-                                        $set('slug', Str::slug($state))
-                                    ),
+                                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state, ?PortfolioItem $record) {
+                                        if (!$record) {
+                                            $set('slug', Str::slug(trim(($get('client') ?? '') . ' ' . ($state ?? ''))));
+                                        }
+                                    }),
                             ]),
                             Forms\Components\TextInput::make('slug')
                                 ->nullable()
                                 ->unique(ignoreRecord: true)
                                 ->maxLength(255)
-                                ->helperText('Auto-generated from title. Change with care.'),
+                                ->helperText('Auto-generated from client & title on creation. Change with care.'),
                             Forms\Components\Textarea::make('brief')
                                 ->label('Brief / Challenge')
                                 ->rows(3)

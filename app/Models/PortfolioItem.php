@@ -39,7 +39,9 @@ class PortfolioItem extends Model implements HasMedia
     {
         return SlugOptions::create()
             ->generateSlugsFrom(['client', 'title'])
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate()
+            ->preventOverwrite();
     }
 
     public function registerMediaCollections(): void
