@@ -59,13 +59,6 @@ export default function Footer() {
     twitter_url: '',
   })
 
-  const [officesList, setOfficesList] = useState([
-    { city: 'Colombo', country: 'Sri Lanka',  role: 'HQ',          color: '#E8005A' },
-    { city: 'Doha',    country: 'Qatar',      role: 'Middle East',  color: '#7B2FBE' },
-    { city: 'Dubai',   country: 'UAE',        role: 'GCC Hub',      color: '#1B3FB5' },
-    { city: 'Sydney',  country: 'Australia',  role: 'APAC',         color: '#00B4B4' },
-  ])
-
   useEffect(() => {
     api.settings()
       .then(res => {
@@ -86,23 +79,6 @@ export default function Footer() {
       .catch(err => {
         console.error('Failed to load global settings in Footer:', err)
       })
-
-    api.offices.list()
-      .then(res => {
-        if (res && Array.isArray(res.data) && res.data.length > 0) {
-          const footerOffices = res.data.filter((o: any) => o.show_in_footer !== false)
-          if (footerOffices.length > 0) {
-            const colors = ['#E8005A', '#7B2FBE', '#1B3FB5', '#00B4B4']
-            setOfficesList(footerOffices.map((o: any, idx: number) => ({
-              city: o.city,
-              country: o.country,
-              role: o.role || (o.is_headquarters ? 'HQ' : 'Regional Hub'),
-              color: colors[idx % colors.length]
-            })))
-          }
-        }
-      })
-      .catch(() => {})
   }, [])
 
   const socialList = [
@@ -252,21 +228,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Global offices */}
-        <div className="mt-16 pt-8 border-t border-white/5">
-          <p className="label text-white/30 mb-5 tracking-[0.2em]">Global Presence</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {officesList.map(o => (
-              <div key={o.city} className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: o.color }} />
-                <div>
-                  <p className="text-white/80 font-medium text-sm">{o.city}</p>
-                  <p className="label text-white/35 mt-0.5" style={{ fontSize: '0.6rem' }}>{o.country} · {o.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* Bottom bar */}
