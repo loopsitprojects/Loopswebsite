@@ -427,27 +427,14 @@ export default function CaseStudy() {
         if (all.length > 0 && currentItem) {
           // Filter out non-clickable items from Next Project selection
           const clickableAll = all.filter(p => p.is_clickable !== false)
-          const catSlugs = currentItem.categories.map(c => c.slug.toLowerCase())
-          const catNames = currentItem.categories.map(c => c.name.toLowerCase())
+          const currentIndex = clickableAll.findIndex(p => p.slug === currentItem.slug)
 
-          const sameCategoryItems = clickableAll.filter(p =>
-            p.slug !== currentItem.slug &&
-            p.categories.some(c =>
-              catSlugs.includes(c.slug.toLowerCase()) || catNames.includes(c.name.toLowerCase())
-            )
-          )
-
-          if (sameCategoryItems.length > 0) {
-            const randomIndex = Math.floor(Math.random() * sameCategoryItems.length)
-            setNext(sameCategoryItems[randomIndex])
+          if (clickableAll.length > 1) {
+            // Cycle through all projects sequentially across all categories
+            const nextIndex = currentIndex !== -1 ? (currentIndex + 1) % clickableAll.length : 0
+            setNext(clickableAll[nextIndex])
           } else {
-            const fallbackList = clickableAll.filter(p => p.slug !== currentItem.slug)
-            if (fallbackList.length > 0) {
-              const randomIndex = Math.floor(Math.random() * fallbackList.length)
-              setNext(fallbackList[randomIndex])
-            } else {
-              setNext(null)
-            }
+            setNext(null)
           }
         }
       })
