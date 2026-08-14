@@ -116,11 +116,6 @@ function CampaignVideoSection({
               <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">
                 {hasMultiple ? 'CAMPAIGN VIDEOS' : 'CAMPAIGN VIDEO'}
               </p>
-              {isPortrait && (
-                <span className="ml-2 px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-mono text-emerald-400 font-semibold tracking-wider uppercase">
-                  PORTRAIT PLAYER
-                </span>
-              )}
             </div>
 
             {hasMultiple && (
@@ -135,12 +130,6 @@ function CampaignVideoSection({
             {/* Main Video Preview Player */}
             <div className={`w-full ${isPortrait ? 'max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] mx-auto' : 'flex-1 min-w-0'}`}>
               <div className={`cs-reveal relative rounded-3xl overflow-hidden bg-black/95 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] ${isPortrait ? 'aspect-[9/16]' : 'aspect-[16/9]'} w-full transition-all duration-500`}>
-                {isPortrait && (
-                  <div className="absolute top-3 right-3 z-20 pointer-events-none px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[10px] font-mono font-semibold tracking-wider text-white/90 flex items-center gap-1.5 shadow-lg">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    PORTRAIT
-                  </div>
-                )}
                 {renderPlayer(currentUrl, currentVideo.title, isPortrait)}
               </div>
             </div>
@@ -177,13 +166,6 @@ function CampaignVideoSection({
                           <svg className="w-6 h-6 text-white/30" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z"/>
                           </svg>
-                        </div>
-                      )}
-
-                      {/* Orientation Tag Badge */}
-                      {vidIsPortrait && (
-                        <div className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-xs text-[9px] font-mono text-white/90 border border-white/20">
-                          📱 9:16
                         </div>
                       )}
 

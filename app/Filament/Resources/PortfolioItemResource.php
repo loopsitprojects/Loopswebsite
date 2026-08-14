@@ -165,11 +165,7 @@ class PortfolioItemResource extends Resource
                                                 ->required()
                                                 ->helperText('Choose whether to play this video in a Landscape (16:9) or Portrait (9:16 vertical) player.'),
                                         ])
-                                        ->itemLabel(function (array $state): ?string {
-                                            $title = !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item');
-                                            $player = ($state['player_type'] ?? 'landscape') === 'portrait' ? '📱 [Portrait]' : '🖥️ [Landscape]';
-                                            return "{$title} {$player}";
-                                        })
+                                        ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
                                         ->collapsible()
                                         ->reorderableWithButtons()
                                         ->defaultItems(0)
