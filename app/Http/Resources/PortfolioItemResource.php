@@ -121,11 +121,13 @@ class PortfolioItemResource extends JsonResource
             foreach ($this->video_urls as $v) {
                 $url = is_array($v) ? ($v['url'] ?? '') : (is_string($v) ? $v : '');
                 $title = is_array($v) ? ($v['title'] ?? '') : '';
+                $playerType = is_array($v) ? ($v['player_type'] ?? 'landscape') : 'landscape';
 
                 if (!empty($url) && !in_array(trim($url), $urlsSeen)) {
                     $videos[] = [
-                        'title' => !empty($title) ? $title : ('Video ' . (count($videos) + 1)),
-                        'url'   => trim($url),
+                        'title'       => !empty($title) ? $title : ('Video ' . (count($videos) + 1)),
+                        'url'         => trim($url),
+                        'player_type' => $playerType ?: 'landscape',
                     ];
                     $urlsSeen[] = trim($url);
                 }
@@ -133,16 +135,18 @@ class PortfolioItemResource extends JsonResource
 
             if ($showHeroAsCampaign && !empty($this->video_url) && !in_array(trim($this->video_url), $urlsSeen)) {
                 $videos[] = [
-                    'title' => 'Main Campaign Video',
-                    'url'   => trim($this->video_url),
+                    'title'       => 'Main Campaign Video',
+                    'url'         => trim($this->video_url),
+                    'player_type' => 'landscape',
                 ];
                 $urlsSeen[] = trim($this->video_url);
             }
         } else {
             if ($showHeroAsCampaign && !empty($this->video_url)) {
                 $videos[] = [
-                    'title' => 'Main Campaign Video',
-                    'url'   => trim($this->video_url),
+                    'title'       => 'Main Campaign Video',
+                    'url'         => trim($this->video_url),
+                    'player_type' => 'landscape',
                 ];
             }
         }

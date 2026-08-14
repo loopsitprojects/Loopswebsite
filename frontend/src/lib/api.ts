@@ -90,7 +90,7 @@ export interface PortfolioItem {
   tags: string[]
   hero_url?: string
   thumbnail_url?: string
-  campaign_videos?: { title: string; url: string }[]
+  campaign_videos?: { title: string; url: string; player_type?: 'landscape' | 'portrait' }[]
   award?: string | null
   gallery: { url: string; thumb: string; alt: string }[]
   meta: {

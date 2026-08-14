@@ -13,7 +13,7 @@ function CampaignVideoSection({
   color,
   posterImage,
 }: {
-  videos: { title: string; url: string }[]
+  videos: { title: string; url: string; player_type?: 'landscape' | 'portrait' }[]
   insight?: string
   color?: string
   posterImage?: string
@@ -26,6 +26,7 @@ function CampaignVideoSection({
   const currentUrl = currentVideo.url.startsWith('http://')
     ? currentVideo.url.replace('http://', 'https://')
     : currentVideo.url
+  const isPortrait = currentVideo.player_type === 'portrait'
 
   const getYouTubeId = (url: string) => {
     if (!url) return ''
@@ -48,12 +49,14 @@ function CampaignVideoSection({
     return posterImage || ''
   }
 
-  const renderPlayer = (url: string, title: string) => {
+  const renderPlayer = (url: string, title: string, portrait: boolean = false) => {
+    const aspectClass = portrait ? 'aspect-[9/16]' : 'aspect-[16/9]'
+
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       const videoId = getYouTubeId(url)
       return (
         <iframe
-          className="w-full h-full aspect-[16/9] rounded-2xl"
+          className={`w-full h-full ${aspectClass} rounded-2xl`}
           src={`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`}
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -65,7 +68,7 @@ function CampaignVideoSection({
       const videoId = url.split('/').pop()?.split('?')[0]
       return (
         <iframe
-          className="w-full h-full aspect-[16/9] rounded-2xl"
+          className={`w-full h-full ${aspectClass} rounded-2xl`}
           src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
           title={title}
           allow="autoplay; fullscreen; picture-in-picture"
@@ -76,7 +79,7 @@ function CampaignVideoSection({
     return (
       <video
         key={url}
-        className="w-full h-full object-cover rounded-2xl"
+        className={`w-full h-full ${portrait ? 'object-contain bg-black' : 'object-cover'} rounded-2xl`}
         src={url}
         controls
         autoPlay
@@ -113,6 +116,11 @@ function CampaignVideoSection({
               <p className="label text-slate-400 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">
                 {hasMultiple ? 'CAMPAIGN VIDEOS' : 'CAMPAIGN VIDEO'}
               </p>
+              {isPortrait && (
+                <span className="ml-2 px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-mono text-emerald-400 font-semibold tracking-wider uppercase">
+                  PORTRAIT PLAYER
+                </span>
+              )}
             </div>
 
             {hasMultiple && (
@@ -123,26 +131,33 @@ function CampaignVideoSection({
           </div>
 
           {/* Main Layout Container */}
-          <div className="flex flex-col lg:flex-row items-start gap-4 sm:gap-6 w-full">
+          <div className={`flex flex-col lg:flex-row ${isPortrait ? 'items-center lg:items-start justify-center' : 'items-start'} gap-6 sm:gap-8 w-full`}>
             {/* Main Video Preview Player */}
-            <div className="flex-1 w-full min-w-0">
-              <div className="cs-reveal relative rounded-3xl overflow-hidden bg-black/90 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] aspect-[16/9] w-full">
-                {renderPlayer(currentUrl, currentVideo.title)}
+            <div className={`w-full ${isPortrait ? 'max-w-[340px] sm:max-w-[380px] lg:max-w-[400px] mx-auto' : 'flex-1 min-w-0'}`}>
+              <div className={`cs-reveal relative rounded-3xl overflow-hidden bg-black/95 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)] ${isPortrait ? 'aspect-[9/16]' : 'aspect-[16/9]'} w-full transition-all duration-500`}>
+                {isPortrait && (
+                  <div className="absolute top-3 right-3 z-20 pointer-events-none px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[10px] font-mono font-semibold tracking-wider text-white/90 flex items-center gap-1.5 shadow-lg">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    PORTRAIT
+                  </div>
+                )}
+                {renderPlayer(currentUrl, currentVideo.title, isPortrait)}
               </div>
             </div>
 
             {/* Right Side Video Gallery (Thumbnails Only) */}
             {hasMultiple && (
-              <div className="flex flex-row lg:flex-col gap-3.5 shrink-0 cs-reveal overflow-x-auto lg:overflow-y-auto max-w-full lg:max-h-[500px] p-1 custom-scrollbar">
+              <div className="flex flex-row lg:flex-col gap-3.5 shrink-0 cs-reveal overflow-x-auto lg:overflow-y-auto max-w-full lg:max-h-[520px] p-1 custom-scrollbar">
                 {videos.map((vid, idx) => {
                   const isActive = idx === activeIdx
+                  const vidIsPortrait = vid.player_type === 'portrait'
                   const thumbUrl = getVideoThumbnail(vid.url)
                   return (
                     <button
                       key={idx}
                       onClick={() => setActiveIdx(idx)}
                       aria-label={vid.title || `Video ${idx + 1}`}
-                      className={`group relative w-28 sm:w-36 aspect-[16/9] shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                      className={`group relative ${vidIsPortrait ? 'w-20 sm:w-24 aspect-[9/16]' : 'w-28 sm:w-36 aspect-[16/9]'} shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                         isActive
                           ? 'scale-105 shadow-[0_0_20px_rgba(232,0,90,0.4)] z-10'
                           : 'opacity-50 hover:opacity-100 hover:scale-102 border-white/10'
@@ -162,6 +177,13 @@ function CampaignVideoSection({
                           <svg className="w-6 h-6 text-white/30" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z"/>
                           </svg>
+                        </div>
+                      )}
+
+                      {/* Orientation Tag Badge */}
+                      {vidIsPortrait && (
+                        <div className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-xs text-[9px] font-mono text-white/90 border border-white/20">
+                          📱 9:16
                         </div>
                       )}
 

@@ -155,12 +155,25 @@ class PortfolioItemResource extends Resource
                                                 ->placeholder('https://www.youtube.com/watch?v=...')
                                                 ->required()
                                                 ->url(),
+                                            Forms\Components\Select::make('player_type')
+                                                ->label('Video Player Type')
+                                                ->options([
+                                                    'landscape' => 'Landscape Player (16:9)',
+                                                    'portrait'  => 'Portrait Player (9:16 / Vertical)',
+                                                ])
+                                                ->default('landscape')
+                                                ->required()
+                                                ->helperText('Choose whether to play this video in a Landscape (16:9) or Portrait (9:16 vertical) player.'),
                                         ])
-                                        ->itemLabel(fn (array $state): ?string => !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item'))
+                                        ->itemLabel(function (array $state): ?string {
+                                            $title = !empty($state['title']) ? $state['title'] : ($state['url'] ?? 'Video Item');
+                                            $player = ($state['player_type'] ?? 'landscape') === 'portrait' ? '📱 [Portrait]' : '🖥️ [Landscape]';
+                                            return "{$title} {$player}";
+                                        })
                                         ->collapsible()
                                         ->reorderableWithButtons()
                                         ->defaultItems(0)
-                                        ->helperText('Add multiple campaign videos. Use the Up (↑) and Down (↓) buttons to change video order.'),
+                                        ->helperText('Add multiple campaign videos. Select Portrait Player for vertical (9:16) videos or Landscape Player for 16:9 videos.'),
                                 ]),
                                 Components\Group::make([
                                     Forms\Components\Placeholder::make('work_card_applied_preview')
