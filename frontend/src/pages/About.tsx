@@ -187,7 +187,7 @@ export default function About() {
       <GlobalOffices />
 
       {/* ── Industry Recognition / Awards (Full-Bleed GUT Agency Style) ──────── */}
-      <section className="relative bg-brand-dark py-14 md:py-28 border-t border-white/10 overflow-hidden">
+      <section className="relative bg-brand-dark pt-10 pb-4 md:pt-16 md:pb-6 border-t border-white/10 overflow-hidden">
         <ParticleField accent="purple" count={280} spread={20} />
         <div
           className="absolute inset-0 pointer-events-none"
@@ -195,7 +195,7 @@ export default function About() {
         />
 
         <div className="relative z-10 w-full">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 mb-14 flex items-end justify-between flex-wrap gap-6">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 mb-8 flex items-end justify-between flex-wrap gap-6">
             <div>
               <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Industry Recognition</p>
               <h2 className="heading-xl fluid-xl text-white font-display">
@@ -234,7 +234,7 @@ export default function About() {
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={() => setIsPaused(true)}
             onTouchEnd={() => setIsPaused(false)}
-            className="w-full flex gap-20 sm:gap-36 md:gap-52 lg:gap-64 overflow-x-auto pb-16 pt-6 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
+            className="w-full flex gap-20 sm:gap-36 md:gap-52 lg:gap-64 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {awardsLoading ? (
@@ -255,7 +255,7 @@ export default function About() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────── */}
-      <section className="bg-brand-dark section-padding py-24 text-center border-t border-white/10">
+      <section className="bg-brand-dark section-padding py-12 md:py-16 text-center border-t border-white/10">
         <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">{cta.label}</p>
         <h2 className="heading-xl fluid-lg text-white mb-8">{cta.headline}</h2>
         <Link to={cta.button_link} className="btn-primary inline-flex">

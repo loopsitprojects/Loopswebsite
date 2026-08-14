@@ -126,11 +126,11 @@ export default function AwardsSection() {
   }
 
   return (
-    <section ref={sectionRef} className="relative bg-brand-dark py-28 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-brand-dark pt-10 pb-4 md:pt-16 md:pb-6 overflow-hidden">
       <ParticleField accent="purple" count={300} spread={18} scrollDriven />
       <div className="relative z-10 w-full">
         {/* Header copy & stats */}
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div className="awards-header max-w-xl">
             <p className="label text-white/70 mb-3 tracking-widest uppercase">Industry Recognition</p>
             <h2 className="heading-xl fluid-xl text-white mb-4 font-display font-bold">
@@ -186,7 +186,7 @@ export default function AwardsSection() {
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={() => setIsPaused(true)}
           onTouchEnd={() => setIsPaused(false)}
-          className="w-full flex gap-20 sm:gap-36 md:gap-52 lg:gap-64 overflow-x-auto pb-16 pt-6 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
+          className="w-full flex gap-20 sm:gap-36 md:gap-52 lg:gap-64 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {awardGroups.map((group, i) => (
