@@ -218,7 +218,7 @@ export default function Careers() {
 
     const isTopicHeader = (str: string) => {
       const clean = str.replace(/^\*\*|\*\*$/g, '').replace(/^#+\s*/, '').replace(/:$/, '').trim()
-      return /^(responsibilities|requirements|qualifications|about the role|key responsibilities|what you'll do|what you will do|who you are|skills & requirements|preferred qualifications|essential duties|benefits|about us|role summary|overview)$/i.test(clean)
+      return /^(responsibilities|requirements|qualifications|about the role|key responsibilities|qualifications & experience|creative strategy & art direction|video production & execution|generative ai integration|what you'll do|what you will do|who you are|skills & requirements|preferred qualifications|essential duties|benefits|about us|role summary|overview)$/i.test(clean)
     }
 
     const lines = text.split('\n')
@@ -248,6 +248,10 @@ export default function Careers() {
         currentList.push(content)
       } else {
         flushList(`${idx}`)
+        const nextNonEmptyLine = lines.slice(idx + 1).find(l => l.trim() !== '')?.trim() || ''
+        const isFollowedByList = nextNonEmptyLine.startsWith('-') || nextNonEmptyLine.startsWith('*')
+        const isShortTitle = trimmed.length < 100 && !trimmed.endsWith('.')
+
         if (trimmed.startsWith('###')) {
           blocks.push(
             <h4 key={idx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
@@ -266,10 +270,10 @@ export default function Careers() {
               {parseInline(trimmed.replace(/^#\s*/, '').trim())}
             </h2>
           )
-        } else if (isTopicHeader(trimmed) || (trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**'))) {
+        } else if (isTopicHeader(trimmed) || (trimmed.endsWith(':') && !trimmed.startsWith('<')) || (trimmed.startsWith('**') && trimmed.endsWith('**')) || (isFollowedByList && isShortTitle)) {
           const cleanTitle = trimmed.replace(/^\*\*|\*\*$/g, '').trim()
           blocks.push(
-            <h4 key={idx} className="font-display font-bold text-white mt-6 mb-2.5 text-base sm:text-lg tracking-tight">
+            <h4 key={idx} className="font-display font-bold text-white mt-5 mb-2 text-base sm:text-lg tracking-tight">
               {cleanTitle}
             </h4>
           )
