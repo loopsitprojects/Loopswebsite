@@ -126,7 +126,7 @@ export default function Awards() {
   }, [loading])
 
   return (
-    <div ref={pageRef}>
+    <div ref={pageRef} className="bg-brand-dark min-h-screen text-white" style={{ backgroundColor: '#0A0A0A', color: '#F5F5F5' }}>
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative min-h-[80vh] flex items-center bg-brand-dark overflow-hidden">
         <ParticleField accent="multi" count={450} spread={18} scrollDriven />

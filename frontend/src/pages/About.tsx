@@ -167,7 +167,7 @@ export default function About() {
     : (statement.text || '').replace(/(?<=\.)\s+/g, '\n')
 
   return (
-    <div ref={pageRef}>
+    <div ref={pageRef} className="bg-brand-dark min-h-screen text-white" style={{ backgroundColor: '#0A0A0A', color: '#F5F5F5' }}>
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section className="relative bg-brand-dark section-padding pt-36 pb-20 overflow-hidden">
         <ParticleField accent="purple" count={250} spread={22} />
