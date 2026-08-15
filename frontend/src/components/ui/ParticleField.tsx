@@ -45,6 +45,11 @@ export default function ParticleField({
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true })
     renderer.setSize(W, H)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault()
+    }
+    renderer.domElement.addEventListener('webglcontextlost', handleContextLost, false)
     mount.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
