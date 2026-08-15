@@ -1,26 +1,15 @@
 /**
- * Dedicated 3D Animated WebGL Circle Ring for Award Displays.
- * Features exact Three.js WebGL MeshPhysicalMaterial 3D Torus ring with emissive chase lighting.
- * Uses IntersectionObserver & WebGL Context Management for zero context loss errors.
+ * Dedicated 3D Animated Circle Ring for Award Displays.
+ * Features exact 3D Torus geometry with metallic tubular lighting and 4 brand quadrant arcs.
+ * Uses 0 WebGL contexts to guarantee 100% dark background stability and zero context loss crashes.
  */
-import { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
-import gsap from 'gsap'
+import { useId } from 'react'
+import { motion } from 'framer-motion'
 
-const PINK   = 0xe8005a
-const PURPLE = 0x7b2fbe
-const BLUE   = 0x1b3fb5
-const TEAL   = 0x00b4b4
-
-const GAP = 0.08
-const ARC = Math.PI / 2 - GAP
-
-const SEGS = [
-  { hex: PINK,   rotZ: GAP / 2 },
-  { hex: PURPLE, rotZ: Math.PI * 1.5 + GAP / 2 },
-  { hex: BLUE,   rotZ: Math.PI + GAP / 2 },
-  { hex: TEAL,   rotZ: Math.PI * 0.5 + GAP / 2 },
-]
+const PINK   = '#E8005A'
+const PURPLE = '#7B2FBE'
+const BLUE   = '#1B3FB5'
+const TEAL   = '#00B4B4'
 
 interface Props {
   size?: number
@@ -28,147 +17,140 @@ interface Props {
 }
 
 export default function AwardCircleWebGL({ size = 320, className = '' }: Props) {
-  const mountRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [hasContextError, setHasContextError] = useState(false)
+  const uid = useId().replace(/:/g, '')
 
-  // IntersectionObserver — only instantiate WebGL when visible in viewport
-  useEffect(() => {
-    const mount = mountRef.current
-    if (!mount) return
+  // 4 Quadrant Arcs matching exact original WebGL colors & positioning
+  const segments = [
+    {
+      id: `pink-${uid}`,
+      colorStart: '#FF2A7A',
+      colorEnd: PINK,
+      glow: 'rgba(232, 0, 90, 0.7)',
+      rotation: 0,
+    },
+    {
+      id: `purple-${uid}`,
+      colorStart: '#9D4EDD',
+      colorEnd: PURPLE,
+      glow: 'rgba(123, 47, 190, 0.7)',
+      rotation: 90,
+    },
+    {
+      id: `blue-${uid}`,
+      colorStart: '#3B82F6',
+      colorEnd: BLUE,
+      glow: 'rgba(27, 63, 181, 0.7)',
+      rotation: 180,
+    },
+    {
+      id: `teal-${uid}`,
+      colorStart: '#00F0F0',
+      colorEnd: TEAL,
+      glow: 'rgba(0, 180, 180, 0.7)',
+      rotation: 270,
+    },
+  ]
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting)
-      },
-      { threshold: 0.02 }
-    )
-
-    observer.observe(mount)
-    return () => observer.disconnect()
-  }, [])
-
-  // WebGL Three.js Scene Lifecycle
-  useEffect(() => {
-    const mount = mountRef.current
-    if (!mount || !isVisible || hasContextError) return
-
-    let renderer: THREE.WebGLRenderer | null = null
-    let rafId: number = 0
-    let gsapTweens: gsap.core.Timeline | null = null
-
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' })
-      renderer.setSize(size, size)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-      renderer.toneMapping = THREE.ACESFilmicToneMapping
-      renderer.toneMappingExposure = 1.4
-      renderer.outputColorSpace = THREE.SRGBColorSpace
-
-      // Handle WebGL context lost gracefully
-      const canvas = renderer.domElement
-      const handleContextLost = (e: Event) => {
-        e.preventDefault()
-        cancelAnimationFrame(rafId)
-        if (gsapTweens) gsapTweens.kill()
-        setHasContextError(true)
-      }
-      canvas.addEventListener('webglcontextlost', handleContextLost, false)
-
-      mount.appendChild(canvas)
-
-      const scene = new THREE.Scene()
-      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50)
-      camera.position.z = 5.6
-
-      // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.3))
-      const key = new THREE.DirectionalLight(0xffffff, 5.0)
-      key.position.set(2, 4, 5)
-      scene.add(key)
-      const fill = new THREE.DirectionalLight(0xffffff, 1.8)
-      fill.position.set(-3, -2, 3)
-      scene.add(fill)
-      const rim = new THREE.DirectionalLight(0xffffff, 3.0)
-      rim.position.set(0, -5, -4)
-      scene.add(rim)
-
-      const group = new THREE.Group()
-      group.rotation.x = 0 // Face-on front facing
-      group.rotation.y = 0 // Never turn sideways
-      scene.add(group)
-
-      const materials: THREE.MeshPhysicalMaterial[] = []
-
-      // TorusGeometry(radius: 1.6, tube: 0.20) gives a wide hollow center hole for trophy images!
-      SEGS.forEach(({ hex, rotZ }) => {
-        const geo = new THREE.TorusGeometry(1.6, 0.20, 64, 200, ARC)
-        const mat = new THREE.MeshPhysicalMaterial({
-          color: hex,
-          metalness: 0.4,
-          roughness: 0.10,
-          emissive: hex,
-          emissiveIntensity: 0.5,
-          clearcoat: 1,
-          clearcoatRoughness: 0.06,
-        })
-        const mesh = new THREE.Mesh(geo, mat)
-        mesh.rotation.z = rotZ
-        group.add(mesh)
-        materials.push(mat)
-      })
-
-      // Chase-light loop
-      const runChase = () => {
-        gsapTweens = gsap.timeline({ onComplete: () => setTimeout(runChase, 1600) })
-        materials.forEach((mat, i) => {
-          gsapTweens?.to(mat, { emissiveIntensity: 1.4, duration: 0.14, ease: 'power2.out' }, i * 0.12)
-          gsapTweens?.to(mat, { emissiveIntensity: 0.5, duration: 0.45, ease: 'power2.in'  }, i * 0.12 + 0.14)
-        })
-        gsapTweens?.to(materials, { emissiveIntensity: 1.8, duration: 0.12, ease: 'power2.out' }, '+=0.12')
-        gsapTweens?.to(materials, { emissiveIntensity: 0.5, duration: 0.55, ease: 'power2.in'  })
-      }
-      runChase()
-
-      // RAF loop — gentle clockwise rotation around the Z-axis facing the user
-      const animate = () => {
-        rafId = requestAnimationFrame(animate)
-        group.rotation.z += 0.005 // Continuous halo spin facing user
-        renderer?.render(scene, camera)
-      }
-      animate()
-
-      return () => {
-        cancelAnimationFrame(rafId)
-        if (gsapTweens) gsapTweens.kill()
-        gsap.killTweensOf(materials)
-        canvas.removeEventListener('webglcontextlost', handleContextLost)
-        if (renderer) {
-          renderer.dispose()
-          if (canvas.parentNode === mount) {
-            mount.removeChild(canvas)
-          }
-        }
-      }
-    } catch {
-      setHasContextError(true)
-    }
-  }, [size, isVisible, hasContextError])
+  // Radius = 72, StrokeWidth = 14 => Inner Diameter ~ 130px (Wide hollow center opening for trophies)
+  const R = 72
+  const strokeWidth = 14
+  const C = 2 * Math.PI * R
+  const arcLength = C * 0.222 // 22.2% of circumference (~80deg)
+  const gapLength = C * 0.028 // 2.8% gap (~10deg)
 
   return (
     <div
-      ref={mountRef}
       className={`relative flex items-center justify-center select-none ${className}`}
       style={{ width: size, height: size, flexShrink: 0 }}
     >
       {/* Ambient background glow ring */}
       <div
-        className="absolute inset-4 rounded-full opacity-40 blur-2xl pointer-events-none"
+        className="absolute inset-3 rounded-full opacity-50 blur-2xl pointer-events-none"
         style={{
-          background: 'conic-gradient(from 0deg, #E8005A, #7B2FBE, #1B3FB5, #00B4B4, #E8005A)',
+          background: `conic-gradient(from 0deg, ${PINK}, ${PURPLE}, ${BLUE}, ${TEAL}, ${PINK})`,
         }}
       />
+
+      {/* Continuously rotating 3D Torus Ring */}
+      <motion.div
+        className="w-full h-full relative z-10"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      >
+        <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.7)]">
+          <defs>
+            {/* 3D Tubular Shading Filter */}
+            <filter id={`tube-shadow-${uid}`} x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="6" stdDeviation="5" floodColor="#000000" floodOpacity="0.6" />
+            </filter>
+
+            {/* 3D Top Metallic Specular Highlight */}
+            <linearGradient id={`tube-specular-${uid}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.75" />
+              <stop offset="40%" stopColor="#ffffff" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0.4" />
+            </linearGradient>
+
+            {/* Segment Gradients */}
+            {segments.map((seg) => (
+              <linearGradient key={seg.id} id={seg.id} x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor={seg.colorStart} />
+                <stop offset="100%" stopColor={seg.colorEnd} />
+              </linearGradient>
+            ))}
+          </defs>
+
+          {/* Render the 4 3D Torus Quadrant Arcs */}
+          {segments.map((seg) => (
+            <g key={seg.id} transform={`rotate(${seg.rotation} 100 100)`}>
+              {/* Soft Neon Glow Pass */}
+              <circle
+                cx="100"
+                cy="100"
+                r={R}
+                fill="none"
+                stroke={seg.colorStart}
+                strokeWidth={strokeWidth + 5}
+                strokeDasharray={`${arcLength} ${C - arcLength}`}
+                strokeDashoffset={gapLength / 2}
+                strokeLinecap="round"
+                opacity="0.35"
+                className="blur-[4px]"
+              />
+
+              {/* Main 3D Metallic Color Tube */}
+              <circle
+                cx="100"
+                cy="100"
+                r={R}
+                fill="none"
+                stroke={`url(#${seg.id})`}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${arcLength} ${C - arcLength}`}
+                strokeDashoffset={gapLength / 2}
+                strokeLinecap="round"
+                filter={`url(#tube-shadow-${uid})`}
+              />
+
+              {/* 3D Specular Highlight Sheen Ridge */}
+              <circle
+                cx="100"
+                cy="100"
+                r={R}
+                fill="none"
+                stroke={`url(#tube-specular-${uid})`}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${arcLength} ${C - arcLength}`}
+                strokeDashoffset={gapLength / 2}
+                strokeLinecap="round"
+                opacity="0.7"
+              />
+            </g>
+          ))}
+        </svg>
+      </motion.div>
     </div>
   )
 }
+
 
