@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import ParticleField from '@/components/ui/ParticleField'
-import GutAwardDisplay, { AwardGroup } from '@/components/ui/GutAwardDisplay'
-import { api, Award, resolveImageUrl } from '@/lib/api'
+import GutAwardDisplay, { AwardGroup, getCleanAwardImage } from '@/components/ui/GutAwardDisplay'
+import { api, Award } from '@/lib/api'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -50,17 +50,7 @@ export default function Awards() {
           const bodyName = a.award_body || "Advertising Award"
           if (!bodiesMap[bodyName]) {
             const rawBg = (a as any).background_url || a.background_path
-            let trophy = resolveImageUrl(rawBg)
-            const bLower = bodyName.toLowerCase()
-            const tLower = (a.tier || '').toLowerCase()
-
-            if (!trophy || trophy.includes('default.jpg') || trophy.includes('placeholder')) {
-              if (bLower.includes('slim')) trophy = '/images/awards/slim-digis-2021-nobg.png'
-              else if (bLower.includes('dragon') && tLower.includes('bronze')) trophy = '/images/awards/dragons-of-asia-blue-2025-nobg.png'
-              else if (bLower.includes('effie')) trophy = '/images/awards/effie-awards-2016-clean.png'
-              else if (bLower.includes('dragon')) trophy = '/images/awards/dragons-of-asia-gold-2025-nobg.png'
-              else trophy = '/images/awards/four-as-gold-2024-clean.png'
-            }
+            const trophy = getCleanAwardImage(bodyName, a.tier, rawBg)
 
             bodiesMap[bodyName] = {
               body: bodyName,

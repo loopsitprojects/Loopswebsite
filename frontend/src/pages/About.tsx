@@ -187,7 +187,10 @@ export default function About() {
       <GlobalOffices />
 
       {/* ── Industry Recognition / Awards (Full-Bleed GUT Agency Style) ──────── */}
-      <section className="relative bg-brand-dark pt-10 pb-4 md:pt-16 md:pb-6 border-t border-white/10 overflow-hidden">
+      <section
+        className="relative bg-brand-dark text-white pt-10 pb-4 md:pt-16 md:pb-6 border-t border-white/10 overflow-hidden"
+        style={{ backgroundColor: '#0A0A0A', color: '#F5F5F5' }}
+      >
         <ParticleField accent="purple" count={280} spread={20} />
         <div
           className="absolute inset-0 pointer-events-none"
@@ -199,8 +202,8 @@ export default function About() {
             <div>
               <p className="text-white font-display font-bold text-xl md:text-2xl tracking-tight mb-4">Industry Recognition</p>
               <h2 className="heading-xl fluid-xl text-white font-display">
-                Work that wins<br />
-                <span className="gradient-text">awards.</span>
+                {recognition.headline_line1}<br />
+                <span className="gradient-text">{recognition.headline_highlight}</span>
               </h2>
             </div>
 
@@ -208,20 +211,20 @@ export default function About() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleScroll('left')}
-                className="w-12 h-12 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/30 text-white flex items-center justify-center transition-all duration-300 active:scale-95 shadow-lg"
+                className="w-12 h-12 rounded-full border border-white/25 bg-white/10 hover:bg-white/20 hover:border-white/40 text-white flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xl backdrop-blur-md"
                 aria-label="Previous Award"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={() => handleScroll('right')}
-                className="w-12 h-12 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/30 text-white flex items-center justify-center transition-all duration-300 active:scale-95 shadow-lg"
+                className="w-12 h-12 rounded-full border border-white/25 bg-white/10 hover:bg-white/20 hover:border-white/40 text-white flex items-center justify-center transition-all duration-300 active:scale-95 shadow-xl backdrop-blur-md"
                 aria-label="Next Award"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
@@ -234,18 +237,18 @@ export default function About() {
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={() => setIsPaused(true)}
             onTouchEnd={() => setIsPaused(false)}
-            className="w-full flex gap-20 sm:gap-36 md:gap-52 lg:gap-64 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
+            className="w-full flex gap-6 sm:gap-12 md:gap-16 lg:gap-24 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing items-start justify-start px-6 md:px-12 lg:px-20"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {awardsLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="w-[85vw] sm:w-[65vw] md:w-[480px] h-[400px] bg-white/5 rounded-3xl animate-pulse flex-shrink-0" />
+                <div key={i} className="w-[88vw] sm:w-[380px] md:w-[460px] lg:w-[500px] h-[400px] bg-white/5 rounded-3xl animate-pulse flex-shrink-0" />
               ))
             ) : awardGroups.length === 0 ? (
               <p className="text-white/30 label col-span-full text-center py-10">No awards registered yet.</p>
             ) : (
               awardGroups.map((group, i) => (
-                <div key={i} className="w-[85vw] sm:w-[65vw] md:w-[480px] lg:w-[520px] flex-shrink-0 snap-center">
+                <div key={i} className="w-[88vw] sm:w-[380px] md:w-[460px] lg:w-[500px] flex-shrink-0 snap-center">
                   <GutAwardDisplay group={group} />
                 </div>
               ))

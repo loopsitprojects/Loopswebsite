@@ -165,8 +165,15 @@ export default function GutAwardDisplay({ group, award, className = '' }: GutAwa
             className="relative z-10 w-full h-full flex items-center justify-center p-6 sm:p-10"
           >
             <img
-              src={imageSrc}
+              src={imageSrc || resolveImageUrl('/images/awards/four-as-gold-2024-nobg.png')}
               alt={bodyName}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                const fallback = resolveImageUrl('/images/awards/four-as-gold-2024-nobg.png')
+                if (target.src !== fallback) {
+                  target.src = fallback
+                }
+              }}
               className="max-h-[56%] max-w-[56%] object-contain filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] group-hover:drop-shadow-[0_24px_40px_rgba(0,0,0,0.7)] transition-all duration-500"
             />
           </motion.div>

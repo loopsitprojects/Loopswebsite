@@ -21,6 +21,10 @@ export function resolveImageUrl(url?: string): string {
     }
   }
 
+  if (!cleanUrl.startsWith('/')) {
+    cleanUrl = `/${cleanUrl}`
+  }
+
   const subfolder = getSubfolder()
   if (cleanUrl.startsWith('/') && subfolder && !cleanUrl.startsWith(subfolder)) {
     cleanUrl = `${subfolder}${cleanUrl}`
