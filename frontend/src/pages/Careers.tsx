@@ -494,7 +494,7 @@ export default function Careers() {
             Don't See Your Role?
           </h2>
           <p className="text-white/80 fluid-sm leading-relaxed mb-10 max-w-xl mx-auto">
-            Send us your CV and tell us what you're great at — we'll reach out when the right opportunity opens up.
+            Send us your CV and tell us what you're great at, we'll reach out when the right opportunity opens up.
           </p>
           <a href="mailto:careers@loopsintegrated.com" className="inline-flex items-center justify-center gap-3.5 px-8 py-4 sm:px-11 sm:py-5 bg-white text-brand-dark font-display font-bold text-base sm:text-lg md:text-xl tracking-tight rounded-full shadow-2xl hover:bg-white/95 transition-all duration-300 hover:scale-105">
             careers@loopsintegrated.com
