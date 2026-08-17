@@ -371,8 +371,8 @@ export default function Careers() {
             {hero.headline.replace(/\.+$/, '').split(' ').slice(0, -1).join(' ')}{' '}
             <span className="gradient-text">{hero.headline.replace(/\.+$/, '').split(' ').slice(-1)}</span>
           </h1>
-          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed hero-reveal">
-            {hero.description}
+          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed hero-reveal text-pretty">
+            {hero.description.replace(/(\s+)(\S+)$/, '\u00a0$2')}
           </p>
         </div>
       </section>
