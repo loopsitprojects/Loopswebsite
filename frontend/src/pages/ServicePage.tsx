@@ -376,7 +376,7 @@ export default function ServicePage() {
     if (slug === 'tech') {
       categoryParam = 'martech'
     } else if (slug === 'play') {
-      categoryParam = 'events'
+      categoryParam = 'productions,production'
     } else if (slug === 'ai-content') {
       categoryParam = 'ai'
     } else if (slug.toLowerCase() === 'performance-marketing' || slug === 'Performance Marketing') {
@@ -652,7 +652,7 @@ export default function ServicePage() {
             {/* View More Button */}
             <div className="mt-12 text-center">
               <Link
-                to={`/work?category=${slug === 'tech' ? 'martech' : slug}`}
+                to={`/work?category=${slug === 'tech' ? 'martech' : slug === 'play' ? 'productions' : slug}`}
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 hover:border-white/50 text-white/80 hover:text-white text-xs font-mono tracking-wider uppercase transition-all duration-300 hover:scale-[1.02] bg-white/[0.02]"
               >
                 View More {service.title} Works
