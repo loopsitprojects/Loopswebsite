@@ -18,7 +18,7 @@ export const services: Service[] = [
     title: 'Creative',
     headline: "Ideas that don't just look good — they work harder.",
     subheadline: 'Bold, culturally sharp creative that turns brands into conversation starters.',
-    description: 'We craft bold, culturally sharp creative that turns brands into conversation starters and category leaders in Sri Lanka and beyond. Great creative isn\'t about beauty — it\'s about impact.',
+    description: 'We craft bold, culturally sharp creative that turns brands into conversation starters and category leaders in Sri\u00a0Lanka and beyond. Great creative isn\'t about beauty — it\'s about impact.',
     capabilities: [
       'Big Idea Development & Creative Strategy',
       '360° Integrated Campaigns (ATL, BTL, Digital & Social)',
@@ -165,12 +165,12 @@ export const clients = [
 export const offices = [
   {
     city: 'Colombo',
-    country: 'Sri Lanka',
+    country: 'Sri\u00a0Lanka',
     role: 'Headquarters',
     description: 'Strategy, Creative, Digital, Production, Tech & Innovation Hub',
     phone: '+94 75 525 3006',
     email: 'hello@loops.lk',
-    address: '2B, Sulaiman Terrace, Colombo 05, Sri Lanka',
+    address: '2B, Sulaiman Terrace, Colombo 05, Sri\u00a0Lanka',
     coords: { lat: 6.9, lng: 79.85 },
   },
   {

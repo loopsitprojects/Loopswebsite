@@ -135,7 +135,7 @@ export default function LoopsMap({
   // Map dynamic or static fallback offices
   const mappedOffices = useMemo(() => {
     const list = offices && offices.length ? offices : [
-      { city: 'Colombo', country: 'Sri Lanka', role: 'Headquarters', lat: 6.9147, lng: 79.8484, is_headquarters: true },
+      { city: 'Colombo', country: 'Sri\u00a0Lanka', role: 'Headquarters', lat: 6.9147, lng: 79.8484, is_headquarters: true },
       { city: 'Dubai', country: 'UAE', role: 'Middle East & Africa', lat: 25.1972, lng: 55.2744, is_headquarters: false },
       { city: 'London', country: 'UK', role: 'Europe', lat: 51.5144, lng: -0.0803, is_headquarters: false },
       { city: 'Singapore', country: 'Singapore', role: 'Southeast Asia', lat: 1.2838, lng: 103.8516, is_headquarters: false },

@@ -17,7 +17,7 @@ export default function Contact() {
 
   const [hero, setHero] = useState({
     title: 'Contact Us',
-    description: "Let's create something great together. We're ready to partner with ambitious brands across Sri Lanka and the world."
+    description: "Let's create something great together. We're ready to partner with ambitious brands across Sri\u00a0Lanka and the world."
   })
 
   const [servicesList, setServicesList] = useState<string[]>(fallbackServices)
@@ -35,7 +35,7 @@ export default function Contact() {
           if (data.hero) {
             setHero({
               title: data.hero.headline || 'Contact Us',
-              description: data.hero.subheadline || "Let's create something great together. We're ready to partner with ambitious brands across Sri Lanka and the world."
+              description: data.hero.subheadline || "Let's create something great together. We're ready to partner with ambitious brands across Sri\u00a0Lanka and the world."
             })
           }
           if (data.form_fields && data.form_fields.service_options) {

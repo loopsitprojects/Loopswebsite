@@ -95,8 +95,8 @@ export default function Work() {
   const [hero, setHero] = useState({
     label: 'Portfolio',
     headline: 'Work',
-    description_line1: "We don't just create campaigns — we build brand momentum that delivers real business impact.",
-    description_line2: "From bold creative ideas to high-performing digital campaigns, cinematic productions, and smart martech solutions — here's what we've delivered for ambitious brands across Sri Lanka and beyond."
+    description_line1: "We don't just create campaigns - we build brand momentum that delivers real business impact.",
+    description_line2: "From bold creative ideas to high-performing digital campaigns, cinematic productions, and smart martech solutions - here's what we've delivered for ambitious brands across Sri\u00a0Lanka and beyond."
   })
 
   useEffect(() => {

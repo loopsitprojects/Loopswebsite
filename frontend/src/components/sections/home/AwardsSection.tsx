@@ -138,7 +138,7 @@ export default function AwardsSection() {
               <span className="gradient-text">awards.</span>
             </h2>
             <p className="text-white/50 text-sm md:text-base leading-relaxed font-sans">
-              Recognised by Sri Lanka's premier advertising awards across creative excellence, campaign effectiveness, and integrated marketing.
+              Recognised by Sri\u00a0Lanka's premier advertising awards across creative excellence, campaign effectiveness, and integrated marketing.
             </p>
           </div>
 

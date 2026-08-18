@@ -13,7 +13,7 @@ export default function NewsletterCTA() {
 
   const [content, setContent] = useState({
     headline: 'Stay in the Loop',
-    subheadline: "Get fresh thinking, campaign stories, and industry insights from Sri Lanka's most integrated agency.",
+    subheadline: "Get fresh thinking, campaign stories, and industry insights from Sri\u00a0Lanka's most integrated agency.",
     cta_label: 'Subscribe',
     placeholder: 'your@email.com',
   })
@@ -26,7 +26,7 @@ export default function NewsletterCTA() {
           const n = res.data.newsletter
           setContent({
             headline: n.headline || 'Stay in the Loop',
-            subheadline: n.subheadline || "Get fresh thinking, campaign stories, and industry insights from Sri Lanka's most integrated agency.",
+            subheadline: n.subheadline || "Get fresh thinking, campaign stories, and industry insights from Sri\u00a0Lanka's most integrated agency.",
             cta_label: n.cta_label || 'Subscribe',
             placeholder: n.placeholder || 'your@email.com',
           })

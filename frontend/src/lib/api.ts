@@ -206,14 +206,48 @@ export interface PaginatedResponse<T> {
   }
 }
 
+export function keepSriLankaTogether(text?: string | null): string {
+  if (!text) return ''
+  return text
+    .replace(/[\u2014\u2013]|--/g, '-')
+    .replace(/ {2,}/g, ' ')
+    .replace(/Sri\s+(Lanka|Lankan|Lankans)/gi, 'Sri\u00a0$1')
+}
+
+function formatItemText(item: PortfolioItem): PortfolioItem {
+  if (!item) return item
+  return {
+    ...item,
+    client: keepSriLankaTogether(item.client),
+    title: keepSriLankaTogether(item.title),
+    brief: item.brief ? keepSriLankaTogether(item.brief) : item.brief,
+    insight: item.insight ? keepSriLankaTogether(item.insight) : item.insight,
+    idea: item.idea ? keepSriLankaTogether(item.idea) : item.idea,
+    result: item.result ? keepSriLankaTogether(item.result) : item.result,
+    background: item.background ? keepSriLankaTogether(item.background) : item.background,
+    objective: item.objective ? keepSriLankaTogether(item.objective) : item.objective,
+    award: item.award ? keepSriLankaTogether(item.award) : item.award,
+  }
+}
+
 // ——— API calls ———
 
 export const api = {
   portfolio: {
     list: (params?: { category?: string; tag?: string; featured?: boolean; year?: number; per_page?: number; page?: number }) =>
-      get<PaginatedResponse<PortfolioItem>>('/portfolio', params as Record<string, string | number | boolean>),
+      get<PaginatedResponse<PortfolioItem>>('/portfolio', params as Record<string, string | number | boolean>).then(res => {
+        if (res && Array.isArray(res.data)) {
+          res.data = res.data.map(formatItemText)
+        }
+        return res
+      }),
     show: (slug: string) =>
-      get<{ data: PortfolioItem }>(`/portfolio/${slug}`),
+      get<{ data: PortfolioItem }>(`/portfolio/${slug}`).then(res => {
+        if (res && res.data) {
+          res.data = formatItemText(res.data)
+        }
+        return res
+      }),
   },
   categories: {
     list: () => get<{ data: Category[] }>('/portfolio-categories'),

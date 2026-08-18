@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger)
 const fallbackAccolades = [
   { icon: '◎', text: 'Campaign Excellence', sub: 'Best in class across integrated, digital, and experiential categories' },
   { icon: '✦', text: 'Creative Effectiveness', sub: 'Awards judged on business results, not just aesthetics' },
-  { icon: '⌬', text: 'Industry Recognition', sub: "Recognised by Sri Lanka's most rigorous advertising jury" },
+  { icon: '⌬', text: 'Industry Recognition', sub: "Recognised by Sri\u00a0Lanka's most rigorous advertising jury" },
 ]
 
 export default function Awards() {
@@ -21,10 +21,10 @@ export default function Awards() {
   const [totals, setTotals] = useState({ gold: 0, bronze: 0, years: 0, nominations: 0 })
 
   const [hero, setHero] = useState({
-    label: 'LOOPS INTEGRATED — AWARDS & RECOGNITION',
+    label: 'LOOPS INTEGRATED - AWARDS & RECOGNITION',
     headline: 'Work that wins',
     headline_gradient: 'gold.',
-    description: "Recognised by Sri Lanka's most prestigious advertising awards across creative, integrated, and experiential disciplines."
+    description: "Recognised by Sri\u00a0Lanka's most prestigious advertising awards across creative, integrated, and experiential disciplines."
   })
 
   const [accoladesList, setAccoladesList] = useState<any[]>(fallbackAccolades)
@@ -230,15 +230,15 @@ export default function Awards() {
       {/* ── What the judges said ─────────────────────────────────────────── */}
       <section className="bg-white py-24 section-padding">
         <div className="max-w-5xl mx-auto text-center">
-          <p className="label text-brand-dark/30 mb-6 tracking-[0.3em]">THE FOUR A's OF SRI LANKA</p>
+          <p className="label text-brand-dark/30 mb-6 tracking-[0.3em]">THE FOUR A's OF SRI\u00a0LANKA</p>
           <blockquote
             className="font-display font-bold text-brand-dark leading-tight mb-6"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
           >
-            "Sri Lanka's premier industry benchmark for advertising excellence."
+            "Sri\u00a0Lanka's premier industry benchmark for advertising excellence."
           </blockquote>
           <p className="text-brand-dark/50 max-w-xl mx-auto leading-relaxed">
-            The Four A's award panel judges campaigns on creative execution, strategic insight, audience impact, and measurable business results. Winning here is not about spectacle — it is about substance.
+            The Four A's award panel judges campaigns on creative execution, strategic insight, audience impact, and measurable business results. Winning here is not about spectacle - it is about substance.
           </p>
         </div>
       </section>

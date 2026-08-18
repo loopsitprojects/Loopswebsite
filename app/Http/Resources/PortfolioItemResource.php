@@ -14,14 +14,14 @@ class PortfolioItemResource extends JsonResource
         return [
             'id'               => $this->id,
             'slug'             => $this->slug,
-            'client'           => $this->client,
-            'title'            => $this->title,
-            'brief'            => $this->brief,
-            'background'       => $this->background,
-            'objective'        => $this->objective,
-            'insight'          => $this->insight,
-            'idea'             => $this->idea,
-            'result'           => $this->result,
+            'client'           => $this->formatSriLanka($this->client),
+            'title'            => $this->formatSriLanka($this->title),
+            'brief'            => $this->formatSriLanka($this->brief),
+            'background'       => $this->formatSriLanka($this->background),
+            'objective'        => $this->formatSriLanka($this->objective),
+            'insight'          => $this->formatSriLanka($this->insight),
+            'idea'             => $this->formatSriLanka($this->idea),
+            'result'           => $this->formatSriLanka($this->result),
             'video_url'        => $this->video_url,
             'campaign_videos'  => $this->formatCampaignVideos(),
             'year'             => $this->year,
@@ -55,6 +55,14 @@ class PortfolioItemResource extends JsonResource
                 'json_ld'     => $this->json_ld,
             ],
         ];
+    }
+
+    private function formatSriLanka(?string $text): ?string
+    {
+        if (!$text) return $text;
+        $text = preg_replace('/[\x{2014}\x{2013}]|--/u', '-', $text);
+        $text = preg_replace('/ {2,}/', ' ', $text);
+        return preg_replace('/Sri\s+(Lanka|Lankan|Lankans)/i', "Sri\u{00A0}$1", $text);
     }
 
     private function formatMediaUrl(?string $url): ?string

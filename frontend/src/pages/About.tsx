@@ -45,12 +45,12 @@ export default function About() {
   const [hero, setHero] = useState({
     label: 'Who We Are',
     headline: 'A creative-led agency for ambitious brands.',
-    description: "We're a collective of strategists, designers, technologists, and storytellers building brand momentum for companies across Sri Lanka and beyond.",
+    description: "We're a collective of strategists, designers, technologists, and storytellers building brand momentum for companies across Sri\u00a0Lanka and beyond.",
   })
 
   const [statement, setStatement] = useState({
     label: 'Our Philosophy',
-    text: "We believe bold ideas, backed by sharp strategy, are what move people — and move business. Every discipline under one roof, working as one integrated team.",
+    text: "We believe bold ideas, backed by sharp strategy, are what move people - and move business. Every discipline under one roof, working as one integrated team.",
   })
 
   const [recognition, setRecognition] = useState({
