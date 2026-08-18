@@ -230,12 +230,12 @@ export default function Awards() {
       {/* ── What the judges said ─────────────────────────────────────────── */}
       <section className="bg-white py-24 section-padding">
         <div className="max-w-5xl mx-auto text-center">
-          <p className="label text-brand-dark/30 mb-6 tracking-[0.3em]">THE FOUR A's OF SRI\u00a0LANKA</p>
+          <p className="label text-brand-dark/30 mb-6 tracking-[0.3em]">{"THE FOUR A's OF SRI\u00a0LANKA"}</p>
           <blockquote
             className="font-display font-bold text-brand-dark leading-tight mb-6"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
           >
-            "Sri\u00a0Lanka's premier industry benchmark for advertising excellence."
+            {"\"Sri\u00a0Lanka's premier industry benchmark for advertising excellence.\""}
           </blockquote>
           <p className="text-brand-dark/50 max-w-xl mx-auto leading-relaxed">
             The Four A's award panel judges campaigns on creative execution, strategic insight, audience impact, and measurable business results. Winning here is not about spectacle - it is about substance.
