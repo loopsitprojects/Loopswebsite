@@ -13,7 +13,7 @@ return new class extends Migration
             'title' => 'Loops Integrated Celebrates Grand Prix Glory at SLIM DIGIS 2.6, Alongside 13 More Wins',
             'slug' => 'loops-integrated-celebrates-grand-prix-glory-at-slim-digis-2-6',
             'category' => 'Award Win',
-            'published_date' => '2026-09-30',
+            'published_date' => '2026-09-24',
             'author' => null,
             'publisher' => null,
             'external_link' => null,

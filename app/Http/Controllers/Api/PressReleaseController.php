@@ -84,7 +84,7 @@ class PressReleaseController extends Controller
             'slug'           => $pr->slug,
             'category'       => $pr->category,
             'published_date' => $pr->published_date ? $pr->published_date->format('Y-m-d') : null,
-            'published_date_formatted' => $pr->published_date ? $pr->published_date->format('M d, Y') : null,
+            'published_date_formatted' => $pr->published_date ? $pr->published_date->format('jS F Y') : null,
             'author'         => $pr->author,
             'publisher'      => $pr->publisher,
             'external_link'  => $pr->external_link,
