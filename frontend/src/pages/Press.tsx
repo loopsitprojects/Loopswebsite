@@ -88,27 +88,10 @@ export default function Press() {
           </h1>
         </motion.div>
 
-        {/* Filters & Search Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 pb-6 border-b border-white/10">
-          {/* Category Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
-                  selectedCategory.toLowerCase() === cat.toLowerCase()
-                    ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] scale-[1.03]'
-                    : 'bg-white/[0.06] text-white/70 hover:text-white hover:bg-white/10 border border-white/10'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
+        {/* Search Bar */}
+        <div className="flex items-center justify-end mb-10 pb-6 border-b border-white/10">
           {/* Search Input */}
-          <div className="relative w-full md:w-72 shrink-0">
+          <div className="relative w-full md:w-72">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -305,14 +288,14 @@ export default function Press() {
                   </motion.article>
                 ))}
               </div>
-            ) : (!featuredItem || searchQuery.trim() || selectedCategory !== 'All') ? (
+            ) : (!featuredItem || searchQuery.trim()) ? (
               <div className="text-center py-20 rounded-2xl bg-white/[0.02] border border-white/5">
-                <p className="text-white/60 text-base mb-2">No news items found matching your filter.</p>
+                <p className="text-white/60 text-base mb-2">No news items found matching your search.</p>
                 <button
-                  onClick={() => { setSelectedCategory('All'); setSearchQuery('') }}
+                  onClick={() => setSearchQuery('')}
                   className="text-brand-pink hover:underline text-sm font-semibold"
                 >
-                  Reset filters
+                  Clear search
                 </button>
               </div>
             ) : null}
