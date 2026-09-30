@@ -305,7 +305,7 @@ export default function Press() {
                   </motion.article>
                 ))}
               </div>
-            ) : (
+            ) : (!featuredItem || searchQuery.trim() || selectedCategory !== 'All') ? (
               <div className="text-center py-20 rounded-2xl bg-white/[0.02] border border-white/5">
                 <p className="text-white/60 text-base mb-2">No news items found matching your filter.</p>
                 <button
@@ -315,7 +315,7 @@ export default function Press() {
                   Reset filters
                 </button>
               </div>
-            )}
+            ) : null}
           </>
         )}
       </div>

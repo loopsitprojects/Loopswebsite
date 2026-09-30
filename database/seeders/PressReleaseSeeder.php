@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use App\Models\PressRelease;
+namespace Database\Seeders;
 
-return new class extends Migration
+use App\Models\PressRelease;
+use Illuminate\Database\Seeder;
+
+class PressReleaseSeeder extends Seeder
 {
-    public function up(): void
+    public function run(): void
     {
         PressRelease::truncate();
 
@@ -26,9 +28,4 @@ return new class extends Migration
             'sort_order' => 1,
         ]);
     }
-
-    public function down(): void
-    {
-        PressRelease::truncate();
-    }
-};
+}
