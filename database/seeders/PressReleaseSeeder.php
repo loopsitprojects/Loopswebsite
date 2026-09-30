@@ -39,9 +39,6 @@ class PressReleaseSeeder extends Seeder
             $dubaiData['gallery_urls'] = [
                 ['url' => '/images/press/dubai-ai-campus-team.jpg', 'caption' => 'Loops Leadership at Dubai AI Campus, DIFC'],
                 ['url' => '/images/press/dubai-ai-campus-workspace.jpg', 'caption' => 'State-of-the-Art Workspaces at Dubai AI Campus'],
-                ['url' => '/images/press/dubai-ai-campus-bar.jpg', 'caption' => 'Collaboration Lounge & Cafe at Dubai AI Campus'],
-                ['url' => '/images/press/dubai-ai-campus-event.jpg', 'caption' => 'Founder Series Session at Dubai AI Campus'],
-                ['url' => '/images/press/dubai-ai-campus-difc.jpg', 'caption' => 'DIFC Innovation One, Dubai'],
             ];
         }
 
