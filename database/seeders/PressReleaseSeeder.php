@@ -42,7 +42,7 @@ class PressReleaseSeeder extends Seeder
             'title' => 'Loops Opens New Office at Dubai AI Campus, Strengthening Its MENA Presence',
             'slug' => 'loops-opens-new-office-at-dubai-ai-campus-strengthening-its-mena-presence',
             'category' => 'Achievement',
-            'published_date' => '2026-09-30',
+            'published_date' => '2026-09-20',
             'author' => null,
             'publisher' => 'Loops Integrated',
             'external_link' => null,
