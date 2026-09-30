@@ -190,6 +190,11 @@ export interface Job {
   created_at: string
 }
 
+export interface PressGalleryItem {
+  url: string
+  caption?: string | null
+}
+
 export interface PressItem {
   id: number
   title: string
@@ -204,6 +209,7 @@ export interface PressItem {
   content?: string | null
   image_url?: string | null
   video_url?: string | null
+  gallery?: PressGalleryItem[]
   is_featured: boolean
   sort_order: number
 }

@@ -134,6 +134,34 @@ class PressReleaseResource extends Resource
                                     ->maxLength(1000)
                                     ->helperText('Optional: Add a video link to be embedded on the story page.')
                                     ->columnSpanFull(),
+
+                                Forms\Components\Section::make('Photo Gallery')
+                                    ->description('Add multiple photos for this achievement/story gallery.')
+                                    ->schema([
+                                        SpatieMediaLibraryFileUpload::make('gallery')
+                                            ->label('Upload Gallery Photos')
+                                            ->collection('gallery')
+                                            ->multiple()
+                                            ->image()
+                                            ->reorderable()
+                                            ->columnSpanFull(),
+
+                                        Forms\Components\Repeater::make('gallery_urls')
+                                            ->label('Or: Image URLs Gallery')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('url')
+                                                    ->label('Image URL')
+                                                    ->placeholder('/images/press/photo.jpg or https://...')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('caption')
+                                                    ->label('Caption (Optional)'),
+                                            ])
+                                            ->columns(2)
+                                            ->columnSpanFull()
+                                            ->collapsible(),
+                                    ])
+                                    ->collapsible()
+                                    ->columnSpanFull(),
                             ]),
                     ])
                     ->columnSpanFull(),

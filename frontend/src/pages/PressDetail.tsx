@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { api, PressItem, resolveImageUrl } from '@/lib/api'
 import ParticleField from '@/components/ui/ParticleField'
 
@@ -10,6 +10,23 @@ export default function PressDetail() {
   const [item, setItem] = useState<PressItem | null>(null)
   const [related, setRelated] = useState<PressItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
+
+  useEffect(() => {
+    if (!isLightboxOpen || !item?.gallery || item.gallery.length === 0) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsLightboxOpen(false)
+      if (e.key === 'ArrowRight') {
+        setActiveImageIndex(prev => (prev + 1) % item.gallery!.length)
+      }
+      if (e.key === 'ArrowLeft') {
+        setActiveImageIndex(prev => (prev - 1 + item.gallery!.length) % item.gallery!.length)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isLightboxOpen, item?.gallery])
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -234,7 +251,58 @@ export default function PressDetail() {
             <p className="text-white/60">{item.excerpt}</p>
           )}
 
+          {/* Photo Gallery Section */}
+          {item.gallery && item.gallery.length > 0 && (
+            <div className="pt-10 sm:pt-14 border-t border-white/10 mt-10 sm:mt-14">
+              <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-widest text-brand-pink">
+                    Photo Gallery
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mt-1">
+                    Event &amp; Office Highlights
+                  </h3>
+                </div>
+                <span className="text-xs text-white/50">
+                  {item.gallery.length} photos · Click to view full size
+                </span>
+              </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {item.gallery.map((photo, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => {
+                      setActiveImageIndex(idx)
+                      setIsLightboxOpen(true)
+                    }}
+                    className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-black/60 border border-white/10 hover:border-brand-pink/60 cursor-pointer shadow-lg transition-all"
+                  >
+                    <img
+                      src={resolveImageUrl(photo.url)}
+                      alt={photo.caption || `${item.title} photo ${idx + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3.5">
+                      <span className="self-end w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                        </svg>
+                      </span>
+                      {photo.caption && (
+                        <p className="text-xs text-white font-medium line-clamp-2">
+                          {photo.caption}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Navigation Footer */}
           <div className="mt-8 flex items-center">
@@ -320,6 +388,81 @@ export default function PressDetail() {
           </section>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && item?.gallery && item.gallery[activeImageIndex] && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-8"
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-6 right-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer z-50"
+              aria-label="Close lightbox"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Main Lightbox Content */}
+            <div className="relative max-w-6xl max-h-[90vh] w-full h-full flex flex-col items-center justify-center">
+              <img
+                src={resolveImageUrl(item.gallery[activeImageIndex].url)}
+                alt={item.gallery[activeImageIndex].caption || `${item.title} image`}
+                className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl border border-white/10"
+              />
+
+              {/* Caption & Counter */}
+              <div className="mt-4 text-center px-4 max-w-2xl">
+                {item.gallery[activeImageIndex].caption && (
+                  <p className="text-white text-base sm:text-lg font-medium">
+                    {item.gallery[activeImageIndex].caption}
+                  </p>
+                )}
+                <span className="text-xs text-white/50 mt-1 inline-block">
+                  {activeImageIndex + 1} / {item.gallery.length}
+                </span>
+              </div>
+
+              {/* Prev / Next Navigation Buttons (if more than 1 image) */}
+              {item.gallery.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : item.gallery!.length - 1))
+                    }}
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-white/10 text-white hover:bg-brand-pink transition-all cursor-pointer backdrop-blur-md"
+                    aria-label="Previous image"
+                  >
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveImageIndex((prev) => (prev + 1) % item.gallery!.length)
+                    }}
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-white/10 text-white hover:bg-brand-pink transition-all cursor-pointer backdrop-blur-md"
+                    aria-label="Next image"
+                  >
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

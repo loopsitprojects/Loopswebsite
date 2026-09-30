@@ -92,6 +92,7 @@ class PressReleaseController extends Controller
             'content'        => $pr->content,
             'image_url'      => $imageUrl,
             'video_url'      => $pr->video_url,
+            'gallery'        => $pr->getFormattedGallery(),
             'is_featured'    => (bool) $pr->is_featured,
             'sort_order'     => (int) $pr->sort_order,
         ];

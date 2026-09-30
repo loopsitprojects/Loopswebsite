@@ -24,6 +24,7 @@ class PressRelease extends Model implements HasMedia
         'content',
         'image_url',
         'video_url',
+        'gallery_urls',
         'is_featured',
         'published',
         'sort_order',
@@ -34,6 +35,7 @@ class PressRelease extends Model implements HasMedia
         'is_featured'    => 'boolean',
         'published'      => 'boolean',
         'sort_order'     => 'integer',
+        'gallery_urls'   => 'array',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -49,6 +51,9 @@ class PressRelease extends Model implements HasMedia
         $this->addMediaCollection('image')
             ->singleFile()
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/avif']);
+
+        $this->addMediaCollection('gallery')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/avif']);
     }
 
     public function getImageUrlAttribute(): ?string
@@ -63,5 +68,42 @@ class PressRelease extends Model implements HasMedia
         }
 
         return null;
+    }
+
+    public function getFormattedGallery(): array
+    {
+        $gallery = [];
+
+        foreach ($this->getMedia('gallery') as $m) {
+            $gallery[] = [
+                'url'     => $m->getUrl(),
+                'caption' => $m->getCustomProperty('caption') ?? null,
+            ];
+        }
+
+        if (is_array($this->gallery_urls)) {
+            foreach ($this->gallery_urls as $item) {
+                if (is_string($item)) {
+                    $url = $item;
+                    $caption = null;
+                } elseif (is_array($item) && isset($item['url'])) {
+                    $url = $item['url'];
+                    $caption = $item['caption'] ?? null;
+                } else {
+                    continue;
+                }
+
+                if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+                    $url = asset(ltrim($url, '/'));
+                }
+
+                $gallery[] = [
+                    'url'     => $url,
+                    'caption' => $caption,
+                ];
+            }
+        }
+
+        return $gallery;
     }
 }
