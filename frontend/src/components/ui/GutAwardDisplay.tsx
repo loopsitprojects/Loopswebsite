@@ -252,7 +252,7 @@ export default function GutAwardDisplay({ group, award, className = '' }: GutAwa
                     }}
                     className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-white/10 hover:bg-brand-pink text-white/90 hover:text-white border border-white/20 hover:border-brand-pink transition-all duration-300 shadow-sm cursor-pointer group/btn"
                   >
-                    <span>{expanded ? 'Show less' : `See more (${remainingWins.length} more)`}</span>
+                    <span>{expanded ? 'Show less' : 'See more'}</span>
                     <motion.svg
                       animate={{ rotate: expanded ? 180 : 0 }}
                       transition={{ duration: 0.25 }}
