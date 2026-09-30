@@ -21,12 +21,14 @@ export default function WhatsAppFloat() {
     return () => observer.disconnect()
   }, [])
 
+  const isPressPage = location.pathname.startsWith('/press')
+
   if (isMenuOpen || location.pathname.startsWith('/careers')) return null
 
   return (
     <>
-      {/* Docked Floating Buttons - Icon-only for Mobile and Web */}
-      <div className="fixed top-1/2 -translate-y-1/2 right-0 z-40 flex flex-col items-end gap-3">
+      {/* Docked Floating Buttons - Icon-only for Mobile and Web (hidden on mobile on press pages) */}
+      <div className={`fixed top-1/2 -translate-y-1/2 right-0 z-40 flex-col items-end gap-3 ${isPressPage ? 'hidden sm:flex' : 'flex'}`}>
         {/* 1. Book a Consultation Button (Brand Purple) */}
         <motion.button
           onClick={() => setIsInquiryOpen(true)}

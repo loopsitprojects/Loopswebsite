@@ -72,7 +72,7 @@ export default function Press() {
         <ParticleField />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12 relative z-10">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}

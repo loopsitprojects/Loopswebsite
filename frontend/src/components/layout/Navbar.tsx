@@ -369,11 +369,27 @@ export default function Navbar() {
                 </Link>
               </motion.div>
 
-              {/* 4. Careers */}
+              {/* 4. Press & Achievements */}
               <motion.div
                 initial={{ x: -25, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.35 }}
+              >
+                <Link
+                  to="/press"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-white hover:text-brand-pink transition-colors py-1.5"
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 6.5vw, 3rem)', letterSpacing: '-0.02em' }}
+                >
+                  Press &amp; Achievements
+                </Link>
+              </motion.div>
+
+              {/* 5. Careers */}
+              <motion.div
+                initial={{ x: -25, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.25, duration: 0.35 }}
               >
                 <Link
                   to="/careers"
@@ -385,11 +401,11 @@ export default function Navbar() {
                 </Link>
               </motion.div>
 
-              {/* 5. Contact */}
+              {/* 6. Contact */}
               <motion.div
                 initial={{ x: -25, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.25, duration: 0.35 }}
+                transition={{ delay: 0.3, duration: 0.35 }}
               >
                 <Link
                   to="/contact"

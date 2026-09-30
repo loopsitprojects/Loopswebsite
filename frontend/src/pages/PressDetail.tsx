@@ -38,23 +38,6 @@ export default function PressDetail() {
       })
   }, [slug])
 
-  const getCategoryColor = (cat?: string) => {
-    switch ((cat || '').toLowerCase()) {
-      case 'award win':
-        return 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-      case 'achievement':
-        return 'bg-brand-pink/15 text-brand-pink border-brand-pink/30'
-      case 'press release':
-        return 'bg-blue-500/15 text-blue-300 border-blue-500/30'
-      case 'media coverage':
-        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-      case 'milestone':
-        return 'bg-purple-500/15 text-purple-300 border-purple-500/30'
-      default:
-        return 'bg-white/10 text-white/90 border-white/20'
-    }
-  }
-
   // Helper to extract YouTube video ID
   const extractYouTubeId = (url?: string | null) => {
     if (!url) return ''
@@ -149,7 +132,7 @@ export default function PressDetail() {
   }
 
   return (
-    <div className="bg-[#08080C] min-h-screen text-white pt-28 pb-10 sm:pb-16 relative overflow-hidden">
+    <div className="bg-[#08080C] min-h-screen text-white pt-24 sm:pt-28 pb-10 sm:pb-16 relative overflow-hidden">
       {/* Ambient background glows */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[700px] h-[500px] bg-brand-pink/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-10 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] pointer-events-none" />
@@ -157,9 +140,9 @@ export default function PressDetail() {
         <ParticleField />
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-5xl mx-auto px-5 sm:px-6 md:px-12 relative z-10">
         {/* Top Navigation Row */}
-        <div className="mb-10 flex items-center justify-between">
+        <div className="mb-6 sm:mb-10 flex items-center justify-between">
           <Link
             to="/press"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/60 hover:text-brand-pink transition-colors duration-200 group"
@@ -167,10 +150,6 @@ export default function PressDetail() {
             <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
             <span>Back to All Press &amp; Achievements</span>
           </Link>
-
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-md ${getCategoryColor(item.category)}`}>
-            {item.category}
-          </span>
         </div>
 
         {/* Article Header */}
@@ -178,10 +157,10 @@ export default function PressDetail() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-10 md:mb-12"
+          className="mb-8 md:mb-12"
         >
           {/* Metadata Line */}
-          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white/50 mb-4">
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white/50 mb-3 sm:mb-4">
             {item.published_date_formatted && (
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -193,29 +172,17 @@ export default function PressDetail() {
                 {item.published_date_formatted}
               </span>
             )}
-            {item.publisher && (
-              <>
-                <span>•</span>
-                <span className="text-white/80 font-medium">Published via {item.publisher}</span>
-              </>
-            )}
-            {item.author && (
-              <>
-                <span>•</span>
-                <span>By {item.author}</span>
-              </>
-            )}
           </div>
 
           {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.12] tracking-tight text-white mb-6">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-extrabold leading-[1.2] sm:leading-[1.12] tracking-tight text-white mb-0 sm:mb-6">
             {item.title}
           </h1>
 
-          {/* Excerpt Lead Box */}
+          {/* Excerpt Lead Box - Hidden in mobile view */}
           {item.excerpt && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.04] border-l-4 border-brand-pink border-y border-r border-white/10 backdrop-blur-sm">
-              <p className="text-base sm:text-xl text-white/90 font-medium leading-relaxed italic">
+            <div className="hidden sm:block p-4 sm:p-6 rounded-2xl bg-white/[0.04] border-l-4 border-brand-pink border-y border-r border-white/10 backdrop-blur-sm">
+              <p className="text-sm sm:text-lg md:text-xl text-white/90 font-medium leading-relaxed italic">
                 "{item.excerpt}"
               </p>
             </div>
