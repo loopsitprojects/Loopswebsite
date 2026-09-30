@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import InquiryModal from '@/components/ui/InquiryModal'
 
 export default function WhatsAppFloat() {
+  const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isInquiryOpen, setIsInquiryOpen] = useState(false)
 
@@ -19,7 +21,7 @@ export default function WhatsAppFloat() {
     return () => observer.disconnect()
   }, [])
 
-  if (isMenuOpen) return null
+  if (isMenuOpen || location.pathname.startsWith('/careers')) return null
 
   return (
     <>

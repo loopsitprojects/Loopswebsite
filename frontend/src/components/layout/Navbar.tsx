@@ -6,9 +6,10 @@ import NavLogoWebGL from '@/components/ui/NavLogoWebGL'
 
 // Top-level desktop links
 const topLinks = [
-  { label: 'Work',    href: '/work' },
-  { label: 'About',   href: '/about' },
-  { label: 'Careers', href: '/careers' },
+  { label: 'Work',                 href: '/work' },
+  { label: 'About',                href: '/about' },
+  { label: 'Press & Achievements', href: '/press' },
+  { label: 'Careers',              href: '/careers' },
 ]
 
 // Sub-pages under "Integrated" dropdown
@@ -33,6 +34,7 @@ const allMobileLinks = [
   { label: 'AI Content',            href: '/ai-content' },
   { label: 'Performance Marketing', href: '/performance-marketing' },
   { label: 'Events & Experiences',  href: '/events' },
+  { label: 'Press & Achievements',  href: '/press' },
   { label: 'Careers',               href: '/careers' },
   { label: 'Contact',               href: '/contact' },
 ]
@@ -110,18 +112,18 @@ export default function Navbar() {
           </Link>
 
           {/* Centered Desktop Nav */}
-          <div className="hidden lg:flex items-center justify-center gap-9 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
             {/* Work */}
             {topLinks.slice(0, 1).map(link => (
               <Link
                 key={link.href}
                 to={link.href}
                 className={`transition-all duration-200 relative drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] after:absolute after:bottom-0 after:left-0 after:h-px after:bg-white after:transition-all after:duration-300 ${
-                  location.pathname === link.href
+                  location.pathname === link.href || (link.href === '/press' && location.pathname === '/pr')
                     ? 'text-white font-bold after:w-full'
                     : 'text-white/90 hover:text-white font-semibold after:w-0 hover:after:w-full'
                 }`}
-                style={{ fontFamily: "'Poppins', sans-serif", fontSize: '0.92rem' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: '0.90rem' }}
               >
                 {link.label}
               </Link>
@@ -218,17 +220,17 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Events + Careers */}
+            {/* Trailing desktop links (About, Press & Achievements, Careers) */}
             {topLinks.slice(1).map(link => (
               <Link
                 key={link.href}
                 to={link.href}
                 className={`transition-all duration-200 relative drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] after:absolute after:bottom-0 after:left-0 after:h-px after:bg-white after:transition-all after:duration-300 ${
-                  location.pathname === link.href
+                  location.pathname === link.href || (link.href === '/press' && location.pathname === '/pr')
                     ? 'text-white font-bold after:w-full'
                     : 'text-white/90 hover:text-white font-semibold after:w-0 hover:after:w-full'
                 }`}
-                style={{ fontFamily: "'Poppins', sans-serif", fontSize: '0.92rem' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: '0.90rem' }}
               >
                 {link.label}
               </Link>

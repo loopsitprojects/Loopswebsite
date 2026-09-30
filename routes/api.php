@@ -34,6 +34,10 @@ Route::prefix('v1')->group(function () {
     // Awards
     Route::get('/awards', [AwardController::class, 'index']);
 
+    // Press Releases & Achievements
+    Route::get('/press', [\App\Http\Controllers\Api\PressReleaseController::class, 'index']);
+    Route::get('/press/{slug}', [\App\Http\Controllers\Api\PressReleaseController::class, 'show']);
+
     // Page sections (CMS content)
     Route::get('/pages/{page}', [PageSectionController::class, 'show']);
     Route::get('/pages/{page}/{section}', [PageSectionController::class, 'section']);

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { motion, useSpring } from 'framer-motion'
+import { motion, useSpring, AnimatePresence } from 'framer-motion'
 import { Award, resolveImageUrl } from '@/lib/api'
 
 import AwardCircleWebGL from '@/components/ui/AwardCircleWebGL'
@@ -49,6 +49,8 @@ export function getCleanAwardImage(bodyName: string, tier?: string, rawBg?: stri
 export default function GutAwardDisplay({ group, award, className = '' }: GutAwardDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const INITIAL_LIMIT = 4
 
   // Smooth 3D tilt spring physics
   const springConfig = { stiffness: 200, damping: 20 }
@@ -187,12 +189,13 @@ export default function GutAwardDisplay({ group, award, className = '' }: GutAwa
           {bodyName}
         </h3>
 
-        {/* ── WIN SUMMARY LINES ── */}
-        <div
-          className="space-y-2.5 text-center text-white/70 font-sans text-sm sm:text-base leading-relaxed max-w-md"
-          style={{ transform: 'translateZ(20px)' }}
-        >
-          {winsList.map((win, idx) => {
+        {/* ── WIN SUMMARY LINES (LATEST 4 AT FIRST GLANCE WITH EXPANDER) ── */}
+        {(() => {
+          const sortedWins = [...winsList].sort((a, b) => (b.year || 0) - (a.year || 0))
+          const initialWins = sortedWins.slice(0, INITIAL_LIMIT)
+          const remainingWins = sortedWins.slice(INITIAL_LIMIT)
+
+          const renderWinItem = (win: typeof winsList[0], idx: number) => {
             const yearStr = win.year ? `${win.year}.` : ''
             const catStr = (win.category || win.tier) ? `${win.category || win.tier}.` : ''
 
@@ -215,8 +218,57 @@ export default function GutAwardDisplay({ group, award, className = '' }: GutAwa
                 <span>{brandCampaign}</span>
               </p>
             )
-          })}
-        </div>
+          }
+
+          return (
+            <div
+              className="space-y-2.5 text-center text-white/70 font-sans text-sm sm:text-base leading-relaxed max-w-md w-full"
+              style={{ transform: 'translateZ(20px)' }}
+            >
+              {initialWins.map((win, idx) => renderWinItem(win, idx))}
+
+              <AnimatePresence initial={false}>
+                {expanded && (
+                  <motion.div
+                    key="expanded-wins"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="space-y-2.5 overflow-hidden pt-2.5"
+                  >
+                    {remainingWins.map((win, idx) => renderWinItem(win, INITIAL_LIMIT + idx))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {remainingWins.length > 0 && (
+                <div className="pt-3">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setExpanded(!expanded)
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-white/10 hover:bg-brand-pink text-white/90 hover:text-white border border-white/20 hover:border-brand-pink transition-all duration-300 shadow-sm cursor-pointer group/btn"
+                  >
+                    <span>{expanded ? 'Show less' : `See more (${remainingWins.length} more)`}</span>
+                    <motion.svg
+                      animate={{ rotate: expanded ? 180 : 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="w-3.5 h-3.5 text-white/70 group-hover/btn:text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        })()}
       </motion.div>
     </div>
   )

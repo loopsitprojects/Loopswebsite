@@ -46,6 +46,9 @@ class NewsletterSubscriberController extends Controller
                     'ip_address' => $ip,
                 ]);
             }
+
+            \App\Services\NewsletterWebhookService::send($subscriber, 'subscriber.updated');
+
             return response()->json([
                 'success' => true,
                 'message' => 'You are already subscribed to our newsletter!',
@@ -54,11 +57,14 @@ class NewsletterSubscriberController extends Controller
         }
 
         $subscriber = NewsletterSubscriber::create([
-            'email'      => $email,
-            'status'     => 'subscribed',
-            'source'     => $source,
-            'ip_address' => $ip,
+            'email'          => $email,
+            'status'         => 'subscribed',
+            'source'         => $source,
+            'ip_address'     => $ip,
+            'webhook_status' => 'pending',
         ]);
+
+        \App\Services\NewsletterWebhookService::send($subscriber, 'subscriber.created');
 
         return response()->json([
             'success' => true,

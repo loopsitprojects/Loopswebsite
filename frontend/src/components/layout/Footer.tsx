@@ -15,10 +15,11 @@ const footerLinks = {
     { label: 'Events & Experiences',  href: '/events' },
   ],
   Company: [
-    { label: 'About Us',       href: '/about' },
-    { label: 'Our Work',       href: '/work' },
-    { label: 'Careers',        href: '/careers' },
-    { label: 'Contact Us',     href: '/contact' },
+    { label: 'About Us',             href: '/about' },
+    { label: 'Our Work',             href: '/work' },
+    { label: 'Press & Achievements', href: '/press' },
+    { label: 'Careers',              href: '/careers' },
+    { label: 'Contact Us',           href: '/contact' },
   ],
 }
 
@@ -131,7 +132,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-dark border-t border-white/5">
       {/* Main footer */}
-      <div className="section-padding py-20">
+      <div className="section-padding py-12 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
 
           {/* Brand col */}

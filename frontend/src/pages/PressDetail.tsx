@@ -1,0 +1,358 @@
+import { useEffect, useState } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { api, PressItem, resolveImageUrl } from '@/lib/api'
+import ParticleField from '@/components/ui/ParticleField'
+
+export default function PressDetail() {
+  const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
+  const [item, setItem] = useState<PressItem | null>(null)
+  const [related, setRelated] = useState<PressItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    if (!slug) return
+
+    setLoading(true)
+    api.press.show(slug)
+      .then(res => {
+        if (res && res.data) {
+          setItem(res.data)
+          document.title = `${res.data.title} | Loops Integrated`
+        }
+        return api.press.list()
+      })
+      .then(res => {
+        if (res && res.data) {
+          // Filter out current story and take related stories for horizontal carousel / grid
+          const other = res.data.filter(i => i.slug !== slug).slice(0, 6)
+          setRelated(other)
+        }
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Failed to load press story:', err)
+        setLoading(false)
+      })
+  }, [slug])
+
+  const getCategoryColor = (cat?: string) => {
+    switch ((cat || '').toLowerCase()) {
+      case 'award win':
+        return 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+      case 'achievement':
+        return 'bg-brand-pink/15 text-brand-pink border-brand-pink/30'
+      case 'press release':
+        return 'bg-blue-500/15 text-blue-300 border-blue-500/30'
+      case 'media coverage':
+        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+      case 'milestone':
+        return 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+      default:
+        return 'bg-white/10 text-white/90 border-white/20'
+    }
+  }
+
+  // Helper to extract YouTube video ID
+  const extractYouTubeId = (url?: string | null) => {
+    if (!url) return ''
+    if (url.includes('youtu.be/')) {
+      return url.split('youtu.be/')[1]?.split('?')[0] || ''
+    }
+    try {
+      const parsed = new URL(url)
+      return parsed.searchParams.get('v') || url.split('/').pop()?.split('?')[0] || ''
+    } catch {
+      return ''
+    }
+  }
+
+  // Helper to extract Vimeo video ID
+  const extractVimeoId = (url?: string | null) => {
+    if (!url) return ''
+    const match = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)/)
+    return match ? match[1] : url.split('/').pop()?.split('?')[0] || ''
+  }
+
+  // Render video player
+  const renderVideoPlayer = (url: string, poster?: string | null) => {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const id = extractYouTubeId(url)
+      return (
+        <div className="relative w-full aspect-[16/9] rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl border border-white/10">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${id}?rel=0&autoplay=0`}
+            title={item?.title || 'Video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )
+    }
+
+    if (url.includes('vimeo.com')) {
+      const id = extractVimeoId(url)
+      return (
+        <div className="relative w-full aspect-[16/9] rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl border border-white/10">
+          <iframe
+            className="w-full h-full"
+            src={`https://player.vimeo.com/video/${id}?autoplay=0`}
+            title={item?.title || 'Video'}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )
+    }
+
+    // Direct MP4 / WebM video file
+    return (
+      <div className="relative w-full aspect-[16/9] rounded-2xl md:rounded-3xl overflow-hidden bg-black shadow-2xl border border-white/10">
+        <video
+          src={resolveImageUrl(url)}
+          poster={poster ? resolveImageUrl(poster) : undefined}
+          controls
+          playsInline
+          className="w-full h-full object-contain"
+        />
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="bg-[#08080C] min-h-screen text-white flex items-center justify-center pt-20">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-2 border-brand-pink border-t-transparent rounded-full animate-spin" />
+          <p className="text-white/40 text-xs font-mono tracking-widest uppercase">Loading Story...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!item) {
+    return (
+      <div className="bg-[#08080C] min-h-screen text-white flex flex-col items-center justify-center p-6 text-center pt-28">
+        <h1 className="text-3xl font-display font-bold mb-4">Story Not Found</h1>
+        <p className="text-white/50 mb-8 max-w-md">The news article or achievement you are looking for may have been moved or unpublished.</p>
+        <Link
+          to="/press"
+          className="px-6 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-brand-pink hover:text-white transition-all duration-300"
+        >
+          ← Return to Press &amp; Achievements
+        </Link>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-[#08080C] min-h-screen text-white pt-28 pb-10 sm:pb-16 relative overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[700px] h-[500px] bg-brand-pink/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 right-10 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute inset-0 h-[650px] overflow-hidden pointer-events-none opacity-30">
+        <ParticleField />
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Top Navigation Row */}
+        <div className="mb-10 flex items-center justify-between">
+          <Link
+            to="/press"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/60 hover:text-brand-pink transition-colors duration-200 group"
+          >
+            <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
+            <span>Back to All Press &amp; Achievements</span>
+          </Link>
+
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-md ${getCategoryColor(item.category)}`}>
+            {item.category}
+          </span>
+        </div>
+
+        {/* Article Header */}
+        <motion.header
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-10 md:mb-12"
+        >
+          {/* Metadata Line */}
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white/50 mb-4">
+            {item.published_date_formatted && (
+              <span className="flex items-center gap-1.5">
+                <svg className="w-4 h-4 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                {item.published_date_formatted}
+              </span>
+            )}
+            {item.publisher && (
+              <>
+                <span>•</span>
+                <span className="text-white/80 font-medium">Published via {item.publisher}</span>
+              </>
+            )}
+            {item.author && (
+              <>
+                <span>•</span>
+                <span>By {item.author}</span>
+              </>
+            )}
+          </div>
+
+          {/* Main Title */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.12] tracking-tight text-white mb-6">
+            {item.title}
+          </h1>
+
+          {/* Excerpt Lead Box */}
+          {item.excerpt && (
+            <div className="p-5 sm:p-6 rounded-2xl bg-white/[0.04] border-l-4 border-brand-pink border-y border-r border-white/10 backdrop-blur-sm">
+              <p className="text-base sm:text-xl text-white/90 font-medium leading-relaxed italic">
+                "{item.excerpt}"
+              </p>
+            </div>
+          )}
+        </motion.header>
+
+        {/* Media Section: Video or Featured Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mb-12 md:mb-16"
+        >
+          {item.video_url ? (
+            <div>
+              {renderVideoPlayer(item.video_url, item.image_url)}
+            </div>
+          ) : item.image_url ? (
+            <div className="relative rounded-2xl md:rounded-3xl overflow-hidden aspect-[16/10] md:aspect-[16/9] max-h-[640px] w-full bg-black shadow-2xl border border-white/15 flex items-center justify-center">
+              {/* Ambient backdrop */}
+              <img
+                src={resolveImageUrl(item.image_url)}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-35 scale-125"
+              />
+              {/* Full crisp poster / image */}
+              <img
+                src={resolveImageUrl(item.image_url)}
+                alt={item.title}
+                className="relative z-10 w-full h-full object-contain max-h-[640px]"
+              />
+            </div>
+          ) : null}
+        </motion.div>
+
+        {/* Full Article Content */}
+        <motion.article
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="max-w-3xl mx-auto space-y-6 text-white/80 text-base sm:text-lg leading-relaxed font-sans"
+        >
+          {item.content ? (
+            <div className="space-y-6 whitespace-pre-line">
+              {item.content}
+            </div>
+          ) : (
+            <p className="text-white/60">{item.excerpt}</p>
+          )}
+
+
+
+          {/* Navigation Footer */}
+          <div className="mt-8 flex items-center">
+            <Link
+              to="/press"
+              className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition-colors duration-200"
+            >
+              ← Back to All Press &amp; Achievements
+            </Link>
+          </div>
+        </motion.article>
+
+        {/* More Stories / Related Achievements */}
+        {related.length > 0 && (
+          <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10">
+            <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8">
+              <h2 className="text-lg sm:text-2xl md:text-3xl font-display font-bold text-white leading-tight">
+                More Press &amp; Achievements
+              </h2>
+              <Link
+                to="/press"
+                className="text-xs sm:text-sm font-semibold text-brand-pink hover:text-white transition-colors duration-200 whitespace-nowrap shrink-0 inline-flex items-center gap-1 group"
+              >
+                <span>View all stories</span>
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
+
+            {/* Mobile horizontal scroll / Desktop 3-column grid */}
+            <div className="flex md:grid md:grid-cols-3 gap-5 md:gap-6 overflow-x-auto md:overflow-visible pb-3 md:pb-0 pt-1 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory scrollbar-none no-scrollbar">
+              {related.map(rel => (
+                <Link
+                  key={rel.id}
+                  to={`/press/${rel.slug}`}
+                  className="w-[82vw] max-w-[320px] md:w-auto shrink-0 md:shrink snap-start group rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-brand-pink/50 transition-all duration-300 flex flex-col overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                >
+                  <div className="aspect-[16/10] relative overflow-hidden bg-black/60">
+                    {rel.image_url ? (
+                      <div className="relative w-full h-full overflow-hidden flex items-center justify-center bg-black/80">
+                        {/* Ambient glow backdrop */}
+                        <img
+                          src={resolveImageUrl(rel.image_url)}
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125"
+                        />
+                        {/* Full image properly contained */}
+                        <img
+                          src={resolveImageUrl(rel.image_url)}
+                          alt={rel.title}
+                          className="relative z-10 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-purple/20 to-brand-pink/20 text-white/30 text-xs font-mono">
+                        Loops Media
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-5 flex flex-col flex-1 justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 text-[11px] text-white/50 mb-2">
+                        {rel.published_date_formatted && <span>{rel.published_date_formatted}</span>}
+                      </div>
+                      <h3 className="text-base font-display font-bold text-white group-hover:text-brand-pink transition-colors duration-200 line-clamp-2 mb-2">
+                        {rel.title}
+                      </h3>
+                      {rel.excerpt && (
+                        <p className="text-white/60 text-xs line-clamp-2 leading-relaxed">
+                          {rel.excerpt}
+                        </p>
+                      )}
+                    </div>
+                    <div className="pt-3 mt-3 border-t border-white/5 text-xs font-semibold text-brand-pink inline-flex items-center gap-1">
+                      <span>Read Story</span>
+                      <span>→</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
+  )
+}

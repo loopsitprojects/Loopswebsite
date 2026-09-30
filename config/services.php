@@ -36,6 +36,13 @@ return [
         'webhook_token' => env('LOOPS_HR_WEBHOOK_TOKEN'),
     ],
 
+    'newsletter_webhook' => [
+        'url' => env('NEWSLETTER_WEBHOOK_URL'),
+        'token' => env('NEWSLETTER_WEBHOOK_TOKEN'),
+        'secret' => env('NEWSLETTER_WEBHOOK_SECRET'),
+        'enabled' => env('NEWSLETTER_WEBHOOK_ENABLED', true),
+    ],
+
     'admin_otp' => [
         'recipient_email' => env('ADMIN_OTP_RECIPIENT_EMAIL'),
     ],

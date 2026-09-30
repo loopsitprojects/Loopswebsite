@@ -180,8 +180,8 @@
   }
 
   /* Horizontal scrollable without scrollbar */
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar, .scrollbar-none::-webkit-scrollbar { display: none; }
+  .no-scrollbar, .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
   /* Fluid type sizes */
   .fluid-hero { font-size: clamp(3.5rem, 10vw, 12rem); }

@@ -14,9 +14,13 @@ class NewsletterSubscriber extends Model
         'status',
         'source',
         'ip_address',
+        'webhook_status',
+        'webhook_synced_at',
+        'webhook_response',
     ];
 
     protected $casts = [
+        'webhook_synced_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

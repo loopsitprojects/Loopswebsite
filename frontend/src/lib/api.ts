@@ -190,6 +190,24 @@ export interface Job {
   created_at: string
 }
 
+export interface PressItem {
+  id: number
+  title: string
+  slug: string
+  category: string
+  published_date: string | null
+  published_date_formatted: string | null
+  author?: string | null
+  publisher?: string | null
+  external_link?: string | null
+  excerpt?: string | null
+  content?: string | null
+  image_url?: string | null
+  video_url?: string | null
+  is_featured: boolean
+  sort_order: number
+}
+
 export interface PaginatedResponse<T> {
   data: T[]
   meta: {
@@ -267,6 +285,11 @@ export const api = {
   },
   awards: {
     list: () => get<{ data: Award[] }>('/awards'),
+  },
+  press: {
+    list: (params?: { category?: string; featured?: boolean; q?: string }) =>
+      get<{ data: PressItem[]; categories: string[] }>('/press', params as Record<string, string | number | boolean>),
+    show: (slug: string) => get<{ data: PressItem }>(`/press/${slug}`),
   },
   jobDepartments: {
     list: () => get<{ data: JobDepartment[] }>('/job-departments'),

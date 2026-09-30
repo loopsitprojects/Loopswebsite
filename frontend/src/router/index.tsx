@@ -10,6 +10,8 @@ import Contact from '@/pages/Contact'
 import Careers from '@/pages/Careers'
 import Privacy from '@/pages/Privacy'
 import Terms from '@/pages/Terms'
+import Press from '@/pages/Press'
+import PressDetail from '@/pages/PressDetail'
 import NotFound from '@/pages/NotFound'
 
 const getBasename = () => {
@@ -34,6 +36,10 @@ export const router = createBrowserRouter([
       { path: 'ai-content', element: <ServicePage /> },
       { path: 'performance-marketing', element: <ServicePage /> },
       { path: 'events', element: <Events /> },
+      { path: 'press', element: <Press /> },
+      { path: 'press/:slug', element: <PressDetail /> },
+      { path: 'pr', element: <Press /> },
+      { path: 'pr/:slug', element: <PressDetail /> },
       { path: 'contact', element: <Contact /> },
       { path: 'careers', element: <Careers /> },
       { path: 'privacy', element: <Privacy /> },

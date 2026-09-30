@@ -85,6 +85,16 @@ class NewsletterSubscriberResource extends Resource
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label('IP')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('webhook_status')
+                    ->label('Webhook')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'synced'  => 'success',
+                        'failed'  => 'danger',
+                        default   => 'warning',
+                    })
+                    ->tooltip(fn ($record) => $record->webhook_response)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Subscribed At')
                     ->dateTime('d M Y, H:i')
@@ -97,13 +107,62 @@ class NewsletterSubscriberResource extends Resource
                         'subscribed'   => 'Subscribed',
                         'unsubscribed' => 'Unsubscribed',
                     ]),
+                Tables\Filters\SelectFilter::make('webhook_status')
+                    ->label('Webhook Status')
+                    ->options([
+                        'synced'  => 'Synced',
+                        'failed'  => 'Failed',
+                        'pending' => 'Pending',
+                    ]),
             ])
             ->actions([
+                Actions\Action::make('send_webhook')
+                    ->label('Send Webhook')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('info')
+                    ->requiresConfirmation()
+                    ->action(function (NewsletterSubscriber $record) {
+                        $res = \App\Services\NewsletterWebhookService::send($record, 'subscriber.sync');
+                        if (!empty($res['success'])) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Webhook Sent Successfully')
+                                ->body("Dispatched {$record->email} to newsletter app.")
+                                ->success()
+                                ->send();
+                        } else {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Webhook Failed')
+                                ->body($res['error'] ?? $res['message'] ?? 'Could not dispatch webhook.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
+                    Actions\BulkAction::make('bulk_send_webhook')
+                        ->label('Sync to Newsletter App')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->color('primary')
+                        ->requiresConfirmation()
+                        ->action(function (\Illuminate\Database\Eloquent\Collection $records) {
+                            $synced = 0;
+                            $failed = 0;
+                            foreach ($records as $record) {
+                                $res = \App\Services\NewsletterWebhookService::send($record, 'subscriber.sync');
+                                if (!empty($res['success'])) {
+                                    $synced++;
+                                } else {
+                                    $failed++;
+                                }
+                            }
+                            \Filament\Notifications\Notification::make()
+                                ->title('Bulk Webhook Completed')
+                                ->body("Synced: {$synced} | Failed: {$failed}")
+                                ->send();
+                        }),
                     Actions\DeleteBulkAction::make(),
                 ]),
             ]);
