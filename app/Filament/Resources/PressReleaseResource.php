@@ -135,7 +135,7 @@ class PressReleaseResource extends Resource
                                     ->helperText('Optional: Add a video link to be embedded on the story page.')
                                     ->columnSpanFull(),
 
-                                Forms\Components\Section::make('Photo Gallery')
+                                Components\Section::make('Photo Gallery')
                                     ->description('Add multiple photos for this achievement/story gallery.')
                                     ->schema([
                                         SpatieMediaLibraryFileUpload::make('gallery')
