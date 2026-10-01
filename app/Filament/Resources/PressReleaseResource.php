@@ -174,7 +174,16 @@ class PressReleaseResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
-                    ->state(fn ($record) => $record->image_url)
+                    ->state(function ($record) {
+                        $url = $record->image_url;
+                        if (!$url) {
+                            return null;
+                        }
+                        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+                            return $url;
+                        }
+                        return asset(ltrim($url, '/'));
+                    })
                     ->square()
                     ->size(48),
 

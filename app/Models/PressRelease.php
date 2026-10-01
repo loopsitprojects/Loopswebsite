@@ -59,7 +59,7 @@ class PressRelease extends Model implements HasMedia
     public function getImageUrlAttribute(): ?string
     {
         $media = $this->getFirstMedia('image');
-        if ($media && file_exists($media->getPath())) {
+        if ($media) {
             return $media->getUrl();
         }
 
