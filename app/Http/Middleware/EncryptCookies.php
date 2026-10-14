@@ -12,6 +12,6 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'region', // geo-redirect opt-out, may be set by the static /uae site
+        //
     ];
 }

@@ -4,16 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Country-Based Homepage Redirect
+    | Country-Based Redirect
     |--------------------------------------------------------------------------
     |
-    | Visitors landing on the homepage from one of the listed countries are
-    | sent (302) to that country's regional site. Visitors can opt out with
-    | ?region=global, which sets a long-lived cookie.
+    | Every page request from one of the listed countries is sent (302) to the
+    | same path on that country's regional site, e.g. /work → /uae/work.
     |
     */
 
-    'enabled' => env('GEO_REDIRECT_ENABLED', true),
+    'enabled' => env('GEO_REDIRECT_ENABLED', false), // keep false on the /uae deployment to avoid a redirect loop
 
     // MaxMind GeoLite2-Country database (kept fresh by `php artisan geoip:update`)
     'database' => env('GEOIP_DATABASE', storage_path('app/geoip/GeoLite2-Country.mmdb')),
@@ -22,11 +21,9 @@ return [
 
     'license_key' => env('MAXMIND_LICENSE_KEY'),
 
-    // ISO country code => destination
+    // ISO country code => regional site prefix
     'redirects' => [
         'AE' => '/uae/',
     ],
-
-    'cookie' => 'region',
 
 ];
