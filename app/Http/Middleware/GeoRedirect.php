@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Sends visitors from configured countries to their regional site, keeping the
- * path and query string: /work/foo?x=1 → /uae/work/foo?x=1
+ * path and query string for real pages (/work/foo?x=1 → /uae/work/foo?x=1) and
+ * sending every other URL to the regional homepage (/random → /uae/).
  */
 class GeoRedirect
 {
@@ -26,7 +27,13 @@ class GeoRedirect
 
         if ($prefix) {
             $path = $request->path() === '/' ? '' : $request->path();
+            $path = config('geo.aliases')[$path] ?? $path;
             $query = $request->getQueryString();
+
+            if (! $this->isAllowedPath($path)) {
+                $path = '';
+                $query = null;
+            }
             $target = $request->getSchemeAndHttpHost() . rtrim($prefix, '/') . '/' . $path . ($query ? '?' . $query : '');
 
             return redirect()->away($target, 302)->header('Cache-Control', 'private, no-store');
@@ -44,9 +51,22 @@ class GeoRedirect
             && ! preg_match(self::BOT_PATTERN, (string) $request->userAgent());
     }
 
+    private function isAllowedPath(string $path): bool
+    {
+        foreach (config('geo.allowed_paths') as $pattern) {
+            if (preg_match($pattern, $path)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function isExcludedPath(Request $request): bool
     {
         return $request->is(
+            'api/*',
+            'storage/*', 'build/*', 'images/*', 'videos/*', 'fonts/*', 'css/*', 'js/*', 'vendor/*', 'works/*',
             'admin*',
             'livewire*',
             'loops-internal-portal*',

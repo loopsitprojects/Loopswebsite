@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/robots.txt', [RobotsController::class, 'index']);
+Route::redirect('/works', '/work', 301);
 
 // SPA catch-all — serves React frontend with server-side media preloading for fast image/video loading
 Route::get('/{any}', function () {
@@ -72,3 +73,6 @@ Route::get('/{any}', function () {
 
     return response('Front-end build file not found. Please run npm run build.', 404);
 })->where('any', '^(?!api|storage|works|livewire.*|vendor|build|fonts|css|js|images|videos|favicon\.ico|_debugbar|' . preg_quote(config('services.filament.path', 'loops-internal-portal'), '#') . ').*$');
+
+// Unmatched URLs still pass through the web middleware (incl. GeoRedirect) before 404ing
+Route::fallback(fn () => abort(404));

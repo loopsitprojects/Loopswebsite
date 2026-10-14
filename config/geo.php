@@ -26,4 +26,17 @@ return [
         'AE' => '/uae/',
     ],
 
+    // Paths renamed on the way to the regional site (exact match)
+    'aliases' => [
+        'works' => 'work',
+    ],
+
+    // Pages that exist on the regional site (mirrors frontend/src/router).
+    // Any other path is sent to the regional homepage instead.
+    'allowed_paths' => [
+        '#^$#',
+        '#^(about|work|creative|digital|play|tech|ai-content|performance-marketing|events|press|pr|contact|careers|privacy|terms)$#',
+        '#^(work|press|pr)/[A-Za-z0-9_-]+$#',
+    ],
+
 ];
