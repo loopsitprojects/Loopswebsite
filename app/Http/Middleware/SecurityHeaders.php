@@ -39,7 +39,7 @@ class SecurityHeaders
                 "frame-src 'self' https:; " .
                 "object-src 'none'; " .
                 "base-uri 'self'; " .
-                "form-action 'self';"
+                "form-action 'self' https://www.facebook.com;"
             );
         }
 

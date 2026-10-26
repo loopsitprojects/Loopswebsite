@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { api } from '@/lib/api'
+import { getRecaptchaToken } from '@/lib/recaptcha'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -64,20 +65,22 @@ export default function NewsletterCTA() {
 
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || submitting) return
     setSubmitting(true)
+    setErrorMessage('')
     try {
-      const res = await api.newsletter.subscribe(email, 'home_cta')
+      const recaptchaToken = await getRecaptchaToken('newsletter_subscribe')
+      const res = await api.newsletter.subscribe(email, 'home_cta', recaptchaToken)
       setSubmitted(true)
       setMessage(res.message || "You're in the loop!")
       setEmail('')
     } catch (err: any) {
       console.error('Subscription error:', err)
-      setSubmitted(true)
-      setMessage(err?.message || "Thank you! You're subscribed.")
+      setErrorMessage(err?.message || 'Subscription failed. Please check your email and try again.')
     } finally {
       setSubmitting(false)
     }
@@ -133,24 +136,34 @@ export default function NewsletterCTA() {
             <span className="label text-white">{message || "You're in the loop!"}</span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg">
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder={content.placeholder}
-              required
-              disabled={submitting}
-              className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-full px-6 py-4 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/30 transition-colors disabled:opacity-50"
-            />
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-8 py-4 bg-white text-brand-dark font-mono font-bold rounded-full hover:bg-white/90 transition-colors whitespace-nowrap label disabled:opacity-60"
-            >
-              {submitting ? 'Subscribing...' : content.cta_label}
-            </button>
-          </form>
+          <div className="max-w-lg">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={e => {
+                  setEmail(e.target.value)
+                  if (errorMessage) setErrorMessage('')
+                }}
+                placeholder={content.placeholder}
+                required
+                disabled={submitting}
+                className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-full px-6 py-4 text-white placeholder:text-white/40 focus:outline-none focus:bg-white/30 transition-colors disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="px-8 py-4 bg-white text-brand-dark font-mono font-bold rounded-full hover:bg-white/90 transition-colors whitespace-nowrap label disabled:opacity-60"
+              >
+                {submitting ? 'Subscribing...' : content.cta_label}
+              </button>
+            </form>
+            {errorMessage && (
+              <p className="mt-3 text-sm text-rose-200 bg-rose-950/40 border border-rose-500/30 rounded-2xl px-4 py-2 font-mono">
+                {errorMessage}
+              </p>
+            )}
+          </div>
         )}
 
         <div className="mt-8">

@@ -21,19 +21,31 @@ export function getRecaptchaToken(action: string): Promise<string | null> {
   return new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve(null)
 
+    let finished = false
+    const finish = (token: string | null) => {
+      if (finished) return
+      finished = true
+      clearTimeout(timer)
+      resolve(token)
+    }
+
+    const timer = setTimeout(() => {
+      finish(null)
+    }, 4000)
+
     const execute = () => {
       const grecaptcha = (window as any).grecaptcha
       if (grecaptcha && grecaptcha.execute) {
         grecaptcha.ready(() => {
           grecaptcha.execute(siteKey, { action })
-            .then((token: string) => resolve(token))
+            .then((token: string) => finish(token))
             .catch((err: any) => {
               console.warn('reCAPTCHA v3 execution error:', err)
-              resolve(null)
+              finish(null)
             })
         })
       } else {
-        resolve(null)
+        finish(null)
       }
     }
 
@@ -47,7 +59,7 @@ export function getRecaptchaToken(action: string): Promise<string | null> {
         document.head.appendChild(script)
       }
       script.addEventListener('load', execute, { once: true })
-      script.addEventListener('error', () => resolve(null), { once: true })
+      script.addEventListener('error', () => finish(null), { once: true })
     } else {
       execute()
     }

@@ -28,11 +28,13 @@ export default function Footer() {
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || submitting) return
     setSubmitting(true)
+    setErrorMessage('')
     try {
       const recaptchaToken = await getRecaptchaToken('newsletter_subscribe')
       const res = await api.newsletter.subscribe(email, 'footer', recaptchaToken)
@@ -41,8 +43,7 @@ export default function Footer() {
       setEmail('')
     } catch (err: any) {
       console.error('Footer newsletter error:', err)
-      setSubmitted(true)
-      setMessage(err?.message || "Thank you! You're subscribed.")
+      setErrorMessage(err?.message || 'Subscription failed. Please check your email and try again.')
     } finally {
       setSubmitting(false)
     }
@@ -209,12 +210,18 @@ export default function Footer() {
                 <input
                   type="email"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={e => {
+                    setEmail(e.target.value)
+                    if (errorMessage) setErrorMessage('')
+                  }}
                   placeholder="your@email.com"
                   required
                   disabled={submitting}
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-brand-pink transition-colors disabled:opacity-50"
                 />
+                {errorMessage && (
+                  <p className="text-rose-400 text-xs font-mono">{errorMessage}</p>
+                )}
                 <button
                   type="submit"
                   disabled={submitting}
