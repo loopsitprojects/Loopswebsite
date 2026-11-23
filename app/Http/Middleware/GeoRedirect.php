@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Sends visitors from configured countries to their regional site, keeping the
- * path and query string for real pages (/work/foo?x=1 → /uae/work/foo?x=1) and
- * sending every other URL to the regional homepage (/random → /uae/).
+ * path and query string for real pages (/work/foo?x=1 → /uae/work/foo?x=1, or
+ * https://uae.example.com/work/foo?x=1) and sending every other URL to the
+ * regional homepage (/random → /uae/).
  */
 class GeoRedirect
 {
@@ -34,7 +35,9 @@ class GeoRedirect
                 $path = '';
                 $query = null;
             }
-            $target = $request->getSchemeAndHttpHost() . rtrim($prefix, '/') . '/' . $path . ($query ? '?' . $query : '');
+            // Full URLs (another host) are used as-is; paths are relative to this site
+            $base = preg_match('#^https?://#', $prefix) ? $prefix : $request->getSchemeAndHttpHost() . $prefix;
+            $target = rtrim($base, '/') . '/' . $path . ($query ? '?' . $query : '');
 
             return redirect()->away($target, 302)->header('Cache-Control', 'private, no-store');
         }

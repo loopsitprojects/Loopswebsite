@@ -8,11 +8,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Every page request from one of the listed countries is sent (302) to the
-    | same path on that country's regional site, e.g. /work → /uae/work.
+    | same path on that country's regional site, e.g. /work →
+    | https://uae.loopsintegrated.com/work. A target may be a full URL on
+    | another host or a path on this site.
     |
     */
 
-    'enabled' => env('GEO_REDIRECT_ENABLED', false), // keep false on the /uae deployment to avoid a redirect loop
+    'enabled' => env('GEO_REDIRECT_ENABLED', false),
 
     // MaxMind GeoLite2-Country database (kept fresh by `php artisan geoip:update`)
     'database' => env('GEOIP_DATABASE', storage_path('app/geoip/GeoLite2-Country.mmdb')),
@@ -21,9 +23,9 @@ return [
 
     'license_key' => env('MAXMIND_LICENSE_KEY'),
 
-    // ISO country code => regional site prefix
+    // ISO country code => regional site (path prefix or full URL)
     'redirects' => [
-        'AE' => '/uae/',
+        'AE' => env('GEO_REDIRECT_AE', 'https://uae.loopsintegrated.com'),
     ],
 
     // Paths renamed on the way to the regional site (exact match)
