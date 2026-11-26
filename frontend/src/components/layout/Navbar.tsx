@@ -8,7 +8,7 @@ import NavLogoWebGL from '@/components/ui/NavLogoWebGL'
 const topLinks = [
   { label: 'Work',                 href: '/work' },
   { label: 'About',                href: '/about' },
-  { label: 'Press & Achievements', href: '/press' },
+  { label: 'Loops Lately', href: '/press' },
   { label: 'Careers',              href: '/careers' },
 ]
 
@@ -34,7 +34,7 @@ const allMobileLinks = [
   { label: 'AI Content',            href: '/ai-content' },
   { label: 'Performance Marketing', href: '/performance-marketing' },
   { label: 'Events & Experiences',  href: '/events' },
-  { label: 'Press & Achievements',  href: '/press' },
+  { label: 'Loops Lately',  href: '/press' },
   { label: 'Careers',               href: '/careers' },
   { label: 'Contact',               href: '/contact' },
 ]
@@ -220,7 +220,7 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Trailing desktop links (About, Press & Achievements, Careers) */}
+            {/* Trailing desktop links (About, Loops Lately, Careers) */}
             {topLinks.slice(1).map(link => (
               <Link
                 key={link.href}
@@ -369,7 +369,7 @@ export default function Navbar() {
                 </Link>
               </motion.div>
 
-              {/* 4. Press & Achievements */}
+              {/* 4. Loops Lately */}
               <motion.div
                 initial={{ x: -25, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -381,7 +381,7 @@ export default function Navbar() {
                   className="block text-white hover:text-brand-pink transition-colors py-1.5"
                   style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 6.5vw, 3rem)', letterSpacing: '-0.02em' }}
                 >
-                  Press &amp; Achievements
+                  Loops Lately
                 </Link>
               </motion.div>
 

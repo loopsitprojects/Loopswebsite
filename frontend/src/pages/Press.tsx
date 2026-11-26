@@ -13,7 +13,7 @@ export default function Press() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    document.title = 'Press & Achievements | Loops Integrated'
+    document.title = 'Loops Lately | Loops Integrated'
     api.press.list()
       .then(res => {
         if (res && res.data) {
@@ -124,7 +124,7 @@ export default function Press() {
         {loading && (
           <div className="py-24 text-center">
             <div className="inline-block w-8 h-8 border-2 border-brand-pink border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-white/40 text-sm font-mono tracking-widest uppercase">Loading Press &amp; News...</p>
+            <p className="text-white/40 text-sm font-mono tracking-widest uppercase">Loading Loops Lately...</p>
           </div>
         )}
 

@@ -142,7 +142,7 @@ export default function PressDetail() {
           to="/press"
           className="px-6 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-brand-pink hover:text-white transition-all duration-300"
         >
-          ← Return to Press &amp; Achievements
+          ← Return to Loops Lately
         </Link>
       </div>
     )
@@ -165,7 +165,7 @@ export default function PressDetail() {
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/60 hover:text-brand-pink transition-colors duration-200 group"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
-            <span>Back to All Press &amp; Achievements</span>
+            <span>Back to Loops Lately</span>
           </Link>
         </div>
 
@@ -310,7 +310,7 @@ export default function PressDetail() {
               to="/press"
               className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition-colors duration-200"
             >
-              ← Back to All Press &amp; Achievements
+              ← Back to Loops Lately
             </Link>
           </div>
         </motion.article>
@@ -320,7 +320,7 @@ export default function PressDetail() {
           <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10">
             <div className="flex items-center justify-between gap-4 mb-6 sm:mb-8">
               <h2 className="text-lg sm:text-2xl md:text-3xl font-display font-bold text-white leading-tight">
-                More Press &amp; Achievements
+                More from Loops Lately
               </h2>
               <Link
                 to="/press"
