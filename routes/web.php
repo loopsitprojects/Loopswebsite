@@ -8,6 +8,12 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/robots.txt', [RobotsController::class, 'index']);
 Route::redirect('/works', '/work', 301);
 
+// Press section moved to /loops-lately; keep old and shared links working
+Route::permanentRedirect('/press', '/loops-lately');
+Route::permanentRedirect('/press/{slug}', '/loops-lately/{slug}');
+Route::permanentRedirect('/pr', '/loops-lately');
+Route::permanentRedirect('/pr/{slug}', '/loops-lately/{slug}');
+
 // SPA catch-all — serves React frontend with server-side media preloading for fast image/video loading
 Route::get('/{any}', function () {
     $paths = [

@@ -21,7 +21,7 @@ export default function WhatsAppFloat() {
     return () => observer.disconnect()
   }, [])
 
-  const isPressPage = location.pathname.startsWith('/press')
+  const isPressPage = location.pathname.startsWith('/loops-lately')
 
   if (isMenuOpen || location.pathname.startsWith('/careers')) return null
 

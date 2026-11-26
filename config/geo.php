@@ -28,9 +28,11 @@ return [
         'AE' => env('GEO_REDIRECT_AE', 'https://uae.loopsintegrated.com'),
     ],
 
-    // Paths renamed on the way to the regional site (exact match)
+    // Paths renamed on the way to the regional site; also applies to sub-paths
+    // (loops-lately/foo → press/foo)
     'aliases' => [
         'works' => 'work',
+        'loops-lately' => 'press',
     ],
 
     // Pages that exist on the regional site (mirrors frontend/src/router).

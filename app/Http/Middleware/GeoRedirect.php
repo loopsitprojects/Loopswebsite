@@ -28,7 +28,7 @@ class GeoRedirect
 
         if ($prefix) {
             $path = $request->path() === '/' ? '' : $request->path();
-            $path = config('geo.aliases')[$path] ?? $path;
+            $path = $this->applyAlias($path);
             $query = $request->getQueryString();
 
             if (! $this->isAllowedPath($path)) {
@@ -52,6 +52,17 @@ class GeoRedirect
             && ! $this->isExcludedPath($request)
             // Crawlers are never redirected so both sites stay indexable
             && ! preg_match(self::BOT_PATTERN, (string) $request->userAgent());
+    }
+
+    private function applyAlias(string $path): string
+    {
+        foreach (config('geo.aliases') as $from => $to) {
+            if ($path === $from || str_starts_with($path, $from . '/')) {
+                return $to . substr($path, strlen($from));
+            }
+        }
+
+        return $path;
     }
 
     private function isAllowedPath(string $path): bool

@@ -141,7 +141,7 @@ export default function Press() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                   {/* Media preview */}
                   <Link
-                    to={`/press/${featuredItem.slug}`}
+                    to={`/loops-lately/${featuredItem.slug}`}
                     className="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-black/60 block"
                   >
                     {featuredItem.image_url ? (
@@ -183,7 +183,7 @@ export default function Press() {
                       )}
                     </div>
 
-                    <Link to={`/press/${featuredItem.slug}`} className="block">
+                    <Link to={`/loops-lately/${featuredItem.slug}`} className="block">
                       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold leading-tight mb-4 text-white group-hover:text-brand-pink transition-colors duration-300">
                         {featuredItem.title}
                       </h2>
@@ -197,7 +197,7 @@ export default function Press() {
 
                     <div className="flex flex-wrap items-center gap-3">
                       <Link
-                        to={`/press/${featuredItem.slug}`}
+                        to={`/loops-lately/${featuredItem.slug}`}
                         className="px-6 py-3 rounded-full bg-white text-black font-semibold text-xs sm:text-sm hover:bg-brand-pink hover:text-white transition-all duration-300 shadow-[0_4px_20px_rgba(255,255,255,0.2)] inline-block"
                       >
                         Read Story →
@@ -222,7 +222,7 @@ export default function Press() {
                   >
                     {/* Card Thumbnail */}
                     <Link
-                      to={`/press/${item.slug}`}
+                      to={`/loops-lately/${item.slug}`}
                       className="aspect-[16/10] relative overflow-hidden bg-black/60 block cursor-pointer"
                     >
                       {item.image_url ? (
@@ -260,7 +260,7 @@ export default function Press() {
                         </div>
 
                         {/* Headline */}
-                        <Link to={`/press/${item.slug}`} className="block">
+                        <Link to={`/loops-lately/${item.slug}`} className="block">
                           <h3 className="text-lg sm:text-xl font-display font-bold leading-snug text-white group-hover:text-brand-pink transition-colors duration-200 mb-3 line-clamp-2">
                             {item.title}
                           </h3>
@@ -277,7 +277,7 @@ export default function Press() {
                       {/* Card Footer Actions */}
                       <div className="pt-4 border-t border-white/5 flex items-center justify-between">
                         <Link
-                          to={`/press/${item.slug}`}
+                          to={`/loops-lately/${item.slug}`}
                           className="text-xs sm:text-sm font-semibold text-brand-pink hover:text-white transition-colors duration-200 inline-flex items-center gap-1.5"
                         >
                           <span>Read Story</span>

@@ -8,7 +8,7 @@ import NavLogoWebGL from '@/components/ui/NavLogoWebGL'
 const topLinks = [
   { label: 'Work',                 href: '/work' },
   { label: 'About',                href: '/about' },
-  { label: 'Loops Lately', href: '/press' },
+  { label: 'Loops Lately', href: '/loops-lately' },
   { label: 'Careers',              href: '/careers' },
 ]
 
@@ -34,7 +34,7 @@ const allMobileLinks = [
   { label: 'AI Content',            href: '/ai-content' },
   { label: 'Performance Marketing', href: '/performance-marketing' },
   { label: 'Events & Experiences',  href: '/events' },
-  { label: 'Loops Lately',  href: '/press' },
+  { label: 'Loops Lately',  href: '/loops-lately' },
   { label: 'Careers',               href: '/careers' },
   { label: 'Contact',               href: '/contact' },
 ]
@@ -119,7 +119,7 @@ export default function Navbar() {
                 key={link.href}
                 to={link.href}
                 className={`transition-all duration-200 relative drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] after:absolute after:bottom-0 after:left-0 after:h-px after:bg-white after:transition-all after:duration-300 ${
-                  location.pathname === link.href || (link.href === '/press' && location.pathname === '/pr')
+                  location.pathname === link.href || location.pathname.startsWith(link.href + '/')
                     ? 'text-white font-bold after:w-full'
                     : 'text-white/90 hover:text-white font-semibold after:w-0 hover:after:w-full'
                 }`}
@@ -226,7 +226,7 @@ export default function Navbar() {
                 key={link.href}
                 to={link.href}
                 className={`transition-all duration-200 relative drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] after:absolute after:bottom-0 after:left-0 after:h-px after:bg-white after:transition-all after:duration-300 ${
-                  location.pathname === link.href || (link.href === '/press' && location.pathname === '/pr')
+                  location.pathname === link.href || location.pathname.startsWith(link.href + '/')
                     ? 'text-white font-bold after:w-full'
                     : 'text-white/90 hover:text-white font-semibold after:w-0 hover:after:w-full'
                 }`}
@@ -376,7 +376,7 @@ export default function Navbar() {
                 transition={{ delay: 0.2, duration: 0.35 }}
               >
                 <Link
-                  to="/press"
+                  to="/loops-lately"
                   onClick={() => setMenuOpen(false)}
                   className="block text-white hover:text-brand-pink transition-colors py-1.5"
                   style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 6.5vw, 3rem)', letterSpacing: '-0.02em' }}

@@ -139,7 +139,7 @@ export default function PressDetail() {
         <h1 className="text-3xl font-display font-bold mb-4">Story Not Found</h1>
         <p className="text-white/50 mb-8 max-w-md">The news article or achievement you are looking for may have been moved or unpublished.</p>
         <Link
-          to="/press"
+          to="/loops-lately"
           className="px-6 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-brand-pink hover:text-white transition-all duration-300"
         >
           ← Return to Loops Lately
@@ -161,7 +161,7 @@ export default function PressDetail() {
         {/* Top Navigation Row */}
         <div className="mb-6 sm:mb-10 flex items-center justify-between">
           <Link
-            to="/press"
+            to="/loops-lately"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/60 hover:text-brand-pink transition-colors duration-200 group"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
@@ -307,7 +307,7 @@ export default function PressDetail() {
           {/* Navigation Footer */}
           <div className="mt-8 flex items-center">
             <Link
-              to="/press"
+              to="/loops-lately"
               className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition-colors duration-200"
             >
               ← Back to Loops Lately
@@ -323,7 +323,7 @@ export default function PressDetail() {
                 More from Loops Lately
               </h2>
               <Link
-                to="/press"
+                to="/loops-lately"
                 className="text-xs sm:text-sm font-semibold text-brand-pink hover:text-white transition-colors duration-200 whitespace-nowrap shrink-0 inline-flex items-center gap-1 group"
               >
                 <span>View all stories</span>
@@ -336,7 +336,7 @@ export default function PressDetail() {
               {related.map(rel => (
                 <Link
                   key={rel.id}
-                  to={`/press/${rel.slug}`}
+                  to={`/loops-lately/${rel.slug}`}
                   className="w-[82vw] max-w-[320px] md:w-auto shrink-0 md:shrink snap-start group rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-brand-pink/50 transition-all duration-300 flex flex-col overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
                 >
                   <div className="aspect-[16/10] relative overflow-hidden bg-black/60">
