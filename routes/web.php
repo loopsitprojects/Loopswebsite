@@ -2,17 +2,19 @@
 
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/robots.txt', [RobotsController::class, 'index']);
 Route::redirect('/works', '/work', 301);
 
-// Press section moved to /loops-lately; keep old and shared links working
-Route::permanentRedirect('/press', '/loops-lately');
-Route::permanentRedirect('/press/{slug}', '/loops-lately/{slug}');
-Route::permanentRedirect('/pr', '/loops-lately');
-Route::permanentRedirect('/pr/{slug}', '/loops-lately/{slug}');
+// Press section moved to /loops-lately; keep old and shared links (and their query strings) working
+Route::get('/{old}/{slug?}', function (Request $request, string $old, ?string $slug = null) {
+    $query = $request->getQueryString();
+
+    return redirect('/loops-lately' . ($slug ? '/' . $slug : '') . ($query ? '?' . $query : ''), 301);
+})->where(['old' => 'press|pr', 'slug' => '[^/]+']);
 
 // SPA catch-all — serves React frontend with server-side media preloading for fast image/video loading
 Route::get('/{any}', function () {

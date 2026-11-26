@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate, useLocation, useParams } from 'react-router-dom'
 import App from '@/App'
 import Home from '@/pages/Home'
 import About from '@/pages/About'
@@ -13,6 +13,13 @@ import Terms from '@/pages/Terms'
 import Press from '@/pages/Press'
 import PressDetail from '@/pages/PressDetail'
 import NotFound from '@/pages/NotFound'
+
+// Old /press and /pr links (e.g. from a cached bundle) → /loops-lately
+function LegacyPressRedirect() {
+  const { slug } = useParams()
+  const { search } = useLocation()
+  return <Navigate to={`/loops-lately${slug ? `/${slug}` : ''}${search}`} replace />
+}
 
 const getBasename = () => {
   const path = window.location.pathname
@@ -38,6 +45,10 @@ export const router = createBrowserRouter([
       { path: 'events', element: <Events /> },
       { path: 'loops-lately', element: <Press /> },
       { path: 'loops-lately/:slug', element: <PressDetail /> },
+      { path: 'press', element: <LegacyPressRedirect /> },
+      { path: 'press/:slug', element: <LegacyPressRedirect /> },
+      { path: 'pr', element: <LegacyPressRedirect /> },
+      { path: 'pr/:slug', element: <LegacyPressRedirect /> },
       { path: 'contact', element: <Contact /> },
       { path: 'careers', element: <Careers /> },
       { path: 'privacy', element: <Privacy /> },
